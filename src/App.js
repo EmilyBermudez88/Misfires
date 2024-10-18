@@ -1,20 +1,20 @@
+import { useState } from 'react';
 import './App.css';
-import players from './util/playerDataSet';
-import gameDates from './util/gameDates';
+import DateDropdown from './components/DateDropdown';
 
 function App() {
-  console.log(players);
+
+  const [selectedDate, setSelectedDate] = useState('');
+  const chooseDate = (day) => setSelectedDate(day);
+  console.log(selectedDate);
+
   return (
     <div className="App">
       <header className="App-header">
         <h1>Misfires Lineup</h1>
       </header>
       <main>
-        {
-          gameDates.map((date)=>
-            <p key={date}>{date}</p>
-          )
-        }
+        <DateDropdown chooseDate={chooseDate}/>
       </main>
     </div>
   );
