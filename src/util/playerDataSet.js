@@ -2,68 +2,117 @@ import gameDates from './gameDates';
 
 const players = [
 	{
-		name: 'Emily',
-		gender: 'F',
-		position: 'right back',
-		secondPosition: 'left back',
-		thirdPosition: '',
-		availability: [...gameDates]
-	},
-	{
 		name: 'German',
 		gender: 'M',
-		position: 'left winger',
-		secondPosition: 'left back',
+		position: 'left back',
+		secondPosition: 'right back',
 		thirdPosition: 'centre back',
-		availability: gameDates.slice(0, -1)
 	},
 	{
 		name: 'Andrew',
 		gender: 'M',
-		position: 'centreback',
-		secondPosition: 'goalie',
-		thirdPosition: 'left back',
-		availability: [...gameDates]
-	},
-	{
-		name: 'Rakhee',
-		gender: 'F',
-		position: 'striker',
-		secondPosition: 'left back',
-		thirdPosition: 'right back',
-		availability: [...gameDates]
+		position: 'goalie',
+		secondPosition: 'centre back',
+		thirdPosition: '',
 	},
 	{
 		name: 'Omar',
 		gender: 'M',
-		position: 'midfield',
-		secondPosition: 'left winger',
-		thirdPosition: 'right winger',
-		availability: [...gameDates]
+		position: 'midfielder',
+		secondPosition: 'right winger',
+		thirdPosition: 'left winger',
 	},
 	{
 		name: 'Chris',
 		gender: 'F',
-		position: 'midfield',
-		secondPosition: 'right winger',
-		thirdPosition: 'right back',
-		availability: [...gameDates]
+		position: 'midfielder',
+		secondPosition: 'left winger',
+		thirdPosition: 'striker',
 	},
 	{
 		name: 'Christian',
 		gender: 'M',
-		position: 'striker',
-		secondPosition: 'right winger',
-		thirdPosition: '',
-		availability: [...gameDates]
+		position: 'left winger',
+		secondPosition: 'striker',
+		thirdPosition: 'midfielder',
 	},
 	{
 		name: 'Bogdan',
 		gender: 'M',
 		position: 'centre back',
 		secondPosition: 'left back',
-		thirdPosition: 'midfield',
-		availability: [...gameDates]
+		thirdPosition: 'left winger',
+	},
+	{
+		name: 'Alex',
+		gender: 'M',
+		position:'left winger',
+		secondPosition: 'striker',
+		thirdPosition: 'right back',
+	},
+	{
+		name: 'Carlos',
+		gender: 'M',
+		position:'left winger',
+		secondPosition: 'striker',
+		thirdPosition: 'left back',
+	},
+	{
+		name: 'Ratsel',
+		gender: 'M',
+		position:'striker',
+		secondPosition: 'left winger',
+		thirdPosition: 'right winger',
+	},
+	{
+		name: 'Adrian',
+		gender: 'M',
+		position:'centre back',
+		secondPosition: 'left winger',
+		thirdPosition: 'striker',
+	},
+	{
+		name: 'Daniel',
+		gender: 'M',
+		position:'centre back',
+		secondPosition: 'left winger',
+		thirdPosition: 'striker',
+		availability: gameDates.slice(0, -1)
+	},
+	{
+		name: 'John',
+		gender: 'M',
+		position:'right back',
+		secondPosition: 'centre back',
+		thirdPosition: 'right winger',
+	},
+	{
+		name: 'Josh',
+		gender: 'M',
+		position:'midfielder',
+		secondPosition: 'left winger',
+		thirdPosition: 'right winger',
+	},
+	{
+		name: 'Nicolas',
+		gender: 'M',
+		position:'centre back',
+		secondPosition: 'left back',
+		thirdPosition: 'left winger',
+	},
+	{
+		name: 'Julian',
+		gender: 'M',
+		position:'right wing',
+		secondPosition: 'striker',
+		thirdPosition: 'goalie',
+	},
+	{
+		name: 'Sanjay',
+		gender: 'M',
+		position:'left winger',
+		secondPosition: 'striker',
+		thirdPosition: 'midfielder',
 	},
 	{
 		name: 'Nuno',
@@ -71,8 +120,23 @@ const players = [
 		position: 'goalie',
 		secondPosition: '',
 		thirdPosition: '',
-		availability: [...gameDates]
-	}
+	},
+	// {
+	// 	name: 'Emily',
+	// 	gender: 'F',
+	// 	position: 'right back',
+	// 	secondPosition: 'left back',
+	// 	thirdPosition: '',
+	// 	availability: [...gameDates]
+	// },
+	// {
+	// 	name: 'Rakhee',
+	// 	gender: 'F',
+	// 	position: 'striker',
+	// 	secondPosition: 'left back',
+	// 	thirdPosition: 'right back',
+	// 	availability: gameDates.slice(0, -1)
+	// },
 ];
 
 export default players;
