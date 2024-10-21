@@ -3,11 +3,12 @@ import './App.css';
 // import players from './util/playerDataSet';
 import DateDropdown from './components/DateDropdown';
 import TeamFormationDropdown from './components/TeamFormationDropdown';
+import FieldLineup from './components/FieldLineup';
 
 function App() {
 
   const [selectedDate, setSelectedDate] = useState('');
-  const [formation, setFormation] = useState([]);
+  const [formation, setFormation] = useState('');
   // const [availablePlayers, setAvailablePlayers] = useState([]);
   // console.log(availablePlayers);
 
@@ -21,8 +22,11 @@ function App() {
         <h1>Misfires Lineup</h1>
       </header>
       <main>
-        <DateDropdown chooseDate={chooseDate}/>
-        <TeamFormationDropdown chooseFormation={chooseFormation} />
+        <form>
+          <DateDropdown chooseDate={chooseDate}/>
+          <TeamFormationDropdown chooseFormation={chooseFormation} />
+        </form>
+        <FieldLineup formation={formation}/>
       </main>
     </div>
   );

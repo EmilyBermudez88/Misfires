@@ -1,5 +1,5 @@
-const formations = [
-    [1, 2, 3, 1], [1, 2, 2, 2], [1, 2, 1, 3], [1, 3, 1, 2], [1, 3, 2, 1], [1, 3, 3]
+const formations= [
+    1231, 1222, 1213, 1312, 1321, 133
 ];
 
 export default formations;
