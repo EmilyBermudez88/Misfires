@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import players from '../util/playerDataSet';
 
 const positions = {
     goalie: 'goalie',
@@ -8,19 +7,27 @@ const positions = {
     attack: 'striker'
 }
 
-const PlayerPositions = ({line, index, availablePlayers}) => {
+const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}) => {
+	// We still want to parse the availablePlayers array into preferred positions to
+	// make the choice easier of which player should go where
 	const [preferredPlayers, setPreferredPlayers] = useState([]),
 		[secondaryPlayers, setSecondaryPlayer] = useState([]),
 		[tertiaryPlayers, setTertiaryPlayers] = useState([]),
+		[selectedPlayer, setSelectedPlayer] = useState('select player'),
 		position = index === undefined ? positions[line]
 			: positions[line][index],
 		renderTertiary = !secondaryPlayers.length && !preferredPlayers.length;
 
 	useEffect(() => {
-		setPreferredPlayers(players.filter((player) => player.position === position));
-		setSecondaryPlayer(players.filter((player) => player.secondPosition === position));
-		setTertiaryPlayers(players.filter((player) => player.thirdPosition === position));
-	}, [position])
+		setPreferredPlayers(availablePlayers.filter((player) => player.position === position));
+		setSecondaryPlayer(availablePlayers.filter((player) => player.secondPosition === position));
+		setTertiaryPlayers(availablePlayers.filter((player) => player.thirdPosition === position));
+	}, [position, availablePlayers])
+
+	const handleOnChange = (e) => {
+		updateAvailablePlayers(e.target.value);
+		setSelectedPlayer(e.target.value);
+	}
 
 	return (
 		<>
@@ -29,8 +36,9 @@ const PlayerPositions = ({line, index, availablePlayers}) => {
 				className= "field-position-dropdown"
 				name="field-position-dropdown"
 				id="field-position-dropdown"
-				onChange={(e) => availablePlayers(e.target.value)}>
-					<option className="player-option" value="">select player</option>
+				onChange={handleOnChange}
+				value={selectedPlayer}>
+					<option className="player-option">{selectedPlayer}</option>
 					{
 						preferredPlayers.length &&
 							<optgroup label="First Choices">

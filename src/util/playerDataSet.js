@@ -77,7 +77,6 @@ const players = [
 		position:'centre back',
 		secondPosition: 'left winger',
 		thirdPosition: 'striker',
-		availability: gameDates.slice(0, -1)
 	},
 	{
 		name: 'John',
