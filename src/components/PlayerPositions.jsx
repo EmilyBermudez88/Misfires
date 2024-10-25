@@ -25,7 +25,9 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 	}, [position, availablePlayers])
 
 	const handleOnChange = (e) => {
-		updateAvailablePlayers(e.target.value);
+		selectedPlayer !== 'select player' ? 
+			updateAvailablePlayers({action:'remove', player: e.target.value}, {action:'add', player: selectedPlayer})
+			: updateAvailablePlayers({action:'remove', player: e.target.value});
 		setSelectedPlayer(e.target.value);
 	}
 

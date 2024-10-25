@@ -7,11 +7,15 @@ const FieldLineup = ({formation}) => {
 	const [availablePlayers, setAvailablePlayers] = useState(playerDataSet),
 		formationArray = formation.split("").map((line) => parseInt(line));
 
-	const updateAvailablePlayers = (assigned) => {
-		console.log(assigned);
-		const update = availablePlayers.filter((player) => player.name !== assigned)
-		setAvailablePlayers(update);
-		console.log(update, availablePlayers);
+	const updateAvailablePlayers = (remove, add) => {
+		let removePlayer = []
+		removePlayer = remove ? availablePlayers.filter((player) => player.name !== remove.player) : availablePlayers;
+		
+		if (add) {
+			const findPlayer = playerDataSet.find((player) => player.name === add.player)
+			removePlayer.push(findPlayer)
+		}
+		setAvailablePlayers(removePlayer)
 	}
 
 	const renderGoalie = () => {
