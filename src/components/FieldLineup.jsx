@@ -10,18 +10,21 @@ const FieldLineup = ({formation}) => {
 	const updateAvailablePlayers = (remove, add) => {
 		let removePlayer = []
 		removePlayer = remove ? availablePlayers.filter((player) => player.name !== remove.player) : availablePlayers;
-		
 		if (add) {
 			const findPlayer = playerDataSet.find((player) => player.name === add.player)
-			removePlayer.push(findPlayer)
+			removePlayer = removePlayer.concat(findPlayer)
 		}
 		setAvailablePlayers(removePlayer)
 	}
-
-	const renderGoalie = () => {
-		return <PlayerPositions line="goalie" 
-														updateAvailablePlayers={updateAvailablePlayers}
-														availablePlayers ={availablePlayers}/>
+	
+	const renderGoalie = (num) => {
+		const children= []
+		for (let i = 0; i < num; i++) {
+			children.push(<PlayerPositions line='goalie'
+																		 updateAvailablePlayers={updateAvailablePlayers}
+																		availablePlayers={availablePlayers}/>)
+		}
+		return children;
 	}
 
 	const renderDefense = (num) => {
@@ -83,7 +86,7 @@ const FieldLineup = ({formation}) => {
 				{
 					availablePlayers && 
 					<>
-						<div className="field-line">{renderGoalie()}</div>
+						<div className="field-line">{renderGoalie(formationArray[0])}</div>
 						<div className="field-line">{renderDefense(formationArray[1])}</div>
 						<div className="field-line">{renderMidfield(formationArray[2])}</div>
 						<div className="field-line">{renderAttack(formationArray[3])}</div>

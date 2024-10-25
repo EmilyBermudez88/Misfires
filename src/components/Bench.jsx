@@ -1,28 +1,16 @@
 import React, { useState } from "react";
-// import playerDataSet from "../util/playerDataSet";
 
 const Bench = ({updateAvailablePlayers, availablePlayers}) => {
-	//available is going to be determined by fieldLineup
-	// it also needs access to full set playerData to establish UNAVAILABLE
-	// const [available, setAvailable] = useState(playerDataSet),
 	const [unavailable, setUnavailable] = useState([]);
 
 	const removePlayer = (player) => {
 		setUnavailable([...unavailable, player]);
-		// const newAvailable = availablePlayers.filter((ind) => ind !== player);
-		// setAvailable(newAvailable);
-		updateAvailablePlayers(player.name)
+		updateAvailablePlayers({action: 'remove', player: player.name})
 	}
 	const addPlayer = (player) => {
-		// setAvailable([...availablePlayers, player]);
-		// const newUnavailable = unavailable.filter((ind) => ind !== player);
-		// setUnavailable(newUnavailable);
-		console.log(player);
+		updateAvailablePlayers(undefined, {action: 'add', player: player.name})
+		setUnavailable(unavailable.filter((ind) => ind.name !== player.name))
 	}
-
-	// useEffect(() => {
-	// 	updateAvailablePlayers(available)
-	// }, [available, updateAvailablePlayers]);
 
 	return (
 		<div className= "bench">
@@ -30,7 +18,7 @@ const Bench = ({updateAvailablePlayers, availablePlayers}) => {
 			<ul className="player-list">
 				{
 					availablePlayers.map((player) => 
-						<li>
+						<li key={player.name}>
 							<button className="player-bench" onClick={() => removePlayer(player)}>
 								{player.name}
 							</button>
@@ -41,7 +29,7 @@ const Bench = ({updateAvailablePlayers, availablePlayers}) => {
 			<ul className="player-list">
 				{
 					unavailable.map((player) => 
-						<li>
+						<li key={player.name}>
 							<button className="player-bench" onClick={() => addPlayer(player)}>
 								{player.name}
 							</button>
