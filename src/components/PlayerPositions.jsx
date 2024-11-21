@@ -21,15 +21,20 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 
 	const dropdownId = useId();
 	const menuId= useId();
+	const optionId = useId();
 	const dropdownRef = useRef(null);
 	const buttonRef = useRef(null);
+	const activeDescendent = visualSelectionIndex !== null ? `${optionId}${visualSelectionIndex}` : null;
+	const labelId = `field-position-${position}`;
 
 	useEffect(() => {
 		setPreferredPlayers(availablePlayers.filter((player) => player.position === position || player.secondPosition === position));
 		setBackupPlayers(availablePlayers.filter((player) => player.thirdPosition === position));
+		console.log(menuId)
 	}, [position, availablePlayers])
 
 	const handleSelection = (selected) => {
+		console.log(selected, preferredPlayers, renderTertiary);
 		selectedPlayer !== 'select player' ? 
 			updateAvailablePlayers({action:'remove', player: selected}, {action:'add', player: selectedPlayer})
 			: updateAvailablePlayers({action:'remove', player: selected});
@@ -39,9 +44,8 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 		handleFocus();
 	}
 
-	// NEXT STEPS!!!! - TAB needs to move to next element --> this may have to be done in field lineup
 	const handleOnKeyDown = (e) => {
-		console.log(e.key)
+		console.log(selectedPlayer, preferredPlayers, e.key, visualSelectionIndex)
 		const openKeys = [' ', 'ArrowDown', 'ArrowUp', 'Enter', 'Home', 'End'];
 		if (!open && openKeys.includes(e.key)) {
 			e.preventDefault();
@@ -65,7 +69,9 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 					if (visualSelectionIndex === null) {
 						setVisualSelectionIndex(0)
 					}
-					else if (visualSelectionIndex === 0 || visualSelectionIndex < preferredPlayers.length - 1) {
+					else if (preferredPlayers.length && (visualSelectionIndex === 0 || visualSelectionIndex < preferredPlayers.length - 1)) {
+						setVisualSelectionIndex(visualSelectionIndex + 1)
+					} else if (!preferredPlayers.length && (visualSelectionIndex === 0 || visualSelectionIndex < backupPlayers.length - 1)){
 						setVisualSelectionIndex(visualSelectionIndex + 1)
 					}
 					break
@@ -83,19 +89,36 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 					break
 				case 'End':
 				case 'PageDown':
-					setVisualSelectionIndex(preferredPlayers.length - 1);
+					if (preferredPlayers.length) {
+						setVisualSelectionIndex(preferredPlayers.length - 1);
+					}
+					else {
+						setVisualSelectionIndex(backupPlayers.length - 1);
+					}
 					break
 				case 'Tab':
-					handleSelection(preferredPlayers[visualSelectionIndex].name)
+					if (visualSelectionIndex === null) {
+						return
+					}
+					else if (preferredPlayers.length) {
+						handleSelection(preferredPlayers[visualSelectionIndex].name)
+					}
+					else {
+						handleSelection(backupPlayers[visualSelectionIndex].name)
+					}
+					break
 				case 'Enter':
 				case ' ':
+					e.preventDefault();
 					if (visualSelectionIndex === null) {
 						setOpen(false);
 					}
-					else {
+					else if (preferredPlayers.length) {
 						handleSelection(preferredPlayers[visualSelectionIndex].name)
 					}
-					e.preventDefault();
+					else {
+						handleSelection(backupPlayers[visualSelectionIndex].name)
+					}
 					break
 				default: 
 					break;
@@ -120,7 +143,7 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 	return (
 		<>
 		<div className="field-position-dropdown" ref={dropdownRef} onBlur={handleBlur}>
-			<p className= "field-position">{position}</p>
+			<p className= "field-position" id={labelId}>{position}</p>
 			<button id={dropdownId}
 					 ref={buttonRef}
 					 className="field-position-dropdown-button"
@@ -128,6 +151,8 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 					 aria-controls={menuId}
 					 aria-expanded={open}
 					 aria-haspopup="listbox"
+					 aria-activedescendant={activeDescendent}
+					 aria-labelledby={labelId}
 					 onClick={handleOnClick}
 					 onKeyDown={handleOnKeyDown}
 					 onFocus={handleFocus}>
@@ -143,7 +168,8 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 						<li role="option" 
 								aria-selected={i === visualSelectionIndex}
 								className={i === visualSelectionIndex? "selected" : undefined}
-								key={player.name}>
+								key={player.name}
+								id={`${optionId}${i}`}>
 							<button className="player-option" 
 											tabIndex={-1} 
 											onClick={() => handleSelection(player.name)}>
@@ -154,8 +180,12 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 					}
 					{
 						renderTertiary &&
-						backupPlayers.map((player) => 
-						<li role="option" aria-selected="false" className="player-option" key={player.name}>
+						backupPlayers.map((player, i) => 
+						<li role="option"
+								aria-selected={i === visualSelectionIndex}
+								className={i=== visualSelectionIndex ? "selected" : undefined}
+								key={player.name}
+								id={`${optionId}${i}`}>
 							<button className="player-option"
 											tabIndex={-1}
 											onClick={() => handleSelection(player.name)}>
@@ -166,58 +196,9 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 					}
 				</ul>
 			}
-			{/* <label htmlFor="field-position-dropdown">{position}</label>
-			<select
-				className= "field-position-dropdown"
-				name="field-position-dropdown"
-				id="field-position-dropdown"
-				onChange={handleOnChange}
-				value={selectedPlayer}>
-					<option className="player-option">{selectedPlayer}</option>
-					{
-						preferredPlayers.length &&
-							<optgroup label="First Choices">
-								{ 
-									preferredPlayers.map((player) => 
-									<option className="player-option" key={player.name}>{player.name}</option>)
-								}
-							</optgroup>
-					}
-					{
-						secondaryPlayers.length &&
-							<optgroup label="Second Choices">
-								{ 
-									secondaryPlayers.map((player) => 
-									<option className="player-option" key={player.name}>{player.name}</option>)
-								}
-							</optgroup>
-					}
-					{
-						renderTertiary &&
-							<optgroup label="Third Choices">
-								{ 
-									tertiaryPlayers.map((player) => 
-									<option className="player-option" key={player.name}>{player.name}</option>)
-								}
-							</optgroup>
-					}
-			</select> */}
 		</div>
 		</>
 	);
 };
 
 export default PlayerPositions;
-
-// main component will be a button
-	// have aria-haspopup="true"
-	// have aria-expanded --> state to set open / closed
-	// onClick --> set state to open / closed (also tabbed into)
-	// should have role of "button" 
-	// will likely need an 'aria-labelled-by' with a label above
-//dropdown will be a div container --> holding the ul & lis => or <menu> and lis? 
-	// property of menu
-	// needs to be focusable - so each item needs to be a button perhaps?
-	// need to think of what an empty value/string is --> is this 'select player?'
-	// managing focus - when clicked out and refocused, needs to keep its selection
-	// when one is selected, it closes the dropdown
