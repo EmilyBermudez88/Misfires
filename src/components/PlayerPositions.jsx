@@ -36,7 +36,6 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 	}, [position, availablePlayers])
 
 	const handleSelection = (selected) => {
-		console.log(selected, preferredPlayers, renderTertiary);
 		selectedPlayer !== 'select player' ? 
 			updateAvailablePlayers({action:'remove', player: selected}, {action:'add', player: selectedPlayer})
 			: updateAvailablePlayers({action:'remove', player: selected});
@@ -142,11 +141,10 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 		buttonRef.current.focus();
 	}
 
-	const handleClear = (e) => {
-		console.log(buttonRef.current);
+	const handleClear = () => {
+		console.log(selectedPlayer);
 		setSelectedPlayer('select player');
-		// updateAvailablePlayers({ action: 'add', player: })
-		console.log(e.target);
+		updateAvailablePlayers(undefined, { action: 'add', player: selectedPlayer })
 	}
 
 	return (
