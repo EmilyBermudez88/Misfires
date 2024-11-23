@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useId, useRef } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faX } from '@fortawesome/free-solid-svg-icons'
 
 const positions = {
     goalie: 'goalie',
@@ -17,7 +19,8 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 		[visualSelectionIndex, setVisualSelectionIndex] = useState(null),
 		position = index === undefined ? positions[line]
 			: positions[line][index],
-		renderTertiary = !preferredPlayers.length;
+		renderTertiary = !preferredPlayers.length,
+		renderClearSelection = selectedPlayer !== 'select player';
 
 	const dropdownId = useId();
 	const menuId= useId();
@@ -30,7 +33,6 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 	useEffect(() => {
 		setPreferredPlayers(availablePlayers.filter((player) => player.position === position || player.secondPosition === position));
 		setBackupPlayers(availablePlayers.filter((player) => player.thirdPosition === position));
-		console.log(menuId)
 	}, [position, availablePlayers])
 
 	const handleSelection = (selected) => {
@@ -140,10 +142,18 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 		buttonRef.current.focus();
 	}
 
+	const handleClear = (e) => {
+		console.log(buttonRef.current);
+		setSelectedPlayer('select player');
+		// updateAvailablePlayers({ action: 'add', player: })
+		console.log(e.target);
+	}
+
 	return (
 		<>
 		<div className="field-position-dropdown" ref={dropdownRef} onBlur={handleBlur}>
 			<p className= "field-position" id={labelId}>{position}</p>
+			<div className="field-position-dropdown-container">
 			<button id={dropdownId}
 					 ref={buttonRef}
 					 className="field-position-dropdown-button"
@@ -158,6 +168,13 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 					 onFocus={handleFocus}>
 				{selectedPlayer}
 			</button>
+				{
+					renderClearSelection &&
+					<button className="clear-button" onClick={handleClear}>
+						<FontAwesomeIcon icon={faX}/>
+					</button>
+				}
+			</div>
 			{/* need to have a button that conditionally renders when selection is made, sibling to main button */}
 			{
 				open &&
