@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useId, useRef } from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faX } from '@fortawesome/free-solid-svg-icons'
+import { EditButton } from "./EditButton";
 
 const positions = {
     goalie: 'goalie',
@@ -168,9 +167,7 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 			</button>
 				{
 					renderClearSelection &&
-					<button className="clear-button" onClick={handleClear}>
-						<FontAwesomeIcon icon={faX}/>
-					</button>
+					<EditButton onClick={handleClear} type= "remove" />
 				}
 			</div>
 			{/* need to have a button that conditionally renders when selection is made, sibling to main button */}

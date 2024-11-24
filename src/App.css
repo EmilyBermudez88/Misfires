@@ -49,15 +49,9 @@ form {
   background-color: white;
   border: none;
   padding: 2px 8px;
-  height: 24px;
+  height: 100%;
+  width: 100%;
   position: relative;
-}
-.clear-button {
-  position: absolute;
-  right: 6px;
-  top: 2px;
-  height: 20px;
-  width: 20px;
 }
 
 .field-position-dropdown-menu {
@@ -90,21 +84,28 @@ ul {
   width: 25%;
 }
 .player-bench {
-  margin: 8px;
+  margin: 10px;
   margin-left: 35%;
   text-align: left;
+  position: relative;
 }
 
 .edit-button {
-  margin: 2px 6px;
-  height: 20px;
+  position: absolute;
+  top: 1px;
+  right: 2px;
+  height: 22px;
   width: 20px;
   background-color: transparent;
-  border: 1px solid rgb(149, 149, 149);
-  border-radius: 2px;
-  position: relative;
-  top: 2px;
+  /* border: 1px solid rgb(149, 149, 149);
+  border-radius: 2px; */
+  border: none;
 }
+
+.clear {
+  height: 100%;
+}
+
 .svg-inline--fa {
   position: absolute;
   top: 50%;

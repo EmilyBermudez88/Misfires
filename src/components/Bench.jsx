@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faX, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { EditButton } from './EditButton';
 
 const Bench = ({updateAvailablePlayers, availablePlayers}) => {
 	const [unavailable, setUnavailable] = useState([]);
@@ -22,9 +21,7 @@ const Bench = ({updateAvailablePlayers, availablePlayers}) => {
 					availablePlayers.map((player) => 
 						<li className="player-bench" key={player.name}>
 							{player.name}
-							<button className="edit-button" onClick={() => removePlayer(player)}>
-								<FontAwesomeIcon icon={faX}/>
-							</button>
+							<EditButton onClick={() => removePlayer(player)} type="remove" />
 						</li>)
 				}
 			</ul>
@@ -34,9 +31,7 @@ const Bench = ({updateAvailablePlayers, availablePlayers}) => {
 					unavailable.map((player) => 
 						<li className="player-bench" key={player.name}>
 							{player.name}
-							<button className="edit-button" onClick={() => addPlayer(player)}>
-								<FontAwesomeIcon icon={faPlus}/>
-							</button>
+							<EditButton onClick={() => addPlayer(player)} type="add" />
 						</li>)
 				}
 			</ul>
