@@ -7,7 +7,7 @@ export const EditButton = ({ onClick, type }) => {
   const classNames = type === 'add' ? 'add edit-button' : 'edit-button'
   return (
     <button className={classNames} onClick={onClick}>
-      <FontAwesomeIcon icon={icon}/>
+      <FontAwesomeIcon className="button-icon"icon={icon}/>
     </button>
   )
 }

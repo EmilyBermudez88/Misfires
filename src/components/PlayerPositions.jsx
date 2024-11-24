@@ -1,5 +1,8 @@
 import React, { useEffect, useState, useId, useRef } from "react";
 import { EditButton } from "./EditButton";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import Jersey from '../assets/Jersey.png';
 
 const positions = {
     goalie: 'goalie',
@@ -19,7 +22,8 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 		position = index === undefined ? positions[line]
 			: positions[line][index],
 		renderTertiary = !preferredPlayers.length,
-		renderClearSelection = selectedPlayer !== 'select player';
+		renderClearSelection = selectedPlayer !== 'select player',
+		renderWarning = !preferredPlayers.length && !backupPlayers.length;
 
 	const dropdownId = useId();
 	const menuId= useId();
@@ -147,69 +151,78 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 	}
 
 	return (
-		<>
-		<div className="field-position-dropdown" ref={dropdownRef} onBlur={handleBlur}>
-			<p className= "field-position" id={labelId}>{position}</p>
-			<div className="field-position-dropdown-container">
-			<button id={dropdownId}
-					 ref={buttonRef}
-					 className="field-position-dropdown-button"
-					 role="combobox"
-					 aria-controls={menuId}
-					 aria-expanded={open}
-					 aria-haspopup="listbox"
-					 aria-activedescendant={activeDescendent}
-					 aria-labelledby={labelId}
-					 onClick={handleOnClick}
-					 onKeyDown={handleOnKeyDown}
-					 onFocus={handleFocus}>
-				{selectedPlayer}
-			</button>
+		<div className="field-position-container">
+			<img src={Jersey} alt="" className="jersey"/>
+			<div className="field-position-dropdown" ref={dropdownRef} onBlur={handleBlur}>
+				<div className="field-position-dropdown-container">
+				<button id={dropdownId}
+						ref={buttonRef}
+						className="field-position-dropdown-button"
+						role="combobox"
+						aria-controls={menuId}
+						aria-expanded={open}
+						aria-haspopup="listbox"
+						aria-activedescendant={activeDescendent}
+						aria-labelledby={labelId}
+						onClick={handleOnClick}
+						onKeyDown={handleOnKeyDown}
+						onFocus={handleFocus}>
+					{selectedPlayer}
+					{
+						!renderClearSelection &&
+						<FontAwesomeIcon icon={faAngleDown} className="dropdown-caret"/>
+					}
+				</button>
+					{
+						renderClearSelection &&
+						<EditButton onClick={handleClear} type= "remove" />
+					}
+				</div>
+				{/* need to have a button that conditionally renders when selection is made, sibling to main button */}
 				{
-					renderClearSelection &&
-					<EditButton onClick={handleClear} type= "remove" />
+					open &&
+					<ul className="field-position-dropdown-menu" role="listbox" id={menuId}>
+						{
+							preferredPlayers &&
+							preferredPlayers.map((player, i) => 
+							<li role="option" 
+									aria-selected={i === visualSelectionIndex}
+									className={i === visualSelectionIndex? "selected" : undefined}
+									key={player.name}
+									id={`${optionId}${i}`}>
+								<button className="player-option" 
+												tabIndex={-1} 
+												onClick={() => handleSelection(player.name)}>
+													{player.name}
+								</button>
+							</li>				
+							)
+						}
+						{
+							renderTertiary &&
+							backupPlayers.map((player, i) => 
+							<li role="option"
+									aria-selected={i === visualSelectionIndex}
+									className={i=== visualSelectionIndex ? "selected" : undefined}
+									key={player.name}
+									id={`${optionId}${i}`}>
+								<button className="player-option"
+												tabIndex={-1}
+												onClick={() => handleSelection(player.name)}>
+													{player.name}
+								</button>
+							</li>				
+							)
+						}
+						{
+							renderWarning &&
+							<li>No Available Players</li>
+						}
+					</ul>
 				}
+			<p className= "field-position" id={labelId}>{position}</p>
 			</div>
-			{/* need to have a button that conditionally renders when selection is made, sibling to main button */}
-			{
-				open &&
-				<ul className="field-position-dropdown-menu" role="listbox" id={menuId}>
-					{
-						preferredPlayers &&
-						preferredPlayers.map((player, i) => 
-						<li role="option" 
-								aria-selected={i === visualSelectionIndex}
-								className={i === visualSelectionIndex? "selected" : undefined}
-								key={player.name}
-								id={`${optionId}${i}`}>
-							<button className="player-option" 
-											tabIndex={-1} 
-											onClick={() => handleSelection(player.name)}>
-												{player.name}
-							</button>
-						</li>				
-						)
-					}
-					{
-						renderTertiary &&
-						backupPlayers.map((player, i) => 
-						<li role="option"
-								aria-selected={i === visualSelectionIndex}
-								className={i=== visualSelectionIndex ? "selected" : undefined}
-								key={player.name}
-								id={`${optionId}${i}`}>
-							<button className="player-option"
-											tabIndex={-1}
-											onClick={() => handleSelection(player.name)}>
-												{player.name}
-							</button>
-						</li>				
-						)
-					}
-				</ul>
-			}
 		</div>
-		</>
 	);
 };
 
