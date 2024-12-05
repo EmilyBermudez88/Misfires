@@ -15,7 +15,7 @@ const TeamFormationDropdown = (props) => {
 			<option className="layout-option" value="">--Please choose a Formation--</option>
 			{
 				formations.map((layout) => 
-					<option className="layout-option">{layout}</option>)
+					<option className="layout-option" key={layout}>{layout}</option>)
 			}
 		</select>
 	</>
