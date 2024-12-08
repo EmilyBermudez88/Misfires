@@ -1,47 +1,29 @@
-body {
+/* body {
   background-color: rgb(44, 44, 44);
-}
-.App {
-  text-align: center;
-  font-size: 16px;
-}
-header {
-  color: white;
-}
-main {
-  background-color: rgb(117, 172, 61);
-}
-form {
-  padding-top: 20px;
-}
-.container {
-  display: flex;
-}
-.field {
+} */
+
+/* .field {
   width: 60%;
   max-width: 600px;
   margin: 20px auto;
   background-image: url('./assets/Field-Layout.webp');
   background-size: cover;
   height: 80vh;
-}
-.field-line {
+} */
+/* .field-line {
   margin: 60px 0px;
   display: flex;
   justify-content: space-around;
-}
+} */
 
 .field-position-dropdown {
   position: relative;
 }
-
+/* 
 .field-position {
   margin: 4px auto;
-}
-.jersey {
-  height: 70px;
-}
-
+} */
+/* 
 .field-position-dropdown-container {
   background-color: white;
   border: 1px solid rgb(149, 149, 149);
@@ -69,10 +51,6 @@ form {
   z-index: 1;
 }
 
-ul {
-  list-style: none;
-  padding-left: 0px;
-}
 
 .player-option {
   background-color: white;
@@ -83,6 +61,7 @@ ul {
 .selected {
   border: 2px solid green
 }
+} */
 .bench {
   width: 25%;
 }
@@ -91,30 +70,4 @@ ul {
   margin-left: 35%;
   text-align: left;
   position: relative;
-}
-
-.buton-icon {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.edit-button, .dropdown-caret {
-  position: absolute;
-  top: 1px;
-  right: 2px;
-  height: 22px;
-  width: 20px;
-  background-color: transparent;
-  border: none;
-}
-
-.dropdown-caret {
-  height: 16px;
-  top: 2px;
-}
-
-.clear {
-  height: 100%;
 }

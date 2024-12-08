@@ -1,0 +1,45 @@
+.field-position-dropdown {
+  &-container {
+    background-color: white;
+    border: 1px solid rgb(149, 149, 149);
+    width: 150px;
+    position: relative;
+  }
+
+  &-button {
+    background-color: white;
+    border: none;
+    padding: 2px 8px;
+    height: 100%;
+    width: 100%;
+    position: relative;
+
+    .dropdown-caret {
+      height: 16px;
+      top: 2px;
+    }
+  }
+
+  &-menu {
+    position: absolute;
+    box-sizing: border-box;
+    background-color: rgb(238, 238, 238);
+    border: 1px solid rgb(149, 149, 149);
+    border-top: none;
+    margin-top: 0;
+    width: 150px;
+    padding: 5px;
+    z-index: 1;
+  }
+
+  &-player-option {
+    background-color: white;
+    margin-bottom: 2px;
+    border: none;
+  }
+}
+
+.selected {
+  border: 2px solid green
+}
+

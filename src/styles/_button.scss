@@ -1,0 +1,20 @@
+.button-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.edit-button, .dropdown-caret {
+  position: absolute;
+  top: 1px;
+  right: 2px;
+  height: 22px;
+  width: 20px;
+  background-color: transparent;
+  border: none;
+}
+
+.clear {
+  height: 100%;
+}

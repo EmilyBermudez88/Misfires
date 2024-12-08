@@ -1,0 +1,30 @@
+.field {
+  width: 75%;
+  &-setup {
+    width: 80%;
+    margin: 20px auto;
+    background-image: url('../assets/Field-Layout.webp');
+    background-size: cover;
+    height: calc(100vh - 100px - 40px - 20px - 20px);
+    //should calculate height based on total height - header - form - margins/padding
+  }
+
+  &-line {
+    padding: 30px 0px;
+    display: flex;
+    justify-content: space-around;
+  }
+
+  &-warning {
+    position: relative;
+    top: 50%;
+  }
+
+  &-position-title {
+    margin: 4px auto;
+  }
+}
+
+.jersey {
+  height: 70px;
+}

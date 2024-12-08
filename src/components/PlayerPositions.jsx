@@ -206,7 +206,7 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 									className={i=== visualSelectionIndex ? "selected" : undefined}
 									key={player.name}
 									id={`${optionId}${i}`}>
-								<button className="player-option"
+								<button className="field-position-dropdown-player-option"
 												tabIndex={-1}
 												onClick={() => handleSelection(player.name)}>
 													{player.name}
@@ -220,8 +220,8 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 						}
 					</ul>
 				}
-			<p className= "field-position" id={labelId}>{position}</p>
 			</div>
+			<p className= "field-position-title" id={labelId}>{position}</p>
 		</div>
 	);
 };

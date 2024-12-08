@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './App.css';
+import './styles/_base.scss';
 import DateDropdown from './components/DateDropdown';
 import TeamFormationDropdown from './components/TeamFormationDropdown';
 import FieldLineup from './components/FieldLineup';
@@ -14,11 +15,11 @@ function App() {
   console.log(selectedDate, formation);
 
   return (
-    <div className="App">
-      <header className="App-header">
+    <div className="app">
+      <header className="app-header">
         <h1>Misfires Lineup</h1>
       </header>
-      <main>
+      <main className="app-main">
         <form>
           <DateDropdown chooseDate={chooseDate}/>
           <TeamFormationDropdown chooseFormation={chooseFormation} />
