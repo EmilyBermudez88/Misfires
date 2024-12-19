@@ -49,7 +49,6 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 	}
 
 	const handleOnKeyDown = (e) => {
-		console.log(selectedPlayer, preferredPlayers, e.key, visualSelectionIndex)
 		const openKeys = [' ', 'ArrowDown', 'ArrowUp', 'Enter', 'Home', 'End'];
 		if (!open && openKeys.includes(e.key)) {
 			e.preventDefault();
@@ -130,10 +129,6 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 		}
 	}
 
-	const handleOnClick = (e) => {
-		setOpen(!open);
-	}
-
 	const handleBlur=(e) => {
 		if (!dropdownRef.current.contains(e.relatedTarget)) {
 			setOpen(false)
@@ -145,9 +140,8 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 	}
 
 	const handleClear = () => {
-		console.log(selectedPlayer);
 		setSelectedPlayer('select player');
-		updateAvailablePlayers(undefined, { action: 'add', player: selectedPlayer })
+		updateAvailablePlayers({ action: 'add', player: selectedPlayer })
 	}
 
 	return (
@@ -164,7 +158,7 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 						aria-haspopup="listbox"
 						aria-activedescendant={activeDescendent}
 						aria-labelledby={labelId}
-						onClick={handleOnClick}
+						onClick={() => setOpen(!open)}
 						onKeyDown={handleOnKeyDown}
 						onFocus={handleFocus}>
 					{selectedPlayer}
@@ -172,7 +166,7 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 						!renderClearSelection &&
 						<FontAwesomeIcon icon={faAngleDown} className="dropdown-caret"/>
 					}
-				</button>
+				</button> 
 					{
 						renderClearSelection &&
 						<EditButton onClick={handleClear} type= "remove" />

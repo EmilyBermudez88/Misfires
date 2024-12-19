@@ -8,40 +8,18 @@ const FieldLineup = ({formation}) => {
 		formationArray = formation.split("").map((line) => parseInt(line));
 		console.log(formationArray, formationArray.length)
 
-	const updateAvailablePlayers = (remove, add) => {
-		// review name : exists in availablePlayers ? filter out : concat 
-
-		// console.log(actions)
-		// const test = actions.map((type) => type.action === 'remove' ? availablePlayers.filter((player) => player.name !== type.player) 
-		// 	: availablePlayers.concat(playerDataSet.find((person) => person.name === type.player)))
-		// console.log(test)
-
-		// const finalUpdate = actions.map((action) => {
-			// let updated = []
-			// updated = action.action === 'remove' ? availablePlayers.filter((player) => player.name !== action.player)
-			// 	: action.action === 'add' ? [...availablePlayers, playerDataSet.find((player) => player.name === action.player)]
-			// 	: [...availablePlayers]
-			// if (action.action === 'remove') {
-			// 	updated = availablePlayers.filter((player) => player.name !== action.player);
-			// 	setAvailablePlayers(updated)
-			// }
-			// else {
-			// 	const addedPlayer = playerDataSet.find((player) => player.name === action.player)
-			// 	updated = [...availablePlayers, addedPlayer]
-			// 	console.log(updated)
-			// 	setAvailablePlayers(updated)
-			// }
-			// return updated;
-		// 	setAvailablePlayers(updated);
-		// })
-
-		let removePlayer = []
-		removePlayer = remove ? availablePlayers.filter((player) => player.name !== remove.player) : availablePlayers;
-		if (add) {
-			const findPlayer = playerDataSet.find((player) => player.name === add.player)
-			removePlayer = removePlayer.concat(findPlayer)
+	const updateAvailablePlayers = ( ...actions ) => {
+		let availablePlayersCopy = availablePlayers;
+		const removePlayer = (playerName, playerArr) => availablePlayersCopy = playerArr.filter((ind) => ind.name !== playerName);
+		const addPlayer = (playerName, playerArr) => {
+			const playerToAdd = playerDataSet.find((player) => player.name === playerName);
+			return availablePlayersCopy = playerArr.concat(playerToAdd);
 		}
-		setAvailablePlayers(removePlayer)
+		actions.forEach((update) => update.action === 'remove' 
+			? removePlayer(update.player, availablePlayersCopy)
+			: addPlayer(update.player, availablePlayersCopy)
+		)
+		setAvailablePlayers(availablePlayersCopy);
 	}
 	
 	const renderGoalie = (num) => {
@@ -49,7 +27,7 @@ const FieldLineup = ({formation}) => {
 		for (let i = 0; i < num; i++) {
 			children.push(<PlayerPositions line='goalie'
 																		 updateAvailablePlayers={updateAvailablePlayers}
-																		availablePlayers={availablePlayers}/>)
+																		 availablePlayers={availablePlayers}/>)
 		}
 		return children;
 	}

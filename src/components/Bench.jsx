@@ -9,7 +9,7 @@ const Bench = ({updateAvailablePlayers, availablePlayers}) => {
 		updateAvailablePlayers({action: 'remove', player: player.name})
 	}
 	const addPlayer = (player) => {
-		updateAvailablePlayers(undefined, {action: 'add', player: player.name})
+		updateAvailablePlayers({action: 'add', player: player.name})
 		setUnavailable(unavailable.filter((ind) => ind.name !== player.name))
 	}
 
