@@ -10,13 +10,13 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 	// make the choice easier of which player should go where
 	const [preferredPlayers, setPreferredPlayers] = useState([]),
 		[backupPlayers, setBackupPlayers] = useState([]),
-		[selectedPlayer, setSelectedPlayer] = useState('select player'),
+		[selectedPlayer, setSelectedPlayer] = useState({}),
 		[open, setOpen] = useState(false),
 		[visualSelectionIndex, setVisualSelectionIndex] = useState(null),
 		position = index === undefined ? positions[line]
 			: positions[line][index],
+    selectionMade = Object.keys(selectedPlayer).length > 0,
 		renderTertiary = !preferredPlayers.length,
-		renderClearSelection = selectedPlayer !== 'select player',
 		renderWarning = !preferredPlayers.length && !backupPlayers.length,
     caret = open ? faAngleUp : faAngleDown;
 
@@ -34,9 +34,9 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 	}, [position, availablePlayers])
 
 	const handleSelection = (selected) => {
-		selectedPlayer !== 'select player' ? 
-			updateAvailablePlayers({action:'remove', name: selected}, {action:'add', name: selectedPlayer})
-			: updateAvailablePlayers({action:'remove', name: selected});
+		selectionMade ? 
+			updateAvailablePlayers({action:'remove', player: selected}, {action:'add', player: selectedPlayer})
+			: updateAvailablePlayers({action:'remove', player: selected});
 		setSelectedPlayer(selected);
 		setVisualSelectionIndex(null);
 		setOpen(false);
@@ -156,14 +156,14 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 						onClick={() => setOpen(!open)}
 						onKeyDown={handleOnKeyDown}
 						onFocus={handleFocus}>
-					{selectedPlayer}
+					{selectionMade ? selectedPlayer.name : 'select player'}
 					{
-						!renderClearSelection &&
+						!selectionMade &&
 						<FontAwesomeIcon icon={caret} className="dropdown-caret"/>
 					}
 				</button> 
 					{
-						renderClearSelection &&
+						selectionMade &&
 						<EditButton onClick={handleClear} type= "remove" />
 					}
 				</div>
@@ -180,7 +180,7 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 									id={`${optionId}${i}`}>
 								<button className="field-position-dropdown__player-option" 
 												tabIndex={-1} 
-												onClick={() => handleSelection(player.name)}>
+												onClick={() => handleSelection(player)}>
 													{player.name}
 								</button>
 							</li>				
@@ -196,7 +196,7 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 									id={`${optionId}${i}`}>
 								<button className="field-position-dropdown__player-option"
 												tabIndex={-1}
-												onClick={() => handleSelection(player.name)}>
+												onClick={() => handleSelection(player)}>
 													{player.name}
 								</button>
 							</li>				

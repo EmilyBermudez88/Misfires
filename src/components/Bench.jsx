@@ -8,20 +8,18 @@ const Bench = ({updateAvailablePlayers, availablePlayers}) => {
   const renderSubWarning = availablePlayers.length < 2;
   const renderSubButton = renderSubWarning && !showSubForm;
 
-	const removePlayer = (player) => {
-    //PASSES FULL PLAYER
-		setUnavailable([...unavailable, player]);
-		updateAvailablePlayers({action: 'remove', name: player.name})
+	const removePlayer = (removedPlayer) => {
+		setUnavailable([...unavailable, removedPlayer]);
+		updateAvailablePlayers({action: 'remove', player: removedPlayer})
 	}
-	const addPlayer = (player) => {
-    //PASSES FULL PLAYER
-		updateAvailablePlayers({action: 'add', name: player.name})
-		setUnavailable(unavailable.filter((ind) => ind.name !== player.name))
+	const addPlayer = (addedPlayer) => {
+		updateAvailablePlayers({action: 'add', player: addedPlayer})
+		setUnavailable(unavailable.filter((ind) => ind.name !== addedPlayer.name))
 	}
 
   const onSubmit = (addSubProp) => {
     setShowSubForm(false);
-    updateAvailablePlayers({action: 'add', ...addSubProp});
+    updateAvailablePlayers({action: 'add', player: addSubProp});
   }
 	
 	return (

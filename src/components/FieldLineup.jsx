@@ -9,17 +9,16 @@ const FieldLineup = ({formation}) => {
 
 	const updateAvailablePlayers = ( ...actions ) => {
 		let availablePlayersCopy = availablePlayers;
-		const removePlayer = (playerName, playerArr) => availablePlayersCopy = playerArr.filter((ind) => ind.name !== playerName);
-		const addPlayer = (playerInfo, playerArr) => {
+		const removePlayer = (playerToRemove, playerArr) => availablePlayersCopy = playerArr.filter((ind) => ind.name !== playerToRemove.name);
+		const addPlayer = (playerToAdd, playerArr) => {
 			//player to add may not exist in dataset because they're an extra sub
-			const findPlayer = playerDataSet.find((player) => player.name === playerInfo.name);
-			const { name, position } = playerInfo
-			const playerToAdd = findPlayer ? findPlayer : {name, position};
-			return availablePlayersCopy = playerArr.concat(playerToAdd);
+			const playerFromRoster = playerDataSet.find((player) => player.name === playerToAdd.name);
+			const playerInfo = playerFromRoster ? playerFromRoster : playerToAdd;
+			return availablePlayersCopy = playerArr.concat(playerInfo);
 		}
 		actions.forEach((update) => update.action === 'remove' 
-			? removePlayer(update.name, availablePlayersCopy)
-			: addPlayer(update, availablePlayersCopy)
+			? removePlayer(update.player, availablePlayersCopy)
+			: addPlayer(update.player, availablePlayersCopy)
 		)
 		setAvailablePlayers(availablePlayersCopy);
 	}
