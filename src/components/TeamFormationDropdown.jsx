@@ -1,5 +1,5 @@
 import React from "react";
-import formations from "../util/formations";
+import { formations } from "../util/lineupData";
 
 const TeamFormationDropdown = (props) => {
 	const { chooseFormation: chooseFormationProp } = props;

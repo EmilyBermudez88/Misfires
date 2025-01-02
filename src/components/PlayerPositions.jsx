@@ -1,15 +1,9 @@
 import React, { useEffect, useState, useId, useRef } from "react";
+import { positions } from '../util/lineupData';
 import { EditButton } from "./EditButton";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import Jersey from '../assets/Jersey.png';
-
-const positions = {
-    goalie: 'goalie',
-    defense: ['right back', 'left back', 'centre back'],
-    midfield: ['right winger', 'midfielder', 'left winger'],
-    attack: 'striker'
-}
 
 const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}) => {
 	// We still want to parse the availablePlayers array into preferred positions to
@@ -41,8 +35,8 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 
 	const handleSelection = (selected) => {
 		selectedPlayer !== 'select player' ? 
-			updateAvailablePlayers({action:'remove', player: selected}, {action:'add', player: selectedPlayer})
-			: updateAvailablePlayers({action:'remove', player: selected});
+			updateAvailablePlayers({action:'remove', name: selected}, {action:'add', name: selectedPlayer})
+			: updateAvailablePlayers({action:'remove', name: selected});
 		setSelectedPlayer(selected);
 		setVisualSelectionIndex(null);
 		setOpen(false);
@@ -142,7 +136,7 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 
 	const handleClear = () => {
 		setSelectedPlayer('select player');
-		updateAvailablePlayers({ action: 'add', player: selectedPlayer })
+		updateAvailablePlayers({ action: 'add', name: selectedPlayer })
 	}
 
 	return (
