@@ -6,7 +6,6 @@ import playerDataSet from "../util/playerDataSet";
 const FieldLineup = ({formation}) => {
 	const [availablePlayers, setAvailablePlayers] = useState(playerDataSet),
 		formationArray = formation.split("").map((line) => parseInt(line));
-		console.log(formationArray, formationArray.length)
 
 	const updateAvailablePlayers = ( ...actions ) => {
 		let availablePlayersCopy = availablePlayers;
@@ -89,16 +88,16 @@ const FieldLineup = ({formation}) => {
 		<div className="container">
 			<Bench updateAvailablePlayers={updateAvailablePlayers} availablePlayers ={availablePlayers}/>
 			<div className="field">
-				<div className="field-setup">
+				<div className="field__setup">
 					{
 						formation ?
 						<>
-							<div className="field-line">{renderGoalie(formationArray[0])}</div>
-							<div className="field-line">{renderDefense(formationArray[1])}</div>
-							<div className="field-line">{renderMidfield(formationArray[2])}</div>
-							<div className="field-line">{renderAttack(formationArray[3])}</div>
+							<div className="field__line">{renderGoalie(formationArray[0])}</div>
+							<div className="field__line">{renderDefense(formationArray[1])}</div>
+							<div className="field__line">{renderMidfield(formationArray[2])}</div>
+							<div className="field__line">{renderAttack(formationArray[3])}</div>
 						</>
-						: <h3 className="field-warning">Please Select a Formation</h3>
+						: <h3 className="field__warning">Please Select a Formation</h3>
 					}
 				</div>
 			</div>

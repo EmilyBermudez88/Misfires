@@ -5,11 +5,11 @@ body {
 }
 
 .app {
-  &-header {
+  &__header {
     color: white;
     padding: 10px;
   }
-  &-main {
+  &__main {
     padding: 20px;
     background-color: rgb(117, 172, 61);
   }

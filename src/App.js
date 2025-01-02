@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import './App.css';
 import './styles/_base.scss';
 import DateDropdown from './components/DateDropdown';
 import TeamFormationDropdown from './components/TeamFormationDropdown';
@@ -12,14 +11,13 @@ function App() {
 
   const chooseDate = (day) => setSelectedDate(day);
   const chooseFormation = (layout) => setFormation(layout);
-  console.log(selectedDate, formation);
 
   return (
     <div className="app">
-      <header className="app-header">
+      <header className="app__header">
         <h1>Misfires Lineup</h1>
       </header>
-      <main className="app-main">
+      <main className="app__main">
         <form>
           <DateDropdown chooseDate={chooseDate}/>
           <TeamFormationDropdown chooseFormation={chooseFormation} />

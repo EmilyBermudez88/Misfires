@@ -1,12 +1,12 @@
 .field-position-dropdown {
-  &-container {
+  &__container {
     background-color: white;
     border: 1px solid rgb(149, 149, 149);
     width: 150px;
     position: relative;
   }
 
-  &-button {
+  &__button {
     background-color: white;
     border: none;
     padding: 2px 8px;
@@ -20,7 +20,7 @@
     }
   }
 
-  &-menu {
+  &__menu {
     position: absolute;
     box-sizing: border-box;
     background-color: rgb(238, 238, 238);
@@ -32,10 +32,14 @@
     z-index: 1;
   }
 
-  &-player-option {
+  &__player-option {
     background-color: white;
     margin-bottom: 2px;
     border: none;
+  }
+  &__no-option-warning {
+    font-size: 14px;
+    color: red;
   }
 }
 

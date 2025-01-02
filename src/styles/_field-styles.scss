@@ -1,6 +1,6 @@
 .field {
   width: 75%;
-  &-setup {
+  &__setup {
     width: 80%;
     margin: 20px auto;
     background-image: url('../assets/Field-Layout.webp');
@@ -9,18 +9,20 @@
     //should calculate height based on total height - header - form - margins/padding
   }
 
-  &-line {
+  &__line {
     padding: 30px 0px;
     display: flex;
     justify-content: space-around;
   }
 
-  &-warning {
+  &__warning {
     position: relative;
     top: 50%;
   }
+}
 
-  &-position-title {
+.field-position {
+  &__title {
     margin: 4px auto;
   }
 }

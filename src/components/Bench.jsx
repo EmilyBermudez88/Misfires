@@ -15,21 +15,21 @@ const Bench = ({updateAvailablePlayers, availablePlayers}) => {
 
 	return (
 		<div className= "bench">
-			<h2 className="bench-title">Available</h2>
-			<ul className="player-list">
+			<h2 className="bench__title">Available</h2>
+			<ul className="bench__player-list">
 				{
 					availablePlayers.map((player) => 
-						<li className="player-bench" key={player.name}>
+						<li className="bench__player-option" key={player.name}>
 							{player.name}
 							<EditButton onClick={() => removePlayer(player)} type="remove" />
 						</li>)
 				}
 			</ul>
-			<h2 className="bench-title">Unavailable</h2>
-			<ul className="player-list">
+			<h2 className="bench__title">Unavailable</h2>
+			<ul className="bench__player-list">
 				{
 					unavailable.map((player) => 
-						<li className="player-bench" key={player.name}>
+						<li className="bench__player-option" key={player.name}>
 							{player.name}
 							<EditButton onClick={() => addPlayer(player)} type="add" />
 						</li>)

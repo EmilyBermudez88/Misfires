@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useId, useRef } from "react";
 import { EditButton } from "./EditButton";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import Jersey from '../assets/Jersey.png';
 
 const positions = {
@@ -23,7 +23,8 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 			: positions[line][index],
 		renderTertiary = !preferredPlayers.length,
 		renderClearSelection = selectedPlayer !== 'select player',
-		renderWarning = !preferredPlayers.length && !backupPlayers.length;
+		renderWarning = !preferredPlayers.length && !backupPlayers.length,
+    caret = open ? faAngleUp : faAngleDown;
 
 	const dropdownId = useId();
 	const menuId= useId();
@@ -145,13 +146,13 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 	}
 
 	return (
-		<div className="field-position-container">
+		<div className="field-position">
 			<img src={Jersey} alt="" className="jersey"/>
 			<div className="field-position-dropdown" ref={dropdownRef} onBlur={handleBlur}>
-				<div className="field-position-dropdown-container">
+				<div className="field-position-dropdown__container">
 				<button id={dropdownId}
 						ref={buttonRef}
-						className="field-position-dropdown-button"
+						className="field-position-dropdown__button"
 						role="combobox"
 						aria-controls={menuId}
 						aria-expanded={open}
@@ -164,7 +165,7 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 					{selectedPlayer}
 					{
 						!renderClearSelection &&
-						<FontAwesomeIcon icon={faAngleDown} className="dropdown-caret"/>
+						<FontAwesomeIcon icon={caret} className="dropdown-caret"/>
 					}
 				</button> 
 					{
@@ -172,10 +173,9 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 						<EditButton onClick={handleClear} type= "remove" />
 					}
 				</div>
-				{/* need to have a button that conditionally renders when selection is made, sibling to main button */}
 				{
 					open &&
-					<ul className="field-position-dropdown-menu" role="listbox" id={menuId}>
+					<ul className="field-position-dropdown__menu" role="listbox" id={menuId}>
 						{
 							preferredPlayers &&
 							preferredPlayers.map((player, i) => 
@@ -184,7 +184,7 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 									className={i === visualSelectionIndex? "selected" : undefined}
 									key={player.name}
 									id={`${optionId}${i}`}>
-								<button className="player-option" 
+								<button className="field-position-dropdown__player-option" 
 												tabIndex={-1} 
 												onClick={() => handleSelection(player.name)}>
 													{player.name}
@@ -200,7 +200,7 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 									className={i=== visualSelectionIndex ? "selected" : undefined}
 									key={player.name}
 									id={`${optionId}${i}`}>
-								<button className="field-position-dropdown-player-option"
+								<button className="field-position-dropdown__player-option"
 												tabIndex={-1}
 												onClick={() => handleSelection(player.name)}>
 													{player.name}
@@ -210,12 +210,12 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 						}
 						{
 							renderWarning &&
-							<li>No Available Players</li>
+							<li className="field-position-dropdown__no-option-warning">No Available Players</li>
 						}
 					</ul>
 				}
 			</div>
-			<p className= "field-position-title" id={labelId}>{position}</p>
+			<p className= "field-position__title" id={labelId}>{position}</p>
 		</div>
 	);
 };
