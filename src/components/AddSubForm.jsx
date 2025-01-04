@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { positions } from '../util/lineupData';
 
 
-const AddSubForm = ({onSubmit: onSubmitProp}) => {
-  const [addSub, setAddSub] = useState({name:'', position:''});
+const AddSubForm = ({onSubmit: onSubmitProp, selectedPosition}) => {
+  const defaultPosition = selectedPosition ? selectedPosition : '';
+  const [addSub, setAddSub] = useState({name:'', position: defaultPosition});
   const positionsArray = Object.values(positions).flat();
 
   const handleFormChange = (value, key) => setAddSub({...addSub, [key]: value});
@@ -24,7 +25,10 @@ const AddSubForm = ({onSubmit: onSubmitProp}) => {
           <label htmlFor="sub-position">Player Position</label>
           <select id="sub-position" name="sub-position" onChange={(e) => handleFormChange(e.target.value, 'position')}>
             <option value="">Choose a Position</option>
-            {positionsArray.map((position) => <option key={position}>{position}</option>)}
+            {positionsArray.map((position) => position === selectedPosition 
+              ? <option selected key={position}>{position}</option>
+              : <option key={position}>{position}</option>
+            )}
           </select>
         </div>
         <button className="button--form">Add Player</button>

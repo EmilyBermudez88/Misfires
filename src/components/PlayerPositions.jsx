@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import Jersey from '../assets/Jersey.png';
 
-const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}) => {
+const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers, renderSubForm}) => {
 	// We still want to parse the availablePlayers array into preferred positions to
 	// make the choice easier of which player should go where
 	const [preferredPlayers, setPreferredPlayers] = useState([]),
@@ -204,7 +204,10 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers}
 						}
 						{
 							renderWarning &&
-							<li className="field-position-dropdown__no-option-warning">No Available Players</li>
+							<li className="field-position-dropdown__no-option-warning">
+                No Available Players
+                <button onClick={() => renderSubForm(true, position)}>Add a Sub</button>
+              </li>
 						}
 					</ul>
 				}

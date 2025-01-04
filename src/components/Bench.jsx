@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import AddSubForm from './AddSubForm';
 import { EditButton } from './EditButton';
 
-const Bench = ({updateAvailablePlayers, availablePlayers}) => {
+const Bench = ({updateAvailablePlayers, availablePlayers, renderForm, setRenderForm, selectedPosition }) => {
 	const [unavailable, setUnavailable] = useState([]);
-	const [showSubForm, setShowSubForm] = useState(false);
   const renderSubWarning = availablePlayers.length < 2;
-  const renderSubButton = renderSubWarning && !showSubForm;
+  const renderSubButton = renderSubWarning && !renderForm;
 
 	const removePlayer = (removedPlayer) => {
 		setUnavailable([...unavailable, removedPlayer]);
@@ -18,7 +17,7 @@ const Bench = ({updateAvailablePlayers, availablePlayers}) => {
 	}
 
   const onSubmit = (addSubProp) => {
-    setShowSubForm(false);
+    setRenderForm(false);
     updateAvailablePlayers({action: 'add', player: addSubProp});
   }
 	
@@ -35,8 +34,8 @@ const Bench = ({updateAvailablePlayers, availablePlayers}) => {
 				}
 			</ul>
 			{renderSubWarning && <p>WARNING: more subs needed</p> }
-      {renderSubButton && <button onClick={() => setShowSubForm(true)}>Add A Sub</button>}
-      {showSubForm && <AddSubForm onSubmit={onSubmit} />}
+      {renderSubButton && <button onClick={() => setRenderForm(true)}>Add A Sub</button>}
+      {renderForm && <AddSubForm onSubmit={onSubmit} selectedPosition={selectedPosition}/>}
 			<h2 className="bench__title">Unavailable</h2>
 			<ul className="bench__player-list">
 				{
