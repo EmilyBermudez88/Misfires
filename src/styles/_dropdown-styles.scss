@@ -1,8 +1,11 @@
 .field-position-dropdown {
+  position: absolute;
+  bottom: 0%;
+  width: 100%;
+
   &__container {
     background-color: white;
     border: 1px solid rgb(149, 149, 149);
-    width: 150px;
     position: relative;
   }
 

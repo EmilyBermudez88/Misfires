@@ -135,33 +135,36 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers,
 	}
 
 	const handleClear = () => {
-		setSelectedPlayer('select player');
-		updateAvailablePlayers({ action: 'add', name: selectedPlayer })
+		setSelectedPlayer({});
+		updateAvailablePlayers({ action: 'add', player: selectedPlayer })
 	}
 
 	return (
 		<div className="field-position">
-			<img src={Jersey} alt="" className="jersey"/>
+      <div className="field-position__icon-container">
+        <img src={Jersey} alt="" className="field-position__icon"/>
+        <p className= "field-position__title" id={labelId}>{position}</p>
+      
 			<div className="field-position-dropdown" ref={dropdownRef} onBlur={handleBlur}>
 				<div className="field-position-dropdown__container">
-				<button id={dropdownId}
-						ref={buttonRef}
-						className="field-position-dropdown__button"
-						role="combobox"
-						aria-controls={menuId}
-						aria-expanded={open}
-						aria-haspopup="listbox"
-						aria-activedescendant={activeDescendent}
-						aria-labelledby={labelId}
-						onClick={() => setOpen(!open)}
-						onKeyDown={handleOnKeyDown}
-						onFocus={handleFocus}>
-					{selectionMade ? selectedPlayer.name : 'select player'}
-					{
-						!selectionMade &&
-						<FontAwesomeIcon icon={caret} className="dropdown-caret"/>
-					}
-				</button> 
+          <button id={dropdownId}
+              ref={buttonRef}
+              className="field-position-dropdown__button"
+              role="combobox"
+              aria-controls={menuId}
+              aria-expanded={open}
+              aria-haspopup="listbox"
+              aria-activedescendant={activeDescendent}
+              aria-labelledby={labelId}
+              onClick={() => setOpen(!open)}
+              onKeyDown={handleOnKeyDown}
+              onFocus={handleFocus}>
+            {selectionMade ? selectedPlayer.name : 'select player'}
+            {
+              !selectionMade &&
+              <FontAwesomeIcon icon={caret} className="dropdown-caret"/>
+            }
+          </button> 
 					{
 						selectionMade &&
 						<EditButton onClick={handleClear} type= "remove" />
@@ -211,8 +214,8 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers,
 						}
 					</ul>
 				}
+        </div>
 			</div>
-			<p className= "field-position__title" id={labelId}>{position}</p>
 		</div>
 	);
 };

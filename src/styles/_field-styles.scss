@@ -10,9 +10,12 @@
   }
 
   &__line {
-    padding: 30px 0px;
+    padding: 25px 0px;
     display: flex;
     justify-content: space-around;
+    &:first-child {
+      padding-top: 50px;
+    }
   }
 
   &__warning {
@@ -22,11 +25,20 @@
 }
 
 .field-position {
-  &__title {
-    margin: 4px auto;
+  width: 150px;
+  &__icon-container {
+    position: relative;
   }
-}
-
-.jersey {
-  height: 70px;
+  &__icon {
+    height: 120px;
+  }
+  &__title {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 4px auto;
+    width: 100%;
+    position: absolute;
+    top: 30%;
+  }
 }
