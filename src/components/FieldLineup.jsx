@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Bench from './Bench';
 import PlayerPositions from "./PlayerPositions";
 import playerDataSet from "../util/playerDataSet";
+import { positions } from '../util/lineupData';
 
 const FieldLineup = ({formation}) => {
 	const [availablePlayers, setAvailablePlayers] = useState(playerDataSet),
@@ -24,11 +25,24 @@ const FieldLineup = ({formation}) => {
 		)
 		setAvailablePlayers(availablePlayersCopy);
 	}
-	
+
+  let formationPositions = [];
+  const definePosition = (line, idx) => {
+    for (const prop in positions) {
+      if (prop === line) {
+        if (!formationPositions.includes(positions[prop][idx])) {
+          formationPositions.push(positions[prop][idx]);
+        }
+        return positions[prop][idx]
+      }
+    }
+  }
+
 	const renderGoalie = (num) => {
 		const children= []
 		for (let i = 0; i < num; i++) {
-			children.push(<PlayerPositions line='goalie'
+      const goalie = definePosition('goalie', i);
+			children.push(<PlayerPositions position={goalie}
 																		 updateAvailablePlayers={updateAvailablePlayers}
 																		 availablePlayers={availablePlayers}
                                      renderSubForm={renderSubForm}/>);
@@ -39,8 +53,8 @@ const FieldLineup = ({formation}) => {
 	const renderDefense = (num) => {
 		const children = []
 		for (let i = 0; i < num; i++) {
-			children.push(<PlayerPositions line='defense'
-																		 index={i}
+      const defense = definePosition('defense', i);
+			children.push(<PlayerPositions position={defense}
 																		 updateAvailablePlayers={updateAvailablePlayers}
 																		 availablePlayers ={availablePlayers}
                                      renderSubForm={renderSubForm}/>);
@@ -55,16 +69,16 @@ const FieldLineup = ({formation}) => {
 	const renderMidfield = (num) => {
 		const children = []
 		if (num === 1) {
-			children.push(<PlayerPositions line='midfield'
-																		 index={num}
+      const midfield = definePosition('midfield', num);
+			children.push(<PlayerPositions position={midfield}
 																		 updateAvailablePlayers={updateAvailablePlayers}
 																		 availablePlayers ={availablePlayers}
                                      renderSubForm={renderSubForm}/>);
 		}
 		else if (num === 2) {
 			for (let i = 0; i <= num; i = i + 2) {
-				children.push(<PlayerPositions line='midfield'
-																			 index={i}
+        const midfield = definePosition('midfield', i);
+				children.push(<PlayerPositions position={midfield}
 																			 updateAvailablePlayers={updateAvailablePlayers}
 																			 availablePlayers ={availablePlayers}
                                        renderSubForm={renderSubForm}/>);
@@ -72,8 +86,8 @@ const FieldLineup = ({formation}) => {
 		}
 		else {
 			for (let i = 0; i < num; i++) {
-				children.push(<PlayerPositions line='midfield'
-																			 index={i}
+        const midfield = definePosition('midfield', i);
+				children.push(<PlayerPositions position={midfield}
 																			 updateAvailablePlayers={updateAvailablePlayers}
 																			 availablePlayers ={availablePlayers}
                                        renderSubForm={renderSubForm}/>);
@@ -85,7 +99,8 @@ const FieldLineup = ({formation}) => {
 	const renderAttack = (num) => {
 		const children = []
 		for (let i = 0; i < num; i++) {
-			children.push(<PlayerPositions line='attack'
+      const attack = definePosition('attack', i);
+			children.push(<PlayerPositions position={attack}
 																		 updateAvailablePlayers={updateAvailablePlayers}
 																		 availablePlayers={availablePlayers}
                                      renderSubForm={renderSubForm}/>);
@@ -105,7 +120,8 @@ const FieldLineup = ({formation}) => {
              availablePlayers ={availablePlayers}
              renderForm={renderForm}
              setRenderForm={setRenderForm}
-             selectedPosition={selectedPosition}/>
+             selectedPosition={selectedPosition}
+             formationPositions={formationPositions} />
       <div className="field">
         <div className="field__setup">
           {

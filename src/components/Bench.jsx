@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import AddSubForm from './AddSubForm';
 import { EditButton } from './EditButton';
 
-const Bench = ({updateAvailablePlayers, availablePlayers, renderForm, setRenderForm, selectedPosition }) => {
+const Bench = ({updateAvailablePlayers, availablePlayers, renderForm, setRenderForm, selectedPosition, formationPositions }) => {
 	const [unavailable, setUnavailable] = useState([]);
   const renderSubWarning = availablePlayers.length < 2;
   const renderSubButton = renderSubWarning && !renderForm;
@@ -20,7 +20,7 @@ const Bench = ({updateAvailablePlayers, availablePlayers, renderForm, setRenderF
     setRenderForm(false);
     updateAvailablePlayers({action: 'add', player: addSubProp});
   }
-	
+
 	return (
 		<div className="bench">
 			<h2 className="bench__title">Available</h2>
@@ -35,7 +35,7 @@ const Bench = ({updateAvailablePlayers, availablePlayers, renderForm, setRenderF
 			</ul>
 			{renderSubWarning && <p>WARNING: more subs needed</p> }
       {renderSubButton && <button onClick={() => setRenderForm(true)}>Add A Sub</button>}
-      {renderForm && <AddSubForm onSubmit={onSubmit} selectedPosition={selectedPosition}/>}
+      {renderForm && <AddSubForm formationPostions={formationPositions} onSubmit={onSubmit} selectedPosition={selectedPosition} setRenderForm={setRenderForm} />}
 			<h2 className="bench__title">Unavailable</h2>
 			<ul className="bench__player-list">
 				{

@@ -1,11 +1,10 @@
 import React, { useEffect, useState, useId, useRef } from "react";
-import { positions } from '../util/lineupData';
 import { EditButton } from "./EditButton";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import Jersey from '../assets/Jersey.png';
 
-const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers, renderSubForm}) => {
+const PlayerPositions = ({ position, updateAvailablePlayers, availablePlayers, renderSubForm}) => {
 	// We still want to parse the availablePlayers array into preferred positions to
 	// make the choice easier of which player should go where
 	const [preferredPlayers, setPreferredPlayers] = useState([]),
@@ -13,8 +12,6 @@ const PlayerPositions = ({line, index, updateAvailablePlayers, availablePlayers,
 		[selectedPlayer, setSelectedPlayer] = useState({}),
 		[open, setOpen] = useState(false),
 		[visualSelectionIndex, setVisualSelectionIndex] = useState(null),
-		position = index === undefined ? positions[line]
-			: positions[line][index],
     selectionMade = Object.keys(selectedPlayer).length > 0,
 		renderTertiary = !preferredPlayers.length,
 		renderWarning = !preferredPlayers.length && !backupPlayers.length,

@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
-import { positions } from '../util/lineupData';
 
-
-const AddSubForm = ({onSubmit: onSubmitProp, selectedPosition}) => {
+const AddSubForm = ({onSubmit: onSubmitProp, selectedPosition, formationPostions, setRenderForm}) => {
   const defaultPosition = selectedPosition ? selectedPosition : '';
   const [addSub, setAddSub] = useState({name:'', position: defaultPosition});
-  const positionsArray = Object.values(positions).flat();
-
   const handleFormChange = (value, key) => setAddSub({...addSub, [key]: value});
 
   const onSubmit = (e) => {
     e.preventDefault();
     onSubmitProp(addSub);
+    setRenderForm(false);
     setAddSub({name:'', position:''});
+  }
+
+  const onCancel = () => {
+    setAddSub({name:'', position:''});
+    setRenderForm(false);
   }
 
   return (
@@ -23,16 +25,13 @@ const AddSubForm = ({onSubmit: onSubmitProp, selectedPosition}) => {
         </div>
         <div className="sub-form-group">
           <label htmlFor="sub-position">Player Position</label>
-          <select id="sub-position" name="sub-position" onChange={(e) => handleFormChange(e.target.value, 'position')}>
+          <select id="sub-position" name="sub-position" onChange={(e) => handleFormChange(e.target.value, 'position')} value={addSub.position}>
             <option value="">Choose a Position</option>
-            {positionsArray.map((position) => position === selectedPosition 
-              ? <option selected key={position}>{position}</option>
-              : <option key={position}>{position}</option>
-            )}
+            {formationPostions.map((position) => <option key={position}>{position}</option> )}
           </select>
         </div>
         <button className="button--form">Add Player</button>
-        <button className="button--form" type="reset">Cancel</button>
+        <button className="button--form" type="reset" onClick={onCancel}>Cancel</button>
       </form>
   )
 }
