@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import AddSubForm from './AddSubForm';
 import { EditButton } from './EditButton';
+import Select from './Select';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
 const Bench = ({updateAvailablePlayers, availablePlayers, renderForm, setRenderForm, selectedPosition, formationPositions }) => {
 	const [unavailable, setUnavailable] = useState([]);
-  const renderSubWarning = availablePlayers.length < 2;
-  const renderSubButton = renderSubWarning && !renderForm;
+  const [showPlayerPosition, setShowPlayerPosition] = useState(false);
+  const renderSubWarning = availablePlayers.length < 2 && !renderForm;
+  const toggleText = showPlayerPosition ? 'Hide Positions' : 'Show Positions';
+  const [playerToEdit, setPlayerToEdit] = useState('');
 
 	const removePlayer = (removedPlayer) => {
 		setUnavailable([...unavailable, removedPlayer]);
@@ -24,17 +29,43 @@ const Bench = ({updateAvailablePlayers, availablePlayers, renderForm, setRenderF
 	return (
 		<div className="bench">
 			<h2 className="bench__title">Available</h2>
+      <div className="toggle-label-container">
+        <label className="toggle">
+          <span id="toggle-text" className="toggle__text">{toggleText}</span>
+          <input className="toggle__input" 
+                type="checkbox" 
+                role="switch"
+                checked={showPlayerPosition} 
+                onChange={() => setShowPlayerPosition(!showPlayerPosition)}
+                aria-labelledby="toggle-text"/>
+          <span className="toggle__container">
+            <span className="toggle__slider"/>
+          </span>
+        </label>
+      </div>
 			<ul className="bench__player-list">
 				{
 					availablePlayers.map((player) => 
 						<li className="bench__player-option" key={player.name}>
-							{player.name}
+							<span className="bench__player-name">{player.name}</span>
+              {showPlayerPosition && 
+                <span className="bench__position-container">
+                  <Select player={player} edit={player.name === playerToEdit} handleSelection={setPlayerToEdit}/>
+                  <button onClick={() => setPlayerToEdit(player.name)}className="button--edit">
+                    <FontAwesomeIcon icon={faPenToSquare} />
+                  </button>
+                </span>  
+              }
 							<EditButton onClick={() => removePlayer(player)} type="remove" />
 						</li>)
 				}
 			</ul>
-			{renderSubWarning && <p>WARNING: more subs needed</p> }
-      {renderSubButton && <button onClick={() => setRenderForm(true)}>Add A Sub</button>}
+			{renderSubWarning && 
+        <>
+          <p>WARNING: more subs needed</p>
+          <button onClick={() => setRenderForm(true)}>Add A Sub</button>
+        </>
+      }
       {renderForm && <AddSubForm formationPostions={formationPositions} onSubmit={onSubmit} selectedPosition={selectedPosition} setRenderForm={setRenderForm} />}
 			<h2 className="bench__title">Unavailable</h2>
 			<ul className="bench__player-list">

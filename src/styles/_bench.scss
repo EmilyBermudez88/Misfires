@@ -1,11 +1,90 @@
+$borderWidth: 2px;
+$border: $borderWidth solid rgb(49, 49,49);
+$marginWidth: 10px;
+$toggleWidth: 45px;
+$toggleSliderWidth: 16px;
+
 .bench {
   width: 25%;
-
   &__player-option {
-    margin: 10px;
-    margin-left: 35%;
+    margin: $marginWidth;
+    margin-left: 25%;
     text-align: left;
     position: relative;
+    display: grid;
+    grid-template-columns: max-content auto 20px;
+    column-gap: $marginWidth;
+  }
+
+  &__position-container {
+    display: flex;
+    justify-content: space-between;
+    .button--edit {
+      position: static;
+    }
+  }
+}
+.toggle-label-container {
+  width: 100%;
+  text-align: left;
+  margin-left: calc(25% - 6px);
+}
+.toggle {
+  box-sizing: border-box;
+  text-align: left;
+  padding: 6px;
+  line-height: 24px;
+  &__container {
+    box-sizing:border-box;
+    display: inline-block;
+    background-color: white;
+    border: $border;
+    border-radius: 20px;
+    width: $toggleWidth;
+    height: 24px;
+    position: relative;
+    top: 6px;
+  }
+  &__slider {
+    &::before {
+      position: absolute;
+      left: $borderWidth;
+      top: 2px;
+      content: '';
+      height: $toggleSliderWidth;
+      width: $toggleSliderWidth;
+      border-radius: 50%;
+      background-color: black;
+    }
+  }
+  &__input {
+    appearance: none;
+    outline: none;
+    margin: 0;
+    &:checked {
+      &+ .toggle__container {
+        .toggle__slider::before {
+          // border * 3 refers to L & R borders and the 2px inner padding
+          left: calc( $toggleWidth - calc($borderWidth * 3) - $toggleSliderWidth);
+        }
+      }
+    } 
+  }
+  &__text {
+    display: inline-block;
+    width: 130px;
+  }
+  &:has(.toggle__input:focus, .toggle__input:active) {
+    border: $border;
+    border-radius: 4px;
+    padding: 4px;
+  }
+  &:hover {
+    cursor: pointer;
+    border: $border;
+    border-radius: 4px;
+    padding: 4px;
+    background-color: rgba(49, 49, 49, 0.08);
   }
 }
   
