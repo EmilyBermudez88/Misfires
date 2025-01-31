@@ -1,8 +1,9 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 
 const Select = ({ player, edit, handleSelection }) => {
   const [availablePositions, setAvailablePositions] = useState([]);
-  const [selected, setSelected ]= useState(player.position);
+  const [selected, setSelected]= useState(player.position);
   const selectRef = useRef();
 
   useEffect(() => {
@@ -10,7 +11,7 @@ const Select = ({ player, edit, handleSelection }) => {
       let positions = [];
       for(const prop in player) {
         if (prop !== 'name')
-          positions.push(player[prop]);
+          {positions.push(player[prop]);}
       }
       setAvailablePositions(positions);
     }
@@ -19,18 +20,36 @@ const Select = ({ player, edit, handleSelection }) => {
 
   useEffect(() => {
     edit && selectRef.current.focus();
-  },[edit])
+  }, [edit])
 
   return (
     <>
-    { edit ? 
-      <select ref={selectRef} id="position-options" name="position-options" onBlur={() => handleSelection('')} onChange={(e) => setSelected(e.target.value)} value={selected}>
-        {availablePositions.map((position) => position && <option key={position}>{position}</option> )}
-      </select>
+      { edit ?
+        <select ref={selectRef}
+                id="position-options"
+                name="position-options"
+                onBlur={() => handleSelection('')}
+                onChange={(e) => setSelected(e.target.value)}
+                value={selected}>
+          {availablePositions.map((position) => position && <option key={position}>{position}</option>)}
+        </select>
       : <span className="bench__player-position">({selected})</span>
     }
     </>
   )
 }
+
+const player = PropTypes.shape({
+  name: PropTypes.string,
+  position: PropTypes.string,
+  secondPosition: PropTypes.string,
+  thirdPosition: PropTypes.string
+})
+
+Select.propTypes = {
+  player: player,
+  edit: PropTypes.bool,
+  handleSelection: PropTypes.func
+};
 
 export default Select;

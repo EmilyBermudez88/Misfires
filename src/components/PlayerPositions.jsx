@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useId, useRef } from "react";
-import { EditButton } from "./EditButton";
+import React, { useEffect, useState, useId, useRef } from 'react';
+import PropTypes from 'prop-types';
+import EditButton from './EditButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import Jersey from '../assets/Jersey.png';
 
-const PlayerPositions = ({ position, updateAvailablePlayers, availablePlayers, renderSubForm}) => {
+const PlayerPositions = ({ position, updateAvailablePlayers, availablePlayers, renderSubForm }) => {
 	// We still want to parse the availablePlayers array into preferred positions to
 	// make the choice easier of which player should go where
 	const [preferredPlayers, setPreferredPlayers] = useState([]),
@@ -26,14 +27,15 @@ const PlayerPositions = ({ position, updateAvailablePlayers, availablePlayers, r
 	const labelId = `field-position-${position}`;
 
 	useEffect(() => {
-		setPreferredPlayers(availablePlayers.filter((player) => player.position === position || player.secondPosition === position));
+		setPreferredPlayers(availablePlayers.filter((player) =>
+      player.position === position || player.secondPosition === position));
 		setBackupPlayers(availablePlayers.filter((player) => player.thirdPosition === position));
 	}, [position, availablePlayers])
 
 	const handleSelection = (selected) => {
-		selectionMade ? 
-			updateAvailablePlayers({action:'remove', player: selected}, {action:'add', player: selectedPlayer})
-			: updateAvailablePlayers({action:'remove', player: selected});
+		selectionMade ?
+			updateAvailablePlayers({ action:'remove', player: selected }, { action:'add', player: selectedPlayer })
+			: updateAvailablePlayers({ action:'remove', player: selected });
 		setSelectedPlayer(selected);
 		setVisualSelectionIndex(null);
 		setOpen(false);
@@ -64,9 +66,11 @@ const PlayerPositions = ({ position, updateAvailablePlayers, availablePlayers, r
 					if (visualSelectionIndex === null) {
 						setVisualSelectionIndex(0)
 					}
-					else if (preferredPlayers.length && (visualSelectionIndex === 0 || visualSelectionIndex < preferredPlayers.length - 1)) {
+					else if (preferredPlayers.length &&
+            (visualSelectionIndex === 0 || visualSelectionIndex < preferredPlayers.length - 1)) {
 						setVisualSelectionIndex(visualSelectionIndex + 1)
-					} else if (!preferredPlayers.length && (visualSelectionIndex === 0 || visualSelectionIndex < backupPlayers.length - 1)){
+					} else if (!preferredPlayers.length &&
+            (visualSelectionIndex === 0 || visualSelectionIndex < backupPlayers.length - 1)) {
 						setVisualSelectionIndex(visualSelectionIndex + 1)
 					}
 					break
@@ -96,10 +100,10 @@ const PlayerPositions = ({ position, updateAvailablePlayers, availablePlayers, r
 						return
 					}
 					else if (preferredPlayers.length) {
-						handleSelection(preferredPlayers[visualSelectionIndex].name)
+						handleSelection(preferredPlayers[visualSelectionIndex])
 					}
 					else {
-						handleSelection(backupPlayers[visualSelectionIndex].name)
+						handleSelection(backupPlayers[visualSelectionIndex])
 					}
 					break
 				case 'Enter':
@@ -109,13 +113,14 @@ const PlayerPositions = ({ position, updateAvailablePlayers, availablePlayers, r
 						setOpen(false);
 					}
 					else if (preferredPlayers.length) {
-						handleSelection(preferredPlayers[visualSelectionIndex].name)
+            console.log(preferredPlayers[visualSelectionIndex]);
+						handleSelection(preferredPlayers[visualSelectionIndex])
 					}
 					else {
-						handleSelection(backupPlayers[visualSelectionIndex].name)
+						handleSelection(backupPlayers[visualSelectionIndex])
 					}
 					break
-				default: 
+				default:
 					break;
 			}
 		}
@@ -133,88 +138,96 @@ const PlayerPositions = ({ position, updateAvailablePlayers, availablePlayers, r
 
 	const handleClear = () => {
 		setSelectedPlayer({});
-		updateAvailablePlayers({ action: 'add', player: selectedPlayer })
+		updateAvailablePlayers({ action: 'add', player: selectedPlayer });
+    buttonRef.current.focus();
 	}
 
 	return (
-		<div className="field-position">
+    <div className="field-position">
       <div className="field-position__icon-container">
         <img src={Jersey} alt="" className="field-position__icon"/>
         <p className= "field-position__title" id={labelId}>{position}</p>
-      
-			<div className="field-position-dropdown" ref={dropdownRef} onBlur={handleBlur}>
-				<div className="field-position-dropdown__container">
-          <button id={dropdownId}
-              ref={buttonRef}
-              className="field-position-dropdown__button"
-              role="combobox"
-              aria-controls={menuId}
-              aria-expanded={open}
-              aria-haspopup="listbox"
-              aria-activedescendant={activeDescendent}
-              aria-labelledby={labelId}
-              onClick={() => setOpen(!open)}
-              onKeyDown={handleOnKeyDown}
-              onFocus={handleFocus}>
-            {selectionMade ? selectedPlayer.name : 'select player'}
-            {
-              !selectionMade &&
-              <FontAwesomeIcon icon={caret} className="dropdown-caret"/>
+        <div className="field-position-dropdown" ref={dropdownRef} onBlur={handleBlur}>
+          <div className="field-position-dropdown__container">
+            <button id={dropdownId}
+                    ref={buttonRef}
+                    className="field-position-dropdown__button"
+                    role="combobox"
+                    aria-controls={menuId}
+                    aria-expanded={open}
+                    aria-haspopup="listbox"
+                    aria-activedescendant={activeDescendent}
+                    aria-labelledby={labelId}
+                    onClick={() => setOpen(!open)}
+                    onKeyDown={handleOnKeyDown}
+                    onFocus={handleFocus}>
+              {selectionMade ? selectedPlayer.name : 'select player'}
+              { !selectionMade &&
+                <FontAwesomeIcon icon={caret} className="dropdown-caret"/>
+              }
+            </button>
+            { selectionMade &&
+            <EditButton onClick={handleClear} type= "remove" />
             }
-          </button> 
-					{
-						selectionMade &&
-						<EditButton onClick={handleClear} type= "remove" />
-					}
-				</div>
-				{
-					open &&
-					<ul className="field-position-dropdown__menu" role="listbox" id={menuId}>
-						{
-							preferredPlayers &&
-							preferredPlayers.map((player, i) => 
-							<li role="option" 
-									aria-selected={i === visualSelectionIndex}
-									className={i === visualSelectionIndex? "selected" : undefined}
-									key={player.name}
-									id={`${optionId}${i}`}>
-								<button className="field-position-dropdown__player-option" 
-												tabIndex={-1} 
-												onClick={() => handleSelection(player)}>
-													{player.name}
-								</button>
-							</li>				
-							)
-						}
-						{
-							renderTertiary &&
-							backupPlayers.map((player, i) => 
-							<li role="option"
-									aria-selected={i === visualSelectionIndex}
-									className={i=== visualSelectionIndex ? "selected" : undefined}
-									key={player.name}
-									id={`${optionId}${i}`}>
-								<button className="field-position-dropdown__player-option"
-												tabIndex={-1}
-												onClick={() => handleSelection(player)}>
-													{player.name}
-								</button>
-							</li>				
-							)
-						}
-						{
-							renderWarning &&
-							<li className="field-position-dropdown__no-option-warning">
+          </div>
+          { open &&
+          <ul className="field-position-dropdown__menu" role="listbox" id={menuId}>
+            { preferredPlayers &&
+              preferredPlayers.map((player, i) =>
+                <li role="option"
+                    aria-selected={i === visualSelectionIndex}
+                    className={i === visualSelectionIndex? 'selected' : undefined}
+                    key={player.name}
+                    id={`${optionId}${i}`}>
+                  <button className="field-position-dropdown__player-option"
+                          tabIndex={-1}
+                          onClick={() => handleSelection(player)}>
+                    {player.name}
+                  </button>
+                </li>
+              )
+            }
+            { renderTertiary &&
+              backupPlayers.map((player, i) =>
+                <li role="option"
+                    aria-selected={i === visualSelectionIndex}
+                    className={i=== visualSelectionIndex ? 'selected' : undefined}
+                    key={player.name}
+                    id={`${optionId}${i}`}>
+                  <button className="field-position-dropdown__player-option"
+                          tabIndex={-1}
+                          onClick={() => handleSelection(player)}>
+                    {player.name}
+                  </button>
+                </li>
+              )
+            }
+            { renderWarning &&
+              <li className="field-position-dropdown__no-option-warning">
                 No Available Players
                 <button onClick={() => renderSubForm(true, position)}>Add a Sub</button>
               </li>
-						}
-					</ul>
-				}
+            }
+          </ul>
+          }
         </div>
-			</div>
-		</div>
+      </div>
+    </div>
 	);
+};
+
+const availablePlayersPropType = PropTypes.shape({
+  name: PropTypes.string,
+  position: PropTypes.string,
+  secondPosition: PropTypes.string,
+  thirdPosition: PropTypes.string
+})
+
+PlayerPositions.propTypes = {
+  position: PropTypes.string,
+  availablePlayers: PropTypes.arrayOf(availablePlayersPropType),
+  updateAvailablePlayers: PropTypes.func,
+  renderSubForm: PropTypes.func
 };
 
 export default PlayerPositions;

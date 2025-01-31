@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import './styles/_base.scss';
 import DateDropdown from './components/DateDropdown';
 import TeamFormationDropdown from './components/TeamFormationDropdown';
@@ -6,6 +6,7 @@ import FieldLineup from './components/FieldLineup';
 
 function App() {
 
+  // eslint-disable-next-line no-unused-vars
   const [selectedDate, setSelectedDate] = useState('');
   const [formation, setFormation] = useState('');
 
@@ -34,7 +35,6 @@ export default App;
   // dateDropdown --> date will provide time, field, home/away
   // availablePlayers will not be assigned via gameDates, but buttons on the bench to be removed
   // (with an in/out to add or remove players)
-
 
 // STRETCH GOALS
 // bench roles - who/position they are going to sub for
