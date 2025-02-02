@@ -167,48 +167,48 @@ const PlayerPositions = ({ position, updateAvailablePlayers, availablePlayers, r
               }
             </button>
             { selectionMade &&
-            <EditButton onClick={handleClear} type= "remove" />
+              <EditButton onClick={handleClear} type= "remove" />
             }
           </div>
           { open &&
-          <ul className="field-position-dropdown__menu" role="listbox" id={menuId}>
-            { preferredPlayers &&
-              preferredPlayers.map((player, i) =>
-                <li role="option"
-                    aria-selected={i === visualSelectionIndex}
-                    className={i === visualSelectionIndex? 'selected' : undefined}
-                    key={player.name}
-                    id={`${optionId}${i}`}>
-                  <button className="field-position-dropdown__player-option"
-                          tabIndex={-1}
-                          onClick={() => handleSelection(player)}>
-                    {player.name}
-                  </button>
+            <ul className="field-position-dropdown__menu" role="listbox" id={menuId}>
+              { preferredPlayers &&
+                preferredPlayers.map((player, i) =>
+                  <li role="option"
+                      aria-selected={i === visualSelectionIndex}
+                      className={i === visualSelectionIndex? 'selected' : undefined}
+                      key={player.name}
+                      id={`${optionId}${i}`}>
+                    <button className="field-position-dropdown__player-option"
+                            tabIndex={-1}
+                            onClick={() => handleSelection(player)}>
+                      {player.name}
+                    </button>
+                  </li>
+                )
+              }
+              { renderTertiary &&
+                backupPlayers.map((player, i) =>
+                  <li role="option"
+                      aria-selected={i === visualSelectionIndex}
+                      className={i=== visualSelectionIndex ? 'selected' : undefined}
+                      key={player.name}
+                      id={`${optionId}${i}`}>
+                    <button className="field-position-dropdown__player-option"
+                            tabIndex={-1}
+                            onClick={() => handleSelection(player)}>
+                      {player.name}
+                    </button>
+                  </li>
+                )
+              }
+              { renderWarning &&
+                <li className="field-position-dropdown__no-option-warning">
+                  No Available Players
+                  <button onClick={() => renderSubForm(true, position)}>Add a Sub</button>
                 </li>
-              )
-            }
-            { renderTertiary &&
-              backupPlayers.map((player, i) =>
-                <li role="option"
-                    aria-selected={i === visualSelectionIndex}
-                    className={i=== visualSelectionIndex ? 'selected' : undefined}
-                    key={player.name}
-                    id={`${optionId}${i}`}>
-                  <button className="field-position-dropdown__player-option"
-                          tabIndex={-1}
-                          onClick={() => handleSelection(player)}>
-                    {player.name}
-                  </button>
-                </li>
-              )
-            }
-            { renderWarning &&
-              <li className="field-position-dropdown__no-option-warning">
-                No Available Players
-                <button onClick={() => renderSubForm(true, position)}>Add a Sub</button>
-              </li>
-            }
-          </ul>
+              }
+            </ul>
           }
         </div>
       </div>

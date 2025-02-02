@@ -71,7 +71,7 @@
         "no-multi-spaces": ["error"],
         "no-trailing-spaces": "warn",
         "no-nested-ternary": "off",
-        "react/jsx-indent": ["warn", 2],
+        "react/jsx-indent": ["warn", 2, { "indentLogicalExpressions": true, "checkAttributes": true }],
         "react/jsx-indent-props": ["warn", "first"],
         "react/jsx-first-prop-new-line": ["error", "never"],
         "react/jsx-max-props-per-line": ["error", { "maximum": 1, "when": "multiline" }],

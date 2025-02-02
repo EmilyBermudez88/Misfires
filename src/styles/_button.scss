@@ -1,3 +1,6 @@
+$borderWidth: 2px;
+$border: $borderWidth solid rgb(49, 49,49);
+
 .button__icon {
   position: absolute;
   transform: translate(-50%, -50%);
@@ -5,10 +8,28 @@
 
 .button--edit, .dropdown-caret {
   position: absolute;
+  padding: 2px;
   right: 2px;
   height: 100%;
   width: 20px;
   background-color: transparent;
   border: none;
+  
+  &:focus {
+    border: $border;
+    border-radius: 4px;
+    outline: none;
+  }
+  &:hover {
+    cursor: pointer;
+    border: $border;
+    border-radius: 4px;
+    background-color: rgba(49, 49, 49, 0.08);
+  }
+  &.update {
+    &:hover, &:focus {
+      padding: 0px;
+    }
+  }
 }
 

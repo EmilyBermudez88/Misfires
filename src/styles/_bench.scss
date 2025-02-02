@@ -7,12 +7,12 @@ $toggleSliderWidth: 16px;
 .bench {
   width: 25%;
   &__player-option {
-    margin: $marginWidth;
+    margin: 8px;
     margin-left: 25%;
     text-align: left;
     position: relative;
     display: grid;
-    grid-template-columns: max-content auto 20px;
+    grid-template-columns: max-content auto 16px;
     column-gap: $marginWidth;
   }
 

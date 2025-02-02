@@ -44,11 +44,11 @@ const Bench = ({ updateAvailablePlayers,
         <label className="toggle">
           <span id="toggle-text" className="toggle__text">{toggleText}</span>
           <input className="toggle__input"
-                type="checkbox"
-                role="switch"
-                checked={showPlayerPosition}
-                onChange={() => setShowPlayerPosition(!showPlayerPosition)}
-                aria-labelledby="toggle-text"/>
+                 type="checkbox"
+                 role="switch"
+                 checked={showPlayerPosition}
+                 onChange={() => setShowPlayerPosition(!showPlayerPosition)}
+                 aria-labelledby="toggle-text"/>
           <span className="toggle__container">
             <span className="toggle__slider"/>
           </span>
@@ -62,7 +62,7 @@ const Bench = ({ updateAvailablePlayers,
               {showPlayerPosition &&
                 <span className="bench__position-container">
                   <Select player={player} edit={player.name === playerToEdit} handleSelection={setPlayerToEdit}/>
-                  <button onClick={() => setPlayerToEdit(player.name)}className="button--edit">
+                  <button onClick={() => setPlayerToEdit(player.name)}className="button--edit update">
                     <FontAwesomeIcon icon={faPenToSquare}/>
                   </button>
                 </span>
