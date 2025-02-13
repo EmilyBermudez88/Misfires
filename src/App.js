@@ -1,29 +1,162 @@
 import React, { useState } from 'react';
 import './styles/_base.scss';
-import DateDropdown from './components/DateDropdown';
+
+// import DateDropdown from './components/DateDropdown';
 import TeamFormationDropdown from './components/TeamFormationDropdown';
-import FieldLineup from './components/FieldLineup';
+import Bench from './components/Bench';
+import FieldLayout from './assets/fieldLayout.png';
+import PlayerPositions from './components/PlayerPositions';
+import { positions } from './util/lineupData';
+import playerDataSet from './util/playerDataSet';
 
 function App() {
+  const [availablePlayers, setAvailablePlayers] = useState(playerDataSet),
+    [renderForm, setRenderForm] = useState(false),
+    [selectedPosition, setSelectedPosition] = useState('');
+
+    const updateAvailablePlayers = (...actions) => {
+      let availablePlayersCopy = availablePlayers;
+      const removePlayer = (playerToRemove, playerArr) =>
+        availablePlayersCopy = playerArr.filter((ind) => ind.name !== playerToRemove.name);
+      const addPlayer = (playerToAdd, playerArr) => {
+        //player to add may not exist in dataset because they're an extra sub
+        const playerFromRoster = playerDataSet.find((player) => player.name === playerToAdd.name);
+        const playerInfo = playerFromRoster ? playerFromRoster : playerToAdd;
+        return availablePlayersCopy = playerArr.concat(playerInfo);
+      }
+      actions.forEach((update) => update.action === 'remove'
+        ? removePlayer(update.player, availablePlayersCopy)
+        : addPlayer(update.player, availablePlayersCopy)
+      )
+      setAvailablePlayers(availablePlayersCopy);
+    }
+
+  let formationPositions = [];
+  const definePosition = (line, idx) => {
+    for (const prop in positions) {
+      if (prop === line) {
+        if (!formationPositions.includes(positions[prop][idx])) {
+          formationPositions.push(positions[prop][idx]);
+        }
+        return positions[prop][idx]
+      }
+    }
+  }
+	const renderGoalie = (num) => {
+		const children= []
+		for (let i = 0; i < num; i++) {
+      const goalie = definePosition('goalie', i);
+			children.push(<PlayerPositions position={goalie}
+                                  updateAvailablePlayers={updateAvailablePlayers}
+                                  availablePlayers={availablePlayers}
+                                  renderSubForm={renderSubForm}/>);
+		}
+		return children;
+	}
+
+	const renderDefense = (num) => {
+		const children = []
+		for (let i = 0; i < num; i++) {
+      const defense = definePosition('defense', i);
+			children.push(<PlayerPositions position={defense}
+                                  updateAvailablePlayers={updateAvailablePlayers}
+                                  availablePlayers ={availablePlayers}
+                                  renderSubForm={renderSubForm}/>);
+		}
+		if (num === 3) {
+			// move centre back position to centre of defense line
+			children.splice(1, 0, children.splice(-1)[0])
+		}
+		return children;
+	}
+
+	const renderMidfield = (num) => {
+		const children = []
+		if (num === 1) {
+      const midfield = definePosition('midfield', num);
+			children.push(<PlayerPositions position={midfield}
+                                  updateAvailablePlayers={updateAvailablePlayers}
+                                  availablePlayers ={availablePlayers}
+                                  renderSubForm={renderSubForm}/>);
+		}
+		else if (num === 2) {
+			for (let i = 0; i <= num; i = i + 2) {
+        const midfield = definePosition('midfield', i);
+				children.push(<PlayerPositions position={midfield}
+                                   updateAvailablePlayers={updateAvailablePlayers}
+                                   availablePlayers ={availablePlayers}
+                                   renderSubForm={renderSubForm}/>);
+			}
+		}
+		else {
+			for (let i = 0; i < num; i++) {
+        const midfield = definePosition('midfield', i);
+				children.push(<PlayerPositions position={midfield}
+                                   updateAvailablePlayers={updateAvailablePlayers}
+                                   availablePlayers ={availablePlayers}
+                                   renderSubForm={renderSubForm}/>);
+			}
+		}
+		return children;
+	}
+
+	const renderAttack = (num) => {
+		const children = []
+		for (let i = 0; i < num; i++) {
+      const attack = definePosition('attack', i);
+			children.push(<PlayerPositions position={attack}
+                                  updateAvailablePlayers={updateAvailablePlayers}
+                                  availablePlayers={availablePlayers}
+                                  renderSubForm={renderSubForm}/>);
+		}
+		return children;
+	}
+
+  const renderSubForm = (show, position) => {
+    setRenderForm(show);
+    position ? setSelectedPosition(position): setSelectedPosition('');
+  };
 
   // eslint-disable-next-line no-unused-vars
-  const [selectedDate, setSelectedDate] = useState('');
+  // const [selectedDate, setSelectedDate] = useState('');
   const [formation, setFormation] = useState('');
 
-  const chooseDate = (day) => setSelectedDate(day);
-  const chooseFormation = (layout) => setFormation(layout);
+  // const chooseDate = (day) => setSelectedDate(day);
+  const chooseFormation = (layout) => {
+    const formationArr = layout.split('').map((line) => parseInt(line));
+    setFormation(formationArr)
+  };
 
   return (
     <div className="app">
-      <header className="app__header">
-        <h1>Misfires Lineup</h1>
-      </header>
       <main className="app__main">
-        <form>
-          <DateDropdown chooseDate={chooseDate}/>
+        <div className="field">
+          <h1>Misfires Lineup</h1>
+          <img className="field__image" src={FieldLayout}/>
+          <div className="field__setup">
+            { formation ?
+              <>
+                <div className="field__line">{renderGoalie(formation[0])}</div>
+                <div className="field__line">{renderDefense(formation[1])}</div>
+                <div className="field__line">{renderMidfield(formation[2])}</div>
+                <div className="field__line">{renderAttack(formation[3])}</div>
+              </>
+              :
+              <h3 className="field__warning">
+                <span>Please Select a Formation</span>
+              </h3>
+              }
+          </div>
+        </div>
+        <div className="sidelines">
           <TeamFormationDropdown chooseFormation={chooseFormation} />
-        </form>
-        <FieldLineup formation={formation}/>
+          <Bench updateAvailablePlayers={updateAvailablePlayers}
+                 availablePlayers ={availablePlayers}
+                 renderForm={renderForm}
+                 setRenderForm={setRenderForm}
+                 selectedPosition={selectedPosition}
+                 formationPositions={formationPositions} />
+        </div>
       </main>
     </div>
   );
@@ -33,8 +166,6 @@ export default App;
 
 // REBUILD -->
   // dateDropdown --> date will provide time, field, home/away
-  // availablePlayers will not be assigned via gameDates, but buttons on the bench to be removed
-  // (with an in/out to add or remove players)
 
 // STRETCH GOALS
 // bench roles - who/position they are going to sub for

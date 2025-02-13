@@ -6,7 +6,7 @@ const TeamFormationDropdown = (props) => {
 	const { chooseFormation: chooseFormationProp } = props;
 
 	return (
-  <>
+  <form className= "formation-form">
     <label htmlFor="formation-dropdown">Choose a formation:</label>
     <select className="formation-dropdown"
             name="formation-dropdown"
@@ -17,7 +17,7 @@ const TeamFormationDropdown = (props) => {
         <option className="formation-dropdown__option" key={layout}>{layout}</option>)
       }
     </select>
-  </>
+  </form>
 	);
 }
 
