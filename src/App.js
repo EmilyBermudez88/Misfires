@@ -16,14 +16,17 @@ function App() {
 
     const updateAvailablePlayers = (...actions) => {
       let availablePlayersCopy = availablePlayers;
+
       const removePlayer = (playerToRemove, playerArr) =>
         availablePlayersCopy = playerArr.filter((ind) => ind.name !== playerToRemove.name);
-      const addPlayer = (playerToAdd, playerArr) => {
+
+        const addPlayer = (playerToAdd, playerArr) => {
         //player to add may not exist in dataset because they're an extra sub
         const playerFromRoster = playerDataSet.find((player) => player.name === playerToAdd.name);
         const playerInfo = playerFromRoster ? playerFromRoster : playerToAdd;
         return availablePlayersCopy = playerArr.concat(playerInfo);
       }
+
       actions.forEach((update) => update.action === 'remove'
         ? removePlayer(update.player, availablePlayersCopy)
         : addPlayer(update.player, availablePlayersCopy)
@@ -122,8 +125,8 @@ function App() {
   const [formation, setFormation] = useState('');
 
   // const chooseDate = (day) => setSelectedDate(day);
-  const chooseFormation = (layout) => {
-    const formationArr = layout.split('').map((line) => parseInt(line));
+  const chooseFormation = (selection) => {
+    const formationArr = selection.layout.split('').map((line) => parseInt(line));
     setFormation(formationArr)
   };
 

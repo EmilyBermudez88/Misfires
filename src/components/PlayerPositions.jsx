@@ -35,14 +35,15 @@ const PlayerPositions = ({ position, updateAvailablePlayers, availablePlayers, r
       <div className="field-position__icon-container">
         <img src={Jersey} alt="" className="field-position__icon"/>
         <p className= "field-position__title" id={labelId}>{position}</p>
-        <div className="field-position-dropdown" ref={dropdownRef} onBlur={handleBlur}>
+        <div className="dropdown" ref={dropdownRef} onBlur={handleBlur}>
           <Dropdown open={open}
                     setOpen={setOpen}
-                    updateAvailablePlayers={updateAvailablePlayers}
+                    updateSelected={updateAvailablePlayers}
                     labelId={labelId}
                     options={dropdownOptions}
                     renderSubForm={renderSubForm}
-                    position={position} />
+                    position={position}
+                    className= "field-position" />
         </div>
       </div>
     </div>

@@ -4,12 +4,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import EditButton from './EditButton';
 
-const Dropdown = ({ updateAvailablePlayers, options, open, setOpen, labelId, renderSubForm, position }) => {
+const Dropdown = ({ updateSelected, options, open, setOpen, labelId, renderSubForm, position, className }) => {
 
-  const [selectedPlayer, setSelectedPlayer] = useState({}),
+  const [userSelection, setUserSelection] = useState({}),
     [visualSelectionIndex, setVisualSelectionIndex] = useState(null),
-    selectionMade = Object.keys(selectedPlayer).length > 0,
-    caret = open ? faAngleUp : faAngleDown;
+    selectionMade = Object.keys(userSelection).length > 0,
+    caret = open ? faAngleUp : faAngleDown,
+    formation = className === 'formation',
+    defaultDropdownVal = formation ? 'select formation' : 'select player',
+    userSelectionDropdownVal = formation ? userSelection.layout : userSelection.name;
 
   const dropdownId = useId();
   const menuId= useId();
@@ -18,13 +21,30 @@ const Dropdown = ({ updateAvailablePlayers, options, open, setOpen, labelId, ren
 	const activeDescendent = visualSelectionIndex !== null ? `${optionId}${visualSelectionIndex}` : null;
 
   const handleSelection = (selected) => {
-		selectionMade ?
-			updateAvailablePlayers({ action:'remove', player: selected }, { action:'add', player: selectedPlayer })
-			: updateAvailablePlayers({ action:'remove', player: selected });
-		setSelectedPlayer(selected);
+    if (selected.layout) {
+      updateSelected(selected);
+    } else {
+      selectionMade ?
+			updateSelected({ action:'remove', player: selected }, { action:'add', player: userSelection })
+			: updateSelected({ action:'remove', player: selected });
+    }
+
+		setUserSelection(selected);
 		setVisualSelectionIndex(null);
 		setOpen(false);
 		handleFocus();
+	}
+
+  const handleFocus= () => {
+		buttonRef.current.focus();
+	}
+
+	const handleClear = () => {
+		setUserSelection({});
+    if (userSelection.name) {
+      updateSelected({ action: 'add', player: userSelection });
+    }
+    buttonRef.current.focus();
 	}
 
   const handleOnKeyDown = (e) => {
@@ -96,22 +116,12 @@ const Dropdown = ({ updateAvailablePlayers, options, open, setOpen, labelId, ren
 		}
 	}
 
-  const handleFocus= () => {
-    console.log('focusing?', buttonRef.current);
-		buttonRef.current.focus();
-	}
-
-	const handleClear = () => {
-		setSelectedPlayer({});
-		updateAvailablePlayers({ action: 'add', player: selectedPlayer });
-    buttonRef.current.focus();
-	}
   return(
     <>
-      <div className="field-position-dropdown__container">
+      <div className={`${className} dropdown__container`}>
         <button id={dropdownId}
                 ref={buttonRef}
-                className="field-position-dropdown__button"
+                className={`${className} dropdown__button`}
                 role="combobox"
                 aria-controls={menuId}
                 aria-expanded={open}
@@ -121,7 +131,7 @@ const Dropdown = ({ updateAvailablePlayers, options, open, setOpen, labelId, ren
                 onClick={() => setOpen(!open)}
                 onKeyDown={handleOnKeyDown}
                 onFocus={handleFocus}>
-          {selectionMade ? selectedPlayer.name : 'select player'}
+          { selectionMade ? userSelectionDropdownVal : defaultDropdownVal }
           { !selectionMade &&
             <FontAwesomeIcon icon={caret} className="dropdown-caret"/>
           }
@@ -131,22 +141,25 @@ const Dropdown = ({ updateAvailablePlayers, options, open, setOpen, labelId, ren
         }
       </div>
       { open &&
-        <ul className="field-position-dropdown__menu" role="listbox" id={menuId}>
+        <ul className={`${className} dropdown__menu`} role="listbox" id={menuId}>
           {options.length
-            ? options.map((player, i) =>
+            ? options.map((option, i) =>
               <li role="option"
                   aria-selected={i === visualSelectionIndex}
                   className={i === visualSelectionIndex? 'selected' : undefined}
-                  key={player.name}
+                  key={`${optionId}${i}`}
                   id={`${optionId}${i}`}>
-                <button className="field-position-dropdown__player-option"
+                <button className={`${className} dropdown__option`}
                         tabIndex={-1}
-                        onClick={() => handleSelection(player)}>
-                  {player.name}
+                        onClick={() => handleSelection(option)}>
+                  <span className={`${className} dropdown__value`}>
+                    { option.name ? option.name: option.layout }
+                  </span>
                 </button>
               </li>
             ) :
-            <li className="field-position-dropdown__no-option-warning">
+            // Only relevant to Player dropdown
+            <li className={`${className} no-option-warning`}>
               No Available Players
               <button onClick={() => renderSubForm(true, position)}>Add a Sub</button>
             </li>
@@ -162,9 +175,10 @@ Dropdown.propTypes = {
   labelId: PropTypes.string,
   open: PropTypes.bool,
   setOpen: PropTypes.func,
-  updateAvailablePlayers: PropTypes.func,
+  updateSelected: PropTypes.func,
   renderSubForm: PropTypes.func,
-  position: PropTypes.string
+  position: PropTypes.string,
+  className: PropTypes.string
 }
 
 export default Dropdown;
