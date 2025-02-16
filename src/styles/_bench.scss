@@ -1,14 +1,22 @@
 $borderWidth: 2px;
 $border: $borderWidth solid rgb(49, 49,49);
+$borderRadius: 4px;
 $marginWidth: 10px;
 $toggleWidth: 45px;
 $toggleSliderWidth: 16px;
+$togglePadding: 6px;
+
+.sidelines {
+  margin-top: 20px;
+  margin-right: 20px;
+  min-width: 190px;
+  width: 20%;
+}
 
 .bench {
-  width: 25%;
   &__player-option {
     margin: 8px;
-    margin-left: 25%;
+    margin-left: 5%;
     text-align: left;
     position: relative;
     display: grid;
@@ -27,15 +35,15 @@ $toggleSliderWidth: 16px;
 .toggle-label-container {
   width: 100%;
   text-align: left;
-  margin-left: calc(25% - 6px);
+  margin-left: calc(5% - 6px);
 }
 .toggle {
   box-sizing: border-box;
   text-align: left;
-  padding: 6px;
+  padding: $togglePadding;
   line-height: 24px;
   &__container {
-    box-sizing:border-box;
+    box-sizing: border-box;
     display: inline-block;
     background-color: white;
     border: $border;
@@ -43,13 +51,14 @@ $toggleSliderWidth: 16px;
     width: $toggleWidth;
     height: 24px;
     position: relative;
-    top: 6px;
+    top: $togglePadding;
+    right: -2px;
   }
   &__slider {
     &::before {
       position: absolute;
       left: $borderWidth;
-      top: 2px;
+      top:  $borderWidth;
       content: '';
       height: $toggleSliderWidth;
       width: $toggleSliderWidth;
@@ -76,15 +85,16 @@ $toggleSliderWidth: 16px;
   }
   &:has(.toggle__input:focus, .toggle__input:active) {
     border: $border;
-    border-radius: 4px;
-    padding: 4px;
+    border-radius: $borderRadius;
+    padding: calc($togglePadding - $borderWidth);
   }
   &:hover {
     cursor: pointer;
     border: $border;
-    border-radius: 4px;
-    padding: 4px;
+    border-radius: $borderRadius;
+    padding: calc($togglePadding - $borderWidth);
     background-color: rgba(49, 49, 49, 0.08);
   }
 }
+
   

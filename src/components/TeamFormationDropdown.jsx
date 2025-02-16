@@ -5,7 +5,7 @@ import { formations } from '../util/lineupData';
 
 const TeamFormationDropdown = (props) => {
 	const { chooseFormation: chooseFormationProp } = props;
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const labelId = 'team-formation-label';
   const dropdownRef = useRef(null);
 

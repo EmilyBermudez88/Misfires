@@ -36,6 +36,7 @@ const Dropdown = ({ updateSelected, options, open, setOpen, labelId, renderSubFo
 	}
 
   const handleFocus= () => {
+    console.log('focusing', buttonRef.current)
 		buttonRef.current.focus();
 	}
 
@@ -115,7 +116,7 @@ const Dropdown = ({ updateSelected, options, open, setOpen, labelId, renderSubFo
 			}
 		}
 	}
-
+  // setOpen(true);
   return(
     <>
       <div className={`${className} dropdown__container`}>
@@ -146,10 +147,10 @@ const Dropdown = ({ updateSelected, options, open, setOpen, labelId, renderSubFo
             ? options.map((option, i) =>
               <li role="option"
                   aria-selected={i === visualSelectionIndex}
-                  className={i === visualSelectionIndex? 'selected' : undefined}
+                  className="dropdown__option"
                   key={`${optionId}${i}`}
                   id={`${optionId}${i}`}>
-                <button className={`${className} dropdown__option`}
+                <button className={`${className} dropdown__option__button`}
                         tabIndex={-1}
                         onClick={() => handleSelection(option)}>
                   <span className={`${className} dropdown__value`}>
@@ -161,7 +162,10 @@ const Dropdown = ({ updateSelected, options, open, setOpen, labelId, renderSubFo
             // Only relevant to Player dropdown
             <li className={`${className} no-option-warning`}>
               No Available Players
-              <button onClick={() => renderSubForm(true, position)}>Add a Sub</button>
+              <button className="no-option-warning__button"
+                      onClick={() => renderSubForm(true, position)}>
+                Add a Sub
+              </button>
             </li>
           }
         </ul>

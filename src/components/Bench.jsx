@@ -39,7 +39,7 @@ const Bench = ({ updateAvailablePlayers,
 
 	return (
     <div className="bench">
-      <h2 className="bench__title">Available</h2>
+      <h2 className="bench__title">Bench</h2>
       <div className="toggle-label-container">
         <label className="toggle">
           <span id="toggle-text" className="toggle__text">{toggleText}</span>

@@ -1,5 +1,7 @@
 $borderWidth: 2px;
-$border: $borderWidth solid rgb(49, 49,49);
+$border: $borderWidth solid rgb(49, 49, 49);
+$borderRadius: 4px;
+$buttonPadding: 2px;
 
 .button__icon {
   position: absolute;
@@ -8,28 +10,33 @@ $border: $borderWidth solid rgb(49, 49,49);
 
 .button--edit, .dropdown-caret {
   position: absolute;
-  padding: 2px;
+  padding: $buttonPadding;
   right: 2px;
   height: 100%;
   width: 20px;
+  font-size: 14px;
   background-color: transparent;
   border: none;
-  
+}
+
+.button--edit {
   &:focus {
     border: $border;
-    border-radius: 4px;
+    border-radius: $borderRadius;
     outline: none;
   }
   &:hover {
     cursor: pointer;
     border: $border;
-    border-radius: 4px;
+    border-radius: $borderRadius;
     background-color: rgba(49, 49, 49, 0.08);
   }
   &.update {
+    font-size: 12px;
     &:hover, &:focus {
-      padding: 0px;
+      padding: calc($buttonPadding - $borderWidth);
     }
   }
 }
+
 

@@ -1,7 +1,16 @@
-.field-position-dropdown {
+$borderWidth: 2px;
+$buttonVerticalPadding: 4px;
+
+.dropdown {
   position: absolute;
   bottom: 0%;
   width: 100%;
+
+  &.formation {
+    position:relative;
+    width: calc(100% - 20px);
+    margin: 5px 10px;
+  }
 
   &__container {
     background-color: white;
@@ -10,43 +19,69 @@
   }
 
   &__button {
+    box-sizing: border-box;
     background-color: white;
     border: none;
-    padding: 2px 8px;
+    padding: $buttonVerticalPadding calc($buttonVerticalPadding * 2);
     height: 100%;
     width: 100%;
     position: relative;
-
+    &:focus, &:focus-visible {
+      outline: $borderWidth solid rgb(49, 49,49);
+      outline-offset: calc(0px - $borderWidth - 1px); //inset border by 1px
+    }
     .dropdown-caret {
-      height: 16px;
-      top: 2px;
+      height: 18px;
+      top: 0px;
     }
   }
 
   &__menu {
     position: absolute;
     box-sizing: border-box;
-    background-color: rgb(238, 238, 238);
+    background-color: rgb(240, 240, 240);
     border: 1px solid rgb(149, 149, 149);
     border-top: none;
     margin-top: 0;
-    width: 150px;
-    padding: 5px;
+    width: 100%;
+    padding: 4px;
     z-index: 1;
   }
 
-  &__player-option {
-    background-color: white;
+  &__option {
+    border: $borderWidth solid transparent;
     margin-bottom: 2px;
-    border: none;
+    &[aria-selected="true"] {
+      border: $borderWidth solid rgb(49, 49,49);
+    }
+    &__button {
+      border: none;
+      width: 100%;
+      background-color: white;
+      text-align: center;
+      padding: $buttonVerticalPadding calc($buttonVerticalPadding / 2);
+      &:hover {
+        background-color: rgba(49, 49, 49, 0.08);
+      }
+    }
   }
-  &__no-option-warning {
+
+  .no-option-warning {
     font-size: 14px;
-    color: red;
+    width: 100%;
+    color: rgb(227, 15, 15);
+    &__button {
+      margin-top: 4px;
+    }
+  }
+  &__value {
+    width: 100%;
+
+    &:hover {
+      background-color: rgba(49, 49, 49, 0.08);
+    }
   }
 }
 
-.selected {
-  border: 2px solid green
-}
+
 
