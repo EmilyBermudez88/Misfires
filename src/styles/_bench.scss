@@ -6,22 +6,35 @@ $toggleWidth: 45px;
 $toggleSliderWidth: 16px;
 $togglePadding: 6px;
 
-.sidelines {
-  margin-top: 20px;
-  margin-right: 20px;
+.bench {
+  // background-color: #9fc76a;
+  // background-color: #e7ae27;
+  margin: 20px 20px 0 0;
   min-width: 190px;
   width: 20%;
-}
-
-.bench {
+  position: relative;
+  &__title {
+    margin-top: 0px;
+    font-family: 'Michroma', sans-serif;
+    text-align: right;
+    position: relative;
+    padding-right: 5px;
+    &.unavailable {
+      font-size: 18px;
+    }
+  }
   &__player-option {
-    margin: 8px;
-    margin-left: 5%;
+    margin: 8px 0 8px 5%;
+    // margin-left: 5%;
     text-align: left;
     position: relative;
     display: grid;
     grid-template-columns: max-content auto 16px;
     column-gap: $marginWidth;
+
+    &:has(button:hover) {
+      background-color: rgba(49, 49,49, 0.08);
+    }
   }
 
   &__position-container {
@@ -31,11 +44,18 @@ $togglePadding: 6px;
       position: static;
     }
   }
+  
+  &__background {
+    position: absolute;
+    right: -15px;
+    top: 0px;
+  }
 }
 .toggle-label-container {
   width: 100%;
   text-align: left;
   margin-left: calc(5% - 6px);
+  position: relative;
 }
 .toggle {
   box-sizing: border-box;

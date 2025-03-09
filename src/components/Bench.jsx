@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import AddSubForm from './AddSubForm';
 import EditButton from './EditButton';
 import Select from './Select';
+import Background from '../assets/background.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
@@ -39,6 +40,7 @@ const Bench = ({ updateAvailablePlayers,
 
 	return (
     <div className="bench">
+      <img className="bench__background" src={Background}/>
       <h2 className="bench__title">Bench</h2>
       <div className="toggle-label-container">
         <label className="toggle">
@@ -83,7 +85,7 @@ const Bench = ({ updateAvailablePlayers,
                     selectedPosition={selectedPosition}
                     setRenderForm={setRenderForm}/>
       }
-      <h2 className="bench__title">Unavailable</h2>
+      <h2 className="bench__title unavailable">Unavailable</h2>
       <ul className="bench__player-list">
         { unavailable.map((player) =>
           <li className="bench__player-option" key={player.name}>

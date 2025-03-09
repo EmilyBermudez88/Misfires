@@ -5,6 +5,7 @@ import './styles/_base.scss';
 import TeamFormationDropdown from './components/TeamFormationDropdown';
 import Bench from './components/Bench';
 import FieldLayout from './assets/fieldLayout.png';
+import SoccerBall from './assets/soccer-ball.png';
 import PlayerPositions from './components/PlayerPositions';
 import { positions } from './util/lineupData';
 import playerDataSet from './util/playerDataSet';
@@ -126,15 +127,21 @@ function App() {
 
   // const chooseDate = (day) => setSelectedDate(day);
   const chooseFormation = (selection) => {
-    const formationArr = selection.layout.split('').map((line) => parseInt(line));
+    const formationArr = selection.layout.split(' - ').map((line) => parseInt(line));
     setFormation(formationArr)
   };
 
   return (
     <div className="app">
+      <header className="app__header">
+        <div className="app__header__title">
+          <h1>Misfires Lineup</h1>
+          <img className="app__header__image" src={SoccerBall}/>
+        </div>
+          <TeamFormationDropdown chooseFormation={chooseFormation} />
+      </header>
       <main className="app__main">
         <div className="field">
-          <h1>Misfires Lineup</h1>
           <img className="field__image" src={FieldLayout}/>
           <div className="field__setup">
             { formation ?
@@ -151,15 +158,12 @@ function App() {
               }
           </div>
         </div>
-        <div className="sidelines">
-          <TeamFormationDropdown chooseFormation={chooseFormation} />
-          <Bench updateAvailablePlayers={updateAvailablePlayers}
-                 availablePlayers ={availablePlayers}
-                 renderForm={renderForm}
-                 setRenderForm={setRenderForm}
-                 selectedPosition={selectedPosition}
-                 formationPositions={formationPositions} />
-        </div>
+        <Bench updateAvailablePlayers={updateAvailablePlayers}
+               availablePlayers ={availablePlayers}
+               renderForm={renderForm}
+               setRenderForm={setRenderForm}
+               selectedPosition={selectedPosition}
+               formationPositions={formationPositions} />
       </main>
     </div>
   );

@@ -1,10 +1,10 @@
 export const formations= [
-    { layout: '1231' },
-    { layout: '1222' },
-    { layout: '1213' },
-    { layout: '1312' },
-    { layout: '1321' },
-    { layout: '133' }
+    { layout: '1 - 2 - 3 - 1' },
+    { layout: '1 - 2 - 2 - 2' },
+    { layout: '1 - 2 - 1 - 3' },
+    { layout: '1 - 3 - 1 - 2' },
+    { layout: '1 - 3 - 2 - 1' },
+    { layout: '1 - 3 - 3' }
 ];
 
 export const positions = {

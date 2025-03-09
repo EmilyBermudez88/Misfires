@@ -16,9 +16,9 @@ const TeamFormationDropdown = (props) => {
 	}
 
 	return (
-  <div className= "formation dropdown__form">
+  <div className= "formation__container">
     <label htmlFor="dropdown" id={labelId}>Choose a formation:</label>
-    <div className="dropdown formation" ref={dropdownRef} onBlur={handleBlur}>
+    <div className="dropdown formation__select" ref={dropdownRef} onBlur={handleBlur}>
       <Dropdown open={open}
                 setOpen={setOpen}
                 labelId={labelId}
