@@ -9,6 +9,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "classnames": "^2.5.1",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.28.0",
     "prop-types": "^15.8.1",

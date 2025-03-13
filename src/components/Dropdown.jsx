@@ -12,7 +12,7 @@ const Dropdown = ({ updateSelected, options, open, setOpen, labelId, renderSubFo
     caret = open ? faAngleUp : faAngleDown,
     formation = className === 'formation',
     defaultDropdownVal = formation ? 'select formation' : 'select player',
-    userSelectionDropdownVal = formation ? userSelection.layout : userSelection.name;
+    userSelectionDropdownVal = formation ? userSelection.dropdownValue : userSelection.name;
 
   const dropdownId = useId();
   const menuId= useId();
@@ -21,7 +21,7 @@ const Dropdown = ({ updateSelected, options, open, setOpen, labelId, renderSubFo
 	const activeDescendent = visualSelectionIndex !== null ? `${optionId}${visualSelectionIndex}` : null;
 
   const handleSelection = (selected) => {
-    if (selected.layout) {
+    if (selected.dropdownValue) {
       updateSelected(selected);
     } else {
       selectionMade ?
@@ -154,7 +154,7 @@ const Dropdown = ({ updateSelected, options, open, setOpen, labelId, renderSubFo
                         tabIndex={-1}
                         onClick={() => handleSelection(option)}>
                   <span className={`${className} dropdown__value`}>
-                    { option.name ? option.name: option.layout }
+                    { option.name ? option.name: option.dropdownValue }
                   </span>
                 </button>
               </li>

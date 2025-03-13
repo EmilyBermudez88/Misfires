@@ -9,7 +9,9 @@ $togglePadding: 6px;
 .bench {
   // background-color: #9fc76a;
   // background-color: #e7ae27;
-  margin: 20px 20px 0 0;
+  // margin: 20px 20px 0 0;
+  grid-area: bench;
+  margin: 150px 20px 0 5%;
   min-width: 190px;
   width: 20%;
   position: relative;
@@ -40,6 +42,9 @@ $togglePadding: 6px;
   &__position-container {
     display: flex;
     justify-content: space-between;
+    &.hidden {
+      visibility: hidden;
+    }
     .button--edit {
       position: static;
     }

@@ -2,8 +2,10 @@ $verticalSpacing: 20px;
 $headerHeight: 38px;
 
 .field {
+  grid-area: field;
   width: 100%;
   position: relative;
+  margin-top: 50px;
   &__setup {
     width: 80%;
     margin: $verticalSpacing auto;
@@ -53,5 +55,8 @@ $headerHeight: 38px;
     width: 100%;
     position: absolute;
     top: 30%;
+    &.away {
+      color: rgb(131, 10, 10);
+    }
   }
 }

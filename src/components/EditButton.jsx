@@ -1,14 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 const EditButton = ({ type, onClick }) => {
-  const icon = type === 'add' ? faPlus : faX
-  const classNames = type === 'add' ? 'add button--edit' : 'button--edit'
+  const icon = type === 'add' ? faPlus : faX,
+    buttonClassNames = classnames('button--edit', {
+      add: type === 'add'
+    });
 
   return (
-    <button className={classNames} onClick={onClick}>
+    <button className={buttonClassNames} onClick={onClick}>
       <FontAwesomeIcon className="button__icon"icon={icon}/>
     </button>
   )

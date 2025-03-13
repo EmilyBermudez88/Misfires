@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import AddSubForm from './AddSubForm';
 import EditButton from './EditButton';
 import Select from './Select';
@@ -21,10 +22,14 @@ const Bench = ({ updateAvailablePlayers,
   const [playerToEdit, setPlayerToEdit] = useState('');
 
   const benchedPlayersRef = useRef(null);
+  const benchPositionClassnames = classnames('bench__position-container', {
+    hidden: !showPlayerPosition
+  });
+
   // when a player is removed, we should set the focus to the NEXT 'x'
 	const removePlayer = (removedPlayer) => {
       const arr = Array.from(benchedPlayersRef.current.querySelectorAll('.button--edit'));
-  console.log(arr);
+      console.log(arr);
 		setUnavailable([...unavailable, removedPlayer]);
 		updateAvailablePlayers({ action: 'remove', player: removedPlayer })
 	}
@@ -61,14 +66,12 @@ const Bench = ({ updateAvailablePlayers,
           availablePlayers.map((player) =>
             <li className="bench__player-option" key={player.name}>
               <span className="bench__player-name">{player.name}</span>
-              {showPlayerPosition &&
-                <span className="bench__position-container">
-                  <Select player={player} edit={player.name === playerToEdit} handleSelection={setPlayerToEdit}/>
-                  <button onClick={() => setPlayerToEdit(player.name)}className="button--edit update">
-                    <FontAwesomeIcon icon={faPenToSquare}/>
-                  </button>
-                </span>
-              }
+              <span className={benchPositionClassnames}>
+                <Select player={player} edit={player.name === playerToEdit} handleSelection={setPlayerToEdit}/>
+                <button onClick={() => setPlayerToEdit(player.name)}className="button--edit update">
+                  <FontAwesomeIcon icon={faPenToSquare}/>
+                </button>
+              </span>
               <EditButton onClick={() => removePlayer(player)} type="remove"/>
             </li>)
         }
