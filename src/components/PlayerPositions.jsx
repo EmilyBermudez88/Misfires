@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import Jersey from '../assets/Jersey.png';
+import classnames from 'classnames';
+import JerseyRed from '../assets/JerseyRed.png';
+import JerseyWhite from '../assets/JerseyWhite.png'
 import Dropdown from './Dropdown';
 
-const PlayerPositions = ({ position, updateAvailablePlayers, availablePlayers, renderSubForm }) => {
+const PlayerPositions = ({ position, updateAvailablePlayers, availablePlayers, renderSubForm, jersey }) => {
 	// We still want to parse the availablePlayers array into preferred positions to
 	// make the choice easier of which player should go where
 	const [preferredPlayers, setPreferredPlayers] = useState([]),
@@ -17,6 +19,10 @@ const PlayerPositions = ({ position, updateAvailablePlayers, availablePlayers, r
 
 	const dropdownRef = useRef(null);
 	const labelId = `field-position-${position}`;
+  const jerseyImg = jersey.dropdownValue === 'home' ? JerseyRed : JerseyWhite;
+  const titleClassName = classnames('field-position__title', {
+    away: jersey.dropdownValue === 'away'
+  });
 
 	useEffect(() => {
 		setPreferredPlayers(availablePlayers.filter((player) =>
@@ -33,8 +39,8 @@ const PlayerPositions = ({ position, updateAvailablePlayers, availablePlayers, r
 	return (
     <div className="field-position">
       <div className="field-position__icon-container">
-        <img src={Jersey} alt="" className="field-position__icon"/>
-        <p className= "field-position__title" id={labelId}>{position}</p>
+        <img src={jerseyImg} alt="" className="field-position__icon"/>
+        <p className={titleClassName} id={labelId}>{position}</p>
         <div className="dropdown" ref={dropdownRef} onBlur={handleBlur}>
           <Dropdown open={open}
                     setOpen={setOpen}
@@ -61,7 +67,8 @@ PlayerPositions.propTypes = {
   position: PropTypes.string,
   availablePlayers: PropTypes.arrayOf(availablePlayersPropType),
   updateAvailablePlayers: PropTypes.func,
-  renderSubForm: PropTypes.func
+  renderSubForm: PropTypes.func,
+  jersey: PropTypes.string
 };
 
 export default PlayerPositions;

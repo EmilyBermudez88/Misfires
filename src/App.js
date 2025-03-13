@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './styles/_base.scss';
 
-// import DateDropdown from './components/DateDropdown';
+import DateDropdown from './components/DateDropdown';
 import TeamFormationDropdown from './components/TeamFormationDropdown';
 import Bench from './components/Bench';
 import FieldLayout from './assets/fieldLayout.png';
@@ -13,7 +13,9 @@ import playerDataSet from './util/playerDataSet';
 function App() {
   const [availablePlayers, setAvailablePlayers] = useState(playerDataSet),
     [renderForm, setRenderForm] = useState(false),
-    [selectedPosition, setSelectedPosition] = useState('');
+    [selectedPosition, setSelectedPosition] = useState(''),
+    [jerseyColour, setJerseyColour] = useState('home'),
+    [formation, setFormation] = useState('');
 
     const updateAvailablePlayers = (...actions) => {
       let availablePlayersCopy = availablePlayers;
@@ -53,7 +55,8 @@ function App() {
 			children.push(<PlayerPositions position={goalie}
                                   updateAvailablePlayers={updateAvailablePlayers}
                                   availablePlayers={availablePlayers}
-                                  renderSubForm={renderSubForm}/>);
+                                  renderSubForm={renderSubForm}
+                                  jersey={jerseyColour} />);
 		}
 		return children;
 	}
@@ -65,7 +68,8 @@ function App() {
 			children.push(<PlayerPositions position={defense}
                                   updateAvailablePlayers={updateAvailablePlayers}
                                   availablePlayers ={availablePlayers}
-                                  renderSubForm={renderSubForm}/>);
+                                  renderSubForm={renderSubForm}
+                                  jersey={jerseyColour}/>);
 		}
 		if (num === 3) {
 			// move centre back position to centre of defense line
@@ -81,7 +85,8 @@ function App() {
 			children.push(<PlayerPositions position={midfield}
                                   updateAvailablePlayers={updateAvailablePlayers}
                                   availablePlayers ={availablePlayers}
-                                  renderSubForm={renderSubForm}/>);
+                                  renderSubForm={renderSubForm}
+                                  jersey={jerseyColour}/>);
 		}
 		else if (num === 2) {
 			for (let i = 0; i <= num; i = i + 2) {
@@ -89,7 +94,8 @@ function App() {
 				children.push(<PlayerPositions position={midfield}
                                    updateAvailablePlayers={updateAvailablePlayers}
                                    availablePlayers ={availablePlayers}
-                                   renderSubForm={renderSubForm}/>);
+                                   renderSubForm={renderSubForm}
+                                   jersey={jerseyColour}/>);
 			}
 		}
 		else {
@@ -98,7 +104,8 @@ function App() {
 				children.push(<PlayerPositions position={midfield}
                                    updateAvailablePlayers={updateAvailablePlayers}
                                    availablePlayers ={availablePlayers}
-                                   renderSubForm={renderSubForm}/>);
+                                   renderSubForm={renderSubForm}
+                                   jersey={jerseyColour}/>);
 			}
 		}
 		return children;
@@ -111,7 +118,8 @@ function App() {
 			children.push(<PlayerPositions position={attack}
                                   updateAvailablePlayers={updateAvailablePlayers}
                                   availablePlayers={availablePlayers}
-                                  renderSubForm={renderSubForm}/>);
+                                  renderSubForm={renderSubForm}
+                                  jersey={jerseyColour}/>);
 		}
 		return children;
 	}
@@ -121,26 +129,22 @@ function App() {
     position ? setSelectedPosition(position): setSelectedPosition('');
   };
 
-  // eslint-disable-next-line no-unused-vars
-  // const [selectedDate, setSelectedDate] = useState('');
-  const [formation, setFormation] = useState('');
-
-  // const chooseDate = (day) => setSelectedDate(day);
   const chooseFormation = (selection) => {
-    const formationArr = selection.layout.split(' - ').map((line) => parseInt(line));
+    const formationArr = selection.dropdownValue.split(' - ').map((line) => parseInt(line));
     setFormation(formationArr)
   };
 
   return (
     <div className="app">
-      <header className="app__header">
-        <div className="app__header__title">
-          <h1>Misfires Lineup</h1>
-          <img className="app__header__image" src={SoccerBall}/>
-        </div>
-          <TeamFormationDropdown chooseFormation={chooseFormation} />
-      </header>
       <main className="app__main">
+        <section className="intro-content">
+          <div className="intro-content__title">
+            <h1>Misfires</h1>
+            <img className="intro-content__image" src={SoccerBall}/>
+          </div>
+          <TeamFormationDropdown chooseFormation={chooseFormation} />
+          <DateDropdown chooseJersey={setJerseyColour} />
+        </section>
         <div className="field">
           <img className="field__image" src={FieldLayout}/>
           <div className="field__setup">
