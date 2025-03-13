@@ -16,14 +16,14 @@ const TeamFormationDropdown = (props) => {
 	}
 
 	return (
-  <div className= "formation__container">
+  <div className= "dropdown--formation__container">
     <label htmlFor="dropdown" id={labelId}>Choose a formation:</label>
-    <div className="dropdown formation__select" ref={dropdownRef} onBlur={handleBlur}>
+    <div className="dropdown dropdown--formation__select" ref={dropdownRef} onBlur={handleBlur}>
       <Dropdown open={open}
                 setOpen={setOpen}
                 labelId={labelId}
                 options={formations}
-                className= "formation"
+                selectionType="formation"
                 updateSelected={chooseFormationProp}
                 />
     </div>

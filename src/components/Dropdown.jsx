@@ -3,22 +3,35 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import EditButton from './EditButton';
+import classNames from 'classnames';
 
-const Dropdown = ({ updateSelected, options, open, setOpen, labelId, renderSubForm, position, className }) => {
+const Dropdown = ({ updateSelected, options, open, setOpen, labelId, renderSubForm, position, selectionType }) => {
 
   const [userSelection, setUserSelection] = useState({}),
     [visualSelectionIndex, setVisualSelectionIndex] = useState(null),
     selectionMade = Object.keys(userSelection).length > 0,
     caret = open ? faAngleUp : faAngleDown,
-    formation = className === 'formation',
-    defaultDropdownVal = formation ? 'select formation' : 'select player',
-    userSelectionDropdownVal = formation ? userSelection.dropdownValue : userSelection.name;
+    defaultDropdownVal = selectionType === 'formation'
+      ? 'select formation'
+      : selectionType === 'position'
+        ? 'select player'
+        : 'select jersey',
+    userSelectionDropdownVal = selectionType ===
+    'position' ? userSelection.name : userSelection.dropdownValue;
 
   const dropdownId = useId();
   const menuId= useId();
   const optionId = useId();
   const buttonRef = useRef(null);
 	const activeDescendent = visualSelectionIndex !== null ? `${optionId}${visualSelectionIndex}` : null;
+
+  const calculateClassName = (className) => {
+    return classNames(className, {
+      'dropdown--formation': selectionType === 'formation',
+      'dropdown--jersey': selectionType === 'jersey',
+      'dropdown--position': selectionType === 'position'
+    })
+  }
 
   const handleSelection = (selected) => {
     if (selected.dropdownValue) {
@@ -116,13 +129,13 @@ const Dropdown = ({ updateSelected, options, open, setOpen, labelId, renderSubFo
 			}
 		}
 	}
-  // setOpen(true);
+
   return(
     <>
-      <div className={`${className} dropdown__container`}>
+      <div className={calculateClassName('dropdown__container')}>
         <button id={dropdownId}
                 ref={buttonRef}
-                className={`${className} dropdown__button`}
+                className={calculateClassName('dropdown__button')}
                 role="combobox"
                 aria-controls={menuId}
                 aria-expanded={open}
@@ -142,7 +155,7 @@ const Dropdown = ({ updateSelected, options, open, setOpen, labelId, renderSubFo
         }
       </div>
       { open &&
-        <ul className={`${className} dropdown__menu`} role="listbox" id={menuId}>
+        <ul className={calculateClassName('dropdown__menu')} role="listbox" id={menuId}>
           {options.length
             ? options.map((option, i) =>
               <li role="option"
@@ -150,17 +163,17 @@ const Dropdown = ({ updateSelected, options, open, setOpen, labelId, renderSubFo
                   className="dropdown__option"
                   key={`${optionId}${i}`}
                   id={`${optionId}${i}`}>
-                <button className={`${className} dropdown__option__button`}
+                <button className={calculateClassName('dropdown__option__button')}
                         tabIndex={-1}
                         onClick={() => handleSelection(option)}>
-                  <span className={`${className} dropdown__value`}>
+                  <span className={calculateClassName('dropdown__value')}>
                     { option.name ? option.name: option.dropdownValue }
                   </span>
                 </button>
               </li>
             ) :
             // Only relevant to Player dropdown
-            <li className={`${className} no-option-warning`}>
+            <li className="dropdown--position no-option-warning">
               No Available Players
               <button className="no-option-warning__button"
                       onClick={() => renderSubForm(true, position)}>
@@ -182,7 +195,7 @@ Dropdown.propTypes = {
   updateSelected: PropTypes.func,
   renderSubForm: PropTypes.func,
   position: PropTypes.string,
-  className: PropTypes.string
+  selectionType: PropTypes.string
 }
 
 export default Dropdown;

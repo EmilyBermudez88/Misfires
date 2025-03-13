@@ -19,7 +19,7 @@ const PlayerPositions = ({ position, updateAvailablePlayers, availablePlayers, r
 
 	const dropdownRef = useRef(null);
 	const labelId = `field-position-${position}`;
-  const jerseyImg = jersey.dropdownValue === 'home' ? JerseyRed : JerseyWhite;
+  const jerseyImg = jersey.dropdownValue === 'away' ? JerseyWhite : JerseyRed;
   const titleClassName = classnames('field-position__title', {
     away: jersey.dropdownValue === 'away'
   });
@@ -49,7 +49,7 @@ const PlayerPositions = ({ position, updateAvailablePlayers, availablePlayers, r
                     options={dropdownOptions}
                     renderSubForm={renderSubForm}
                     position={position}
-                    className= "field-position" />
+                    selectionType="position"/>
         </div>
       </div>
     </div>

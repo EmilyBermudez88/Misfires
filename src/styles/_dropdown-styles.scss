@@ -77,18 +77,15 @@ $buttonVerticalPadding: 4px;
   }
 }
 
-.formation {
+.dropdown--formation, .dropdown--jersey {
   &__container {
-    display: flex;
-    align-items: center;
-    justify-self: end;
-    width: 380px;
+    text-align: right
   }
   &__select {
     display: inline-block;
     position:relative;
     width: 195px;
-    margin: 5px 10px;
+    margin: 5px 0 5px 10px;
   }
 }
 
