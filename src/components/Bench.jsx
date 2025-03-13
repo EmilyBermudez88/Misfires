@@ -91,7 +91,7 @@ const Bench = ({ updateAvailablePlayers,
       <h2 className="bench__title unavailable">Unavailable</h2>
       <ul className="bench__player-list">
         { unavailable.map((player) =>
-          <li className="bench__player-option" key={player.name}>
+          <li className="bench__player-option unavailable" key={player.name}>
             {player.name}
             <EditButton onClick={() => addPlayer(player)} type="add" />
           </li>

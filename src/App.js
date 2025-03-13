@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './styles/_base.scss';
-
+import classnames from 'classnames';
 import DateDropdown from './components/DateDropdown';
 import TeamFormationDropdown from './components/TeamFormationDropdown';
 import Bench from './components/Bench';
@@ -16,26 +16,29 @@ function App() {
     [selectedPosition, setSelectedPosition] = useState(''),
     [jerseyColour, setJerseyColour] = useState('home'),
     [formation, setFormation] = useState('');
+  const fieldLineClassNames = classnames('field__line', {
+    spread: formation.length < 4
+  });
 
-    const updateAvailablePlayers = (...actions) => {
-      let availablePlayersCopy = availablePlayers;
+  const updateAvailablePlayers = (...actions) => {
+    let availablePlayersCopy = availablePlayers;
 
-      const removePlayer = (playerToRemove, playerArr) =>
-        availablePlayersCopy = playerArr.filter((ind) => ind.name !== playerToRemove.name);
+    const removePlayer = (playerToRemove, playerArr) =>
+      availablePlayersCopy = playerArr.filter((ind) => ind.name !== playerToRemove.name);
 
-        const addPlayer = (playerToAdd, playerArr) => {
-        //player to add may not exist in dataset because they're an extra sub
-        const playerFromRoster = playerDataSet.find((player) => player.name === playerToAdd.name);
-        const playerInfo = playerFromRoster ? playerFromRoster : playerToAdd;
-        return availablePlayersCopy = playerArr.concat(playerInfo);
-      }
-
-      actions.forEach((update) => update.action === 'remove'
-        ? removePlayer(update.player, availablePlayersCopy)
-        : addPlayer(update.player, availablePlayersCopy)
-      )
-      setAvailablePlayers(availablePlayersCopy);
+      const addPlayer = (playerToAdd, playerArr) => {
+      //player to add may not exist in dataset because they're an extra sub
+      const playerFromRoster = playerDataSet.find((player) => player.name === playerToAdd.name);
+      const playerInfo = playerFromRoster ? playerFromRoster : playerToAdd;
+      return availablePlayersCopy = playerArr.concat(playerInfo);
     }
+
+    actions.forEach((update) => update.action === 'remove'
+      ? removePlayer(update.player, availablePlayersCopy)
+      : addPlayer(update.player, availablePlayersCopy)
+    )
+    setAvailablePlayers(availablePlayersCopy);
+  }
 
   let formationPositions = [];
   const definePosition = (line, idx) => {
@@ -48,6 +51,7 @@ function App() {
       }
     }
   }
+
 	const renderGoalie = (num) => {
 		const children= []
 		for (let i = 0; i < num; i++) {
@@ -150,10 +154,10 @@ function App() {
           <div className="field__setup">
             { formation ?
               <>
-                <div className="field__line">{renderGoalie(formation[0])}</div>
-                <div className="field__line">{renderDefense(formation[1])}</div>
-                <div className="field__line">{renderMidfield(formation[2])}</div>
-                <div className="field__line">{renderAttack(formation[3])}</div>
+                <div className={fieldLineClassNames}>{renderGoalie(formation[0])}</div>
+                <div className={fieldLineClassNames}>{renderDefense(formation[1])}</div>
+                <div className={fieldLineClassNames}>{renderMidfield(formation[2])}</div>
+                <div className={fieldLineClassNames}>{renderAttack(formation[3])}</div>
               </>
               :
               <h3 className="field__warning">

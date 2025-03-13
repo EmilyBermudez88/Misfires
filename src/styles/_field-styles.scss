@@ -14,7 +14,7 @@ $headerHeight: 38px;
     width: 100%;
     left: 0px;
     top: 20px;
-    height: calc(100% - 50px);
+    height: calc(100% - 100px);
     position: absolute;
   }
 
@@ -24,6 +24,9 @@ $headerHeight: 38px;
     justify-content: space-around;
     &:first-child {
       padding-top: 0px;
+    }
+    &.spread {
+      padding-bottom: 40px;
     }
   }
 
@@ -41,11 +44,11 @@ $headerHeight: 38px;
 
 .field-position {
   width: 150px;
-  &__icon-container {
-    position: relative;
-  }
   &__icon {
     height: 120px;
+  }
+  &__icon-container {
+    position: relative;
   }
   &__title {
     color: white;

@@ -11,12 +11,14 @@ $togglePadding: 6px;
   // background-color: #e7ae27;
   // margin: 20px 20px 0 0;
   grid-area: bench;
-  margin: 150px 20px 0 5%;
+  padding-right: 15px;
   min-width: 190px;
   width: 20%;
   position: relative;
+  justify-self: end;
+
   &__title {
-    margin-top: 0px;
+    margin: 5px 0 10px 0;
     font-family: 'Michroma', sans-serif;
     text-align: right;
     position: relative;
@@ -34,6 +36,11 @@ $togglePadding: 6px;
     grid-template-columns: max-content auto 16px;
     column-gap: $marginWidth;
 
+    &.unavailable {
+      font-size: 14px;
+      width: 70%;
+      justify-self: end;
+    }
     &:has(button:hover) {
       background-color: rgba(49, 49,49, 0.08);
     }
@@ -52,7 +59,7 @@ $togglePadding: 6px;
   
   &__background {
     position: absolute;
-    right: -15px;
+    right: 0px;
     top: 0px;
   }
 }
@@ -121,5 +128,3 @@ $togglePadding: 6px;
     background-color: rgba(49, 49, 49, 0.08);
   }
 }
-
-  
