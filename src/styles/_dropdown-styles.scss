@@ -10,6 +10,10 @@ $buttonVerticalPadding: 4px;
     background-color: white;
     border: 1px solid rgb(149, 149, 149);
     position: relative;
+
+    &:has(button:hover) {
+      border: 1px solid rgb(49, 49, 49);
+    }
   }
 
   &__button {
@@ -24,6 +28,7 @@ $buttonVerticalPadding: 4px;
       outline: $borderWidth solid rgb(49, 49,49);
       outline-offset: calc(0px - $borderWidth - 1px); //inset border by 1px
     }
+  
     .dropdown-caret {
       height: 18px;
       top: 0px;

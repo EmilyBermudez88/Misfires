@@ -62,7 +62,22 @@ $togglePadding: 6px;
     right: 0px;
     top: 0px;
   }
+
+  &__sub-warning {
+    position: relative;
+    padding: 4px 0;
+    margin-bottom: 4px;
+    background-color: rgb(49, 49, 49);
+    color: white;
+    font-weight: bold;
+  }
+
+  &__sub-button.sub-form__button {
+    position: relative;
+    border-width: $borderWidth;
+  }
 }
+
 .toggle-label-container {
   width: 100%;
   text-align: left;

@@ -1,0 +1,38 @@
+$form-spacing: 4px;
+$borderWidth: 2px;
+
+.sub-form {
+  position: relative;
+  margin-left: $form-spacing;
+  text-align: left;
+  background-color:rgba(255,255,255,0.3);
+  border: 2px solid rgb(49,49,49);
+  padding: $form-spacing calc($form-spacing * 2);
+
+  &__group {
+    margin-bottom: 10px;
+  }
+
+  &__field {
+    padding: $form-spacing calc($form-spacing * 2);
+    border: 1px solid rgb(49,49,49);
+    &:focus, &:focus-visible {
+      outline: $borderWidth solid rgb(49, 49,49);
+      outline-offset: calc(0px - $borderWidth - 2px); //inset border by 1px
+    }
+    &.name {
+      width: calc(180px - ($form-spacing * 6) - 6px);
+    }
+  }
+  &__button {
+    background-color:rgba(255,255,255,0.9);
+    border: 1px solid rgb(49,49,49);
+    padding: $form-spacing calc($form-spacing * 2);
+    border-radius: 2px;
+    margin:  $form-spacing;
+  }
+
+  label {
+    font-size: 14px;
+  }
+}

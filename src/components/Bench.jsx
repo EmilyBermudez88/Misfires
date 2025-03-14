@@ -76,14 +76,14 @@ const Bench = ({ updateAvailablePlayers,
             </li>)
         }
       </ul>
-      {renderSubWarning &&
+      {renderSubWarning && !!formationPositions.length &&
         <>
-          <p>WARNING: more subs needed</p>
-          <button onClick={() => setRenderForm(true)}>Add A Sub</button>
+          <p className="bench__sub-warning">MORE SUBS NEEDED</p>
+          <button className="bench__sub-button sub-form__button" onClick={() => setRenderForm(true)}>Add A Sub</button>
         </>
       }
       {renderForm &&
-        <AddSubForm formationPostions={formationPositions}
+        <AddSubForm formationPositions={formationPositions}
                     onSubmit={onSubmit}
                     selectedPosition={selectedPosition}
                     setRenderForm={setRenderForm}/>

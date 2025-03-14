@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-const AddSubForm = ({ onSubmit: onSubmitProp, selectedPosition, formationPostions, setRenderForm }) => {
+const AddSubForm = ({ onSubmit: onSubmitProp, selectedPosition, formationPositions, setRenderForm }) => {
   const defaultPosition = selectedPosition ? selectedPosition : '';
   const [addSub, setAddSub] = useState({ name:'', position: defaultPosition });
   const handleFormChange = (value, key) => setAddSub({ ...addSub, [key]: value });
@@ -19,26 +19,26 @@ const AddSubForm = ({ onSubmit: onSubmitProp, selectedPosition, formationPostion
   }
 
   return (
-    <form aria-label="Add a Sub" onSubmit= {onSubmit}>
-      <div className="sub-form-group">
+    <form aria-label="Add a Sub" className="sub-form" onSubmit= {onSubmit}>
+      <div className="sub-form__group">
         <label htmlFor="sub-name">Player Name</label>
         <input id="sub-name"
                type="text"
                onChange={(e) => handleFormChange(e.target.value, 'name')}
                value={addSub.name}/>
       </div>
-      <div className="sub-form-group">
+      <div className="sub-form__group">
         <label htmlFor="sub-position">Player Position</label>
         <select id="sub-position"
                 name="sub-position"
                 onChange={(e) => handleFormChange(e.target.value, 'position')}
                 value={addSub.position}>
           <option value="">Choose a Position</option>
-          {formationPostions.map((position) => <option key={position}>{position}</option>)}
+          {formationPositions.map((position) => <option key={position}>{position}</option>)}
         </select>
       </div>
-      <button className="button--form">Add Player</button>
-      <button className="button--form" type="reset" onClick={onCancel}>Cancel</button>
+      <button className="sub-form__button">Add Player</button>
+      <button className="sub-form__button" type="reset" onClick={onCancel}>Cancel</button>
     </form>
   )
 }
@@ -46,7 +46,7 @@ const AddSubForm = ({ onSubmit: onSubmitProp, selectedPosition, formationPostion
 AddSubForm.propTypes = {
   onSubmit: PropTypes.func,
   selectedPosition: PropTypes.string,
-  formationPostions: PropTypes.arrayOf(PropTypes.string),
+  formationPositions: PropTypes.arrayOf(PropTypes.string),
   setRenderForm: PropTypes.func
 };
 
