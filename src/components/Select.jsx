@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import PropTypes from 'prop-types';
-// import { AvailablePositions } from '../App';
+import { PlayersContext } from '../App';
 
 const Select = ({ player, edit, handleSelection }) => {
   const [availablePlayerPositions, setAvailablePlayerPositions] = useState([]);
   const [selected, setSelected]= useState(player.position);
   const selectRef = useRef();
-  // const { formationPositions } = useContext(AvailablePositions);
-  // console.log(formationPositions);
+  const { formationPositions } = useContext(PlayersContext);
 
   useEffect(() => {
     const handlePositions = () => {
@@ -34,7 +33,10 @@ const Select = ({ player, edit, handleSelection }) => {
                 onBlur={() => handleSelection('')}
                 onChange={(e) => setSelected(e.target.value)}
                 value={selected}>
-          {availablePlayerPositions.map((position) => position && <option key={position}>{position}</option>)}
+          {player.sub
+            ? formationPositions.map((position) => <option key={position}>{position}</option>)
+            : availablePlayerPositions.map((position) => position && <option key={position}>{position}</option>)
+          }
         </select>
       : <span className="bench__player-position">({selected})</span>
     }
@@ -46,7 +48,8 @@ const player = PropTypes.shape({
   name: PropTypes.string,
   position: PropTypes.string,
   secondPosition: PropTypes.string,
-  thirdPosition: PropTypes.string
+  thirdPosition: PropTypes.string,
+  sub: PropTypes.bool
 })
 
 Select.propTypes = {

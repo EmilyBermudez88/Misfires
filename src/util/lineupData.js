@@ -9,7 +9,7 @@ export const formations= [
 
 export const positions = {
     goalie: ['GK'], //goalkeeper
-    defense: ['RB', 'LB', 'CB'], //standard shortform for right/left/centre backs
+    defense: ['RB', 'CB', 'LB'], //standard shortform for right/left/centre backs
     midfield: ['RW', 'CM', 'LW'], //right winter, centre midfield, left winter
     attack: ['CF', 'CF', 'CF'] //centre forward / striker
 }

@@ -69,16 +69,21 @@ function App() {
 
 	const renderDefense = (num) => {
 		const children = []
-		for (let i = 0; i < num; i++) {
-      const defense = definePosition('defense', i);
-			children.push(<PlayerPositions position={defense}
-                                  renderSubForm={renderSubForm}
-                                  jersey={jerseyColour}/>);
-		}
 		if (num === 3) {
-			// move centre back position to centre of defense line
-			children.splice(1, 0, children.splice(-1)[0])
-		}
+      for (let i = 0; i < num; i++) {
+        const defense = definePosition('defense', i);
+				children.push(<PlayerPositions position={defense}
+                                   renderSubForm={renderSubForm}
+                                   jersey={jerseyColour}/>);
+			}
+		} else {
+      for (let i = 0; i < num; i++) {
+        const defense = definePosition('defense', 1);
+        children.push(<PlayerPositions position={defense}
+                                       renderSubForm={renderSubForm}
+                                       jersey={jerseyColour}/>);
+      }
+    }
 		return children;
 	}
 
@@ -167,7 +172,8 @@ function App() {
           </div>
           <Bench renderForm={renderForm}
                  setRenderForm={setRenderForm}
-                 selectedPosition={selectedPosition} />
+                 selectedPosition={selectedPosition}
+                 formation={formation} />
         </PlayersContext.Provider>
       </main>
     </div>
@@ -176,17 +182,5 @@ function App() {
 
 export default App;
 
-// REBUILD -->
-  // dateDropdown --> date will provide time, field, home/away
-
-// STRETCH GOALS
-// bench roles - who/position they are going to sub for
-  // if bench is below 2, warning to add another sub
-// how to screenshot / capture the field layout with players
-// editing players availability
-
 // TO DO
-// 2 D === CB CB
-// edit positions need to look at availablepositions/formation
-// set flag of sub to all positions & delete on X
-//need to clear unavailableplayers when formation is reset
+// how to screenshot / capture the field layout with players

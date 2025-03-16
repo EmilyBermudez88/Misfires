@@ -9,7 +9,7 @@ import Background from '../assets/background.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
-const Bench = ({ renderForm, setRenderForm, selectedPosition }) => {
+const Bench = ({ renderForm, setRenderForm, selectedPosition, formation }) => {
 	const [unavailable, setUnavailable] = useState([]);
   const [showPlayerPosition, setShowPlayerPosition] = useState(false);
   const { updateAvailablePlayers, availablePlayers, formationPositions } = useContext(PlayersContext);
@@ -24,8 +24,8 @@ const Bench = ({ renderForm, setRenderForm, selectedPosition }) => {
 
   // when a player is removed, we should set the focus to the NEXT 'x'
 	const removePlayer = (removedPlayer) => {
-      const arr = Array.from(benchedPlayersRef.current.querySelectorAll('.button--edit'));
-      console.log(arr);
+      // const arr = Array.from(benchedPlayersRef.current.querySelectorAll('.button--edit'));
+      // console.log(arr);
 		setUnavailable([...unavailable, removedPlayer]);
 		updateAvailablePlayers({ action: 'remove', player: removedPlayer })
 	}
@@ -41,7 +41,7 @@ const Bench = ({ renderForm, setRenderForm, selectedPosition }) => {
 
   useEffect(() => {
     setUnavailable([]);
-  }, [formationPositions]);
+  }, [formation]);
 
 	return (
     <div className="bench">
@@ -111,7 +111,7 @@ Bench.propTypes = {
   // updateAvailablePlayers: PropTypes.func,
   // availablePlayers: PropTypes.arrayOf(availablePlayersPropType),
   selectedPosition: PropTypes.string,
-  // formationPositions: PropTypes.arrayOf(PropTypes.string),
+  formation: PropTypes.arrayOf(PropTypes.string),
   renderForm: PropTypes.bool,
   setRenderForm: PropTypes.func
 };
