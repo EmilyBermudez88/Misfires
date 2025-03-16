@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+// import { AvailablePositions } from '../App';
 
 const Select = ({ player, edit, handleSelection }) => {
-  const [availablePositions, setAvailablePositions] = useState([]);
+  const [availablePlayerPositions, setAvailablePlayerPositions] = useState([]);
   const [selected, setSelected]= useState(player.position);
   const selectRef = useRef();
+  // const { formationPositions } = useContext(AvailablePositions);
+  // console.log(formationPositions);
 
   useEffect(() => {
     const handlePositions = () => {
@@ -13,7 +16,7 @@ const Select = ({ player, edit, handleSelection }) => {
         if (prop !== 'name')
           {positions.push(player[prop]);}
       }
-      setAvailablePositions(positions);
+      setAvailablePlayerPositions(positions);
     }
     handlePositions();
   }, [player]);
@@ -31,7 +34,7 @@ const Select = ({ player, edit, handleSelection }) => {
                 onBlur={() => handleSelection('')}
                 onChange={(e) => setSelected(e.target.value)}
                 value={selected}>
-          {availablePositions.map((position) => position && <option key={position}>{position}</option>)}
+          {availablePlayerPositions.map((position) => position && <option key={position}>{position}</option>)}
         </select>
       : <span className="bench__player-position">({selected})</span>
     }

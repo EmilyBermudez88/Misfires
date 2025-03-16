@@ -1,8 +1,9 @@
-import React, { useState, useId, useRef } from 'react';
+import React, { useState, useId, useRef, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import EditButton from './EditButton';
+import { FormationContext } from '../App';
 import classNames from 'classnames';
 
 const Dropdown = ({ updateSelected, options, open, setOpen, labelId, renderSubForm, position, selectionType }) => {
@@ -49,16 +50,19 @@ const Dropdown = ({ updateSelected, options, open, setOpen, labelId, renderSubFo
 	}
 
   const handleFocus= () => {
-    console.log('focusing', buttonRef.current)
 		buttonRef.current.focus();
 	}
 
-	const handleClear = () => {
-		setUserSelection({});
+  const reset = () => {
+    setUserSelection({});
     if (userSelection.name) {
       updateSelected({ action: 'add', player: userSelection });
     }
-    buttonRef.current.focus();
+  }
+
+	const handleClear = () => {
+    reset();
+    handleFocus();
 	}
 
   const handleOnKeyDown = (e) => {
@@ -129,6 +133,17 @@ const Dropdown = ({ updateSelected, options, open, setOpen, labelId, renderSubFo
 			}
 		}
 	}
+
+  useEffect(() => {
+    if (selectionType === 'formation') {
+      buttonRef.current.focus();
+    }
+  }, [])
+
+  const { formation } = useContext(FormationContext)
+  useEffect(() => {
+    setUserSelection({});
+  }, [formation])
 
   return(
     <>

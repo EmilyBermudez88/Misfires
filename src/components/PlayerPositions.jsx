@@ -1,16 +1,18 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import JerseyRed from '../assets/JerseyRed.png';
 import JerseyWhite from '../assets/JerseyWhite.png'
 import Dropdown from './Dropdown';
+import { PlayersContext } from '../App';
 
-const PlayerPositions = ({ position, updateAvailablePlayers, availablePlayers, renderSubForm, jersey }) => {
+const PlayerPositions = ({ position, renderSubForm, jersey }) => {
 	// We still want to parse the availablePlayers array into preferred positions to
 	// make the choice easier of which player should go where
 	const [preferredPlayers, setPreferredPlayers] = useState([]),
 		[backupPlayers, setBackupPlayers] = useState([]),
 		[open, setOpen] = useState(false),
+    { updateAvailablePlayers, availablePlayers } = useContext(PlayersContext),
     dropdownOptions = preferredPlayers.length
       ? preferredPlayers
       : backupPlayers.length
@@ -56,17 +58,8 @@ const PlayerPositions = ({ position, updateAvailablePlayers, availablePlayers, r
 	);
 };
 
-const availablePlayersPropType = PropTypes.shape({
-  name: PropTypes.string,
-  position: PropTypes.string,
-  secondPosition: PropTypes.string,
-  thirdPosition: PropTypes.string
-})
-
 PlayerPositions.propTypes = {
   position: PropTypes.string,
-  availablePlayers: PropTypes.arrayOf(availablePlayersPropType),
-  updateAvailablePlayers: PropTypes.func,
   renderSubForm: PropTypes.func,
   jersey: PropTypes.string
 };

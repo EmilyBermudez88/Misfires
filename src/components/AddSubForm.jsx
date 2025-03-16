@@ -1,20 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
+import { PlayersContext } from '../App';
 
-const AddSubForm = ({ onSubmit: onSubmitProp, selectedPosition, formationPositions, setRenderForm }) => {
+const AddSubForm = ({ onSubmit: onSubmitProp, selectedPosition, setRenderForm }) => {
   const defaultPosition = selectedPosition ? selectedPosition : '';
-  const [addSub, setAddSub] = useState({ name:'', position: defaultPosition });
-  const handleFormChange = (value, key) => setAddSub({ ...addSub, [key]: value });
+  const [addSub, setAddSub] = useState({ name:'', position: defaultPosition, sub: null });
+  const { formationPositions } = useContext(PlayersContext);
+  const handleFormChange = (value, key) => setAddSub({ ...addSub, [key]: value, sub: true });
 
   const onSubmit = (e) => {
     e.preventDefault();
     onSubmitProp(addSub);
     setRenderForm(false);
-    setAddSub({ name:'', position:'' });
+    setAddSub({ name:'', position:'', sub: null });
   }
 
   const onCancel = () => {
-    setAddSub({ name:'', position:'' });
+    setAddSub({ name:'', position:'', sub: null });
     setRenderForm(false);
   }
 
@@ -46,7 +48,6 @@ const AddSubForm = ({ onSubmit: onSubmitProp, selectedPosition, formationPositio
 AddSubForm.propTypes = {
   onSubmit: PropTypes.func,
   selectedPosition: PropTypes.string,
-  formationPositions: PropTypes.arrayOf(PropTypes.string),
   setRenderForm: PropTypes.func
 };
 

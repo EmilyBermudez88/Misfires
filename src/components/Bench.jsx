@@ -1,22 +1,18 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import AddSubForm from './AddSubForm';
 import EditButton from './EditButton';
 import Select from './Select';
+import { PlayersContext } from '../App';
 import Background from '../assets/background.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
-const Bench = ({ updateAvailablePlayers,
-    availablePlayers,
-    renderForm,
-    setRenderForm,
-    selectedPosition,
-    formationPositions
-  }) => {
+const Bench = ({ renderForm, setRenderForm, selectedPosition }) => {
 	const [unavailable, setUnavailable] = useState([]);
   const [showPlayerPosition, setShowPlayerPosition] = useState(false);
+  const { updateAvailablePlayers, availablePlayers, formationPositions } = useContext(PlayersContext);
   const renderSubWarning = availablePlayers.length < 2 && !renderForm;
   const toggleText = showPlayerPosition ? 'Hide Positions' : 'Show Positions';
   const [playerToEdit, setPlayerToEdit] = useState('');
@@ -42,6 +38,10 @@ const Bench = ({ updateAvailablePlayers,
     setRenderForm(false);
     updateAvailablePlayers({ action: 'add', player: addSubProp });
   }
+
+  useEffect(() => {
+    setUnavailable([]);
+  }, [formationPositions]);
 
 	return (
     <div className="bench">
@@ -83,8 +83,7 @@ const Bench = ({ updateAvailablePlayers,
         </>
       }
       {renderForm &&
-        <AddSubForm formationPositions={formationPositions}
-                    onSubmit={onSubmit}
+        <AddSubForm onSubmit={onSubmit}
                     selectedPosition={selectedPosition}
                     setRenderForm={setRenderForm}/>
       }
@@ -101,18 +100,18 @@ const Bench = ({ updateAvailablePlayers,
   )
 }
 
-const availablePlayersPropType = PropTypes.shape({
-  name: PropTypes.string,
-  position: PropTypes.string,
-  secondPosition: PropTypes.string,
-  thirdPosition: PropTypes.string
-})
+// const availablePlayersPropType = PropTypes.shape({
+//   name: PropTypes.string,
+//   position: PropTypes.string,
+//   secondPosition: PropTypes.string,
+//   thirdPosition: PropTypes.string
+// })
 
 Bench.propTypes = {
-  updateAvailablePlayers: PropTypes.func,
-  availablePlayers: PropTypes.arrayOf(availablePlayersPropType),
+  // updateAvailablePlayers: PropTypes.func,
+  // availablePlayers: PropTypes.arrayOf(availablePlayersPropType),
   selectedPosition: PropTypes.string,
-  formationPositions: PropTypes.arrayOf(PropTypes.string),
+  // formationPositions: PropTypes.arrayOf(PropTypes.string),
   renderForm: PropTypes.bool,
   setRenderForm: PropTypes.func
 };

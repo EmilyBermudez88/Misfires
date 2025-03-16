@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, createContext } from 'react';
 import './styles/_base.scss';
 import classnames from 'classnames';
 import DateDropdown from './components/DateDropdown';
@@ -9,6 +9,10 @@ import SoccerBall from './assets/soccer-ball.png';
 import PlayerPositions from './components/PlayerPositions';
 import { positions } from './util/lineupData';
 import playerDataSet from './util/playerDataSet';
+
+export const FormationContext = createContext({ formation: null });
+export const PlayersContext =
+  createContext({ availablePlayers: null, updateAvailablePlayers: null, formationPositions: null });
 
 function App() {
   const [availablePlayers, setAvailablePlayers] = useState(playerDataSet),
@@ -56,11 +60,9 @@ function App() {
 		const children= []
 		for (let i = 0; i < num; i++) {
       const goalie = definePosition('goalie', i);
-			children.push(<PlayerPositions position={goalie}
-                                  updateAvailablePlayers={updateAvailablePlayers}
-                                  availablePlayers={availablePlayers}
-                                  renderSubForm={renderSubForm}
-                                  jersey={jerseyColour} />);
+      children.push(<PlayerPositions position={goalie}
+                                     renderSubForm={renderSubForm}
+                                     jersey={jerseyColour} />);
 		}
 		return children;
 	}
@@ -70,8 +72,6 @@ function App() {
 		for (let i = 0; i < num; i++) {
       const defense = definePosition('defense', i);
 			children.push(<PlayerPositions position={defense}
-                                  updateAvailablePlayers={updateAvailablePlayers}
-                                  availablePlayers ={availablePlayers}
                                   renderSubForm={renderSubForm}
                                   jersey={jerseyColour}/>);
 		}
@@ -87,8 +87,6 @@ function App() {
 		if (num === 1) {
       const midfield = definePosition('midfield', num);
 			children.push(<PlayerPositions position={midfield}
-                                  updateAvailablePlayers={updateAvailablePlayers}
-                                  availablePlayers ={availablePlayers}
                                   renderSubForm={renderSubForm}
                                   jersey={jerseyColour}/>);
 		}
@@ -96,8 +94,6 @@ function App() {
 			for (let i = 0; i <= num; i = i + 2) {
         const midfield = definePosition('midfield', i);
 				children.push(<PlayerPositions position={midfield}
-                                   updateAvailablePlayers={updateAvailablePlayers}
-                                   availablePlayers ={availablePlayers}
                                    renderSubForm={renderSubForm}
                                    jersey={jerseyColour}/>);
 			}
@@ -106,8 +102,6 @@ function App() {
 			for (let i = 0; i < num; i++) {
         const midfield = definePosition('midfield', i);
 				children.push(<PlayerPositions position={midfield}
-                                   updateAvailablePlayers={updateAvailablePlayers}
-                                   availablePlayers ={availablePlayers}
                                    renderSubForm={renderSubForm}
                                    jersey={jerseyColour}/>);
 			}
@@ -120,8 +114,6 @@ function App() {
 		for (let i = 0; i < num; i++) {
       const attack = definePosition('attack', i);
 			children.push(<PlayerPositions position={attack}
-                                  updateAvailablePlayers={updateAvailablePlayers}
-                                  availablePlayers={availablePlayers}
                                   renderSubForm={renderSubForm}
                                   jersey={jerseyColour}/>);
 		}
@@ -136,7 +128,11 @@ function App() {
   const chooseFormation = (selection) => {
     const formationArr = selection.dropdownValue.split(' - ').map((line) => parseInt(line));
     setFormation(formationArr)
+    setAvailablePlayers(playerDataSet);
   };
+
+  const playersContext = { availablePlayers, updateAvailablePlayers, formationPositions };
+  const formationContext = { formation }
 
   return (
     <div className="app">
@@ -149,29 +145,30 @@ function App() {
           <TeamFormationDropdown chooseFormation={chooseFormation} />
           <DateDropdown chooseJersey={setJerseyColour} />
         </section>
-        <div className="field">
-          <img className="field__image" src={FieldLayout}/>
-          <div className="field__setup">
-            { formation ?
-              <>
-                <div className={fieldLineClassNames}>{renderGoalie(formation[0])}</div>
-                <div className={fieldLineClassNames}>{renderDefense(formation[1])}</div>
-                <div className={fieldLineClassNames}>{renderMidfield(formation[2])}</div>
-                <div className={fieldLineClassNames}>{renderAttack(formation[3])}</div>
-              </>
-              :
-              <h3 className="field__warning">
-                <span>Please Select a Formation</span>
-              </h3>
-              }
+        <PlayersContext.Provider value={playersContext} >
+          <div className="field">
+            <img className="field__image" src={FieldLayout}/>
+            <FormationContext.Provider value={formationContext}>
+              <div className="field__setup">
+                { formation ?
+                  <>
+                    <div className={fieldLineClassNames}>{renderGoalie(formation[0])}</div>
+                    <div className={fieldLineClassNames}>{renderDefense(formation[1])}</div>
+                    <div className={fieldLineClassNames}>{renderMidfield(formation[2])}</div>
+                    <div className={fieldLineClassNames}>{renderAttack(formation[3])}</div>
+                  </>
+                  :
+                  <h3 className="field__warning">
+                    <span>Please Select a Formation</span>
+                  </h3>
+                  }
+              </div>
+            </FormationContext.Provider>
           </div>
-        </div>
-        <Bench updateAvailablePlayers={updateAvailablePlayers}
-               availablePlayers ={availablePlayers}
-               renderForm={renderForm}
-               setRenderForm={setRenderForm}
-               selectedPosition={selectedPosition}
-               formationPositions={formationPositions} />
+          <Bench renderForm={renderForm}
+                 setRenderForm={setRenderForm}
+                 selectedPosition={selectedPosition} />
+        </PlayersContext.Provider>
       </main>
     </div>
   );
@@ -187,3 +184,9 @@ export default App;
   // if bench is below 2, warning to add another sub
 // how to screenshot / capture the field layout with players
 // editing players availability
+
+// TO DO
+// 2 D === CB CB
+// edit positions need to look at availablepositions/formation
+// set flag of sub to all positions & delete on X
+//need to clear unavailableplayers when formation is reset
