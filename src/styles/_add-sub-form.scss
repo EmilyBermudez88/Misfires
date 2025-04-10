@@ -35,26 +35,24 @@ $borderWidth: 2px;
   label {
     font-size: 14px;
   }
-}
-.modal {
-  height: max-content;
-  width: max-content;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color:rgb(255,255,255);
-  border: 2px solid rgb(49,49,49);
-  padding: $form-spacing * 4 calc($form-spacing * 8);
 
+  .validation-message {
+    font-size: 12px;
+    color: rgb(227, 15, 15);
+    position: absolute;
+    margin-top: 0;
+  }
+}
+
+.modal {
   &__container {
-    display: block;
-    top: 0;
-    height: 100%;
-    width: 100%;
-    background-color: rgba(0,0,0,0.4);
-    padding: 0;
-    border: none;
+    position: relative;
+    border: 2px solid rgb(49,49,49);
+    padding: $form-spacing * 4 $form-spacing * 8 $form-spacing * 6 $form-spacing * 8;
+  }
+
+  &::backdrop {
+    background-color: rgba(0,0,0,0.5);
   }
 
   h2 {

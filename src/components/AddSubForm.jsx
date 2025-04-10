@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-const AddSubForm = ({ onSubmit: onSubmitProp, selectedPosition, formationPositions, setRenderForm }) => {
+const AddSubForm =
+({ onSubmit: onSubmitProp, selectedPosition, formationPositions, openModal, closeModal }) => {
   const defaultPosition = selectedPosition ? selectedPosition : '';
 
   const [addSub, setAddSub] = useState({ name:'', position: defaultPosition, sub: null });
+  const [renderValidationError, setRenderValidationError] = useState(false);
   const dialogEl = useRef(null);
   const firstFocusableEl = useRef(null);
   const lastFocusableEl = useRef(null);
@@ -24,10 +26,15 @@ const AddSubForm = ({ onSubmit: onSubmitProp, selectedPosition, formationPositio
 
   const onSubmit = (e) => {
     e.preventDefault();
+    if (submitDisabled) {
+      setRenderValidationError(true);
+      return
+    } else {
+      setRenderValidationError(false);
+    }
     onSubmitProp({ action: 'add', player: addSub });
     setAddSub({ name:'', position:'', sub: null });
-    setRenderForm(false);
-    dialogEl.current.close();
+    closeModal();
     if(!defaultPosition) {
       Promise.resolve().then(() => {
         const recentlyAddedPlayer =
@@ -42,38 +49,33 @@ const AddSubForm = ({ onSubmit: onSubmitProp, selectedPosition, formationPositio
   const onCancel = (e) => {
     e.preventDefault();
     setAddSub({ name:'', position:'', sub: null });
-    setRenderForm(false);
-    dialogEl.current.close();
+    closeModal();
     prevFocusedEl.current.focus();
   }
 
-  const handleKeyUp = (e) => {
-    e.preventDefault();
+  const handleKeyDown = (e) => {
     if (e.key === 'Tab') {
       if (!e.shiftKey && document.activeElement === lastFocusableEl.current) {
+        e.preventDefault();
         firstFocusableEl.current.focus();
       } else if (e.shiftKey && document.activeElement === firstFocusableEl.current) {
+        e.preventDefault();
         lastFocusableEl.current.focus();
       }
     } else if (e.key === 'Escape') {
-      dialogEl.current.close();
-      setRenderForm(false);
+      closeModal();
       prevFocusedEl.current.focus();
     }
   }
 
-  const check = () => {
-    if (dialogEl.open) {
-      console.log('open');
-    } else {
-      console.log('nope');
-    }
-  }
   useEffect(() => {
-    firstFocusableEl.current.focus();
-    dialogEl.current.showModal();
-    check();
-  }, [])
+    if (openModal) {
+      dialogEl.current.showModal();
+      firstFocusableEl.current.focus();
+    } else {
+      dialogEl.current.close();
+    }
+  }, [openModal])
 
   return (
     <dialog ref={dialogEl}
@@ -81,12 +83,12 @@ const AddSubForm = ({ onSubmit: onSubmitProp, selectedPosition, formationPositio
             aria-modal={true}
             aria-labelledby="modal-title"
             className="modal__container"
-            onKeyDown={handleKeyUp}>
+            onKeyDown={handleKeyDown}>
       <div className="modal">
         <h2 id="modal__title">Add A Sub</h2>
         <form aria-label="Add a Sub" className="sub-form" onSubmit= {onSubmit}>
           <div className="sub-form__group">
-            <label htmlFor="sub-name">Player Name</label>
+            <label htmlFor="sub-name">Player Name* </label>
             <input id="sub-name"
                    ref={firstFocusableEl}
                    type="text"
@@ -94,7 +96,7 @@ const AddSubForm = ({ onSubmit: onSubmitProp, selectedPosition, formationPositio
                    value={addSub.name}/>
           </div>
           <div className="sub-form__group">
-            <label htmlFor="sub-position">Player Position</label>
+            <label htmlFor="sub-position">Player Position* </label>
             <select id="sub-position"
                     name="sub-position"
                     onChange={(e) => handleFormChange(e.target.value, 'position')}
@@ -103,12 +105,11 @@ const AddSubForm = ({ onSubmit: onSubmitProp, selectedPosition, formationPositio
               {formationPositions.map((position) => <option key={position}>{position}</option>)}
             </select>
           </div>
-          <button className="sub-form__button"
-                  aria-disabled={submitDisabled}
-                  disabled={submitDisabled}>
+          <button className="sub-form__button">
             Add Player
           </button>
           <button className="sub-form__button" ref={lastFocusableEl} type="reset" onClick={onCancel}>Cancel</button>
+          {renderValidationError && <p className="validation-message">Fill out all fields</p>}
         </form>
       </div>
     </dialog>
@@ -119,7 +120,8 @@ AddSubForm.propTypes = {
   onSubmit: PropTypes.func,
   formationPositions: PropTypes.arrayOf(PropTypes.string),
   selectedPosition: PropTypes.string,
-  setRenderForm: PropTypes.func
+  openModal: PropTypes.bool,
+  closeModal: PropTypes.func
 };
 
 export default AddSubForm;

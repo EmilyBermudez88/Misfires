@@ -179,8 +179,9 @@ function App() {
         <AddSubForm onSubmit={updateAvailablePlayers}
                     formationPositions={formationPositions}
                     selectedPosition={selectedPosition}
-                    setRenderForm={setRenderForm}/>
-        }
+                    openModal={renderForm}
+                    closeModal={()=> setRenderForm(false)}/>
+      }
     </div>
   );
 }
