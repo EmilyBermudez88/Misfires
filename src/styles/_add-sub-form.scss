@@ -2,12 +2,7 @@ $form-spacing: 4px;
 $borderWidth: 2px;
 
 .sub-form {
-  position: relative;
-  margin-left: $form-spacing;
   text-align: left;
-  background-color:rgba(255,255,255,0.3);
-  border: 2px solid rgb(49,49,49);
-  padding: $form-spacing calc($form-spacing * 2);
 
   &__group {
     margin-bottom: 10px;
@@ -30,9 +25,39 @@ $borderWidth: 2px;
     padding: $form-spacing calc($form-spacing * 2);
     border-radius: 2px;
     margin:  $form-spacing;
+    &:disabled {
+      background-color:rgba(232, 232, 232, 0.9);
+      color: rgb(117, 117, 117);
+      border-color:rgb(117, 117, 117);
+    }
   }
 
   label {
     font-size: 14px;
+  }
+}
+.modal {
+  height: max-content;
+  width: max-content;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color:rgb(255,255,255);
+  border: 2px solid rgb(49,49,49);
+  padding: $form-spacing * 4 calc($form-spacing * 8);
+
+  &__container {
+    display: block;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,0.4);
+    padding: 0;
+    border: none;
+  }
+
+  h2 {
+    margin-top: 0;
   }
 }

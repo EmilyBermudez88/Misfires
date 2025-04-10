@@ -75,6 +75,10 @@ $togglePadding: 6px;
   &__sub-button.sub-form__button {
     position: relative;
     border-width: $borderWidth;
+    &:focus, &:focus-within &:focus-visible {
+      outline: $border;
+      outline-offset: calc(0px - ($borderWidth * 2) - 1px);
+    }
   }
 }
 

@@ -1,7 +1,8 @@
 import React, { useState, useRef, useContext, useEffect } from 'react';
+// import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import AddSubForm from './AddSubForm';
+// import AddSubForm from './AddSubForm';
 import EditButton from './EditButton';
 import Select from './Select';
 import { PlayersContext } from '../App';
@@ -9,11 +10,11 @@ import Background from '../assets/background.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
-const Bench = ({ renderForm, setRenderForm, selectedPosition, formation }) => {
+const Bench = ({ renderSubFormFromBench, formation }) => {
 	const [unavailable, setUnavailable] = useState([]);
   const [showPlayerPosition, setShowPlayerPosition] = useState(false);
   const { updateAvailablePlayers, availablePlayers, formationPositions } = useContext(PlayersContext);
-  const renderSubWarning = availablePlayers.length < 2 && !renderForm;
+  const renderSubWarning = availablePlayers.length < 2;
   const toggleText = showPlayerPosition ? 'Hide Positions' : 'Show Positions';
   const [playerToEdit, setPlayerToEdit] = useState('');
 
@@ -24,20 +25,17 @@ const Bench = ({ renderForm, setRenderForm, selectedPosition, formation }) => {
 
   // when a player is removed, we should set the focus to the NEXT 'x'
 	const removePlayer = (removedPlayer) => {
+    if (!removedPlayer.sub) {
+      setUnavailable([...unavailable, removedPlayer]);
+    }
       // const arr = Array.from(benchedPlayersRef.current.querySelectorAll('.button--edit'));
       // console.log(arr);
-		setUnavailable([...unavailable, removedPlayer]);
 		updateAvailablePlayers({ action: 'remove', player: removedPlayer })
 	}
 	const addPlayer = (addedPlayer) => {
 		updateAvailablePlayers({ action: 'add', player: addedPlayer })
 		setUnavailable(unavailable.filter((ind) => ind.name !== addedPlayer.name))
 	}
-
-  const onSubmit = (addSubProp) => {
-    setRenderForm(false);
-    updateAvailablePlayers({ action: 'add', player: addSubProp });
-  }
 
   useEffect(() => {
     setUnavailable([]);
@@ -72,20 +70,17 @@ const Bench = ({ renderForm, setRenderForm, selectedPosition, formation }) => {
                   <FontAwesomeIcon icon={faPenToSquare}/>
                 </button>
               </span>
-              <EditButton onClick={() => removePlayer(player)} type="remove"/>
+              <EditButton className={`${player.name}`} onClick={() => removePlayer(player)} type="remove"/>
             </li>)
         }
       </ul>
       {renderSubWarning && !!formationPositions.length &&
         <>
           <p className="bench__sub-warning">MORE SUBS NEEDED</p>
-          <button className="bench__sub-button sub-form__button" onClick={() => setRenderForm(true)}>Add A Sub</button>
+          <button className="bench__sub-button sub-form__button" onClick={() => renderSubFormFromBench(true)}>
+            Add A Sub
+          </button>
         </>
-      }
-      {renderForm &&
-        <AddSubForm onSubmit={onSubmit}
-                    selectedPosition={selectedPosition}
-                    setRenderForm={setRenderForm}/>
       }
       <h2 className="bench__title unavailable">Unavailable</h2>
       <ul className="bench__player-list">
@@ -108,12 +103,8 @@ const Bench = ({ renderForm, setRenderForm, selectedPosition, formation }) => {
 // })
 
 Bench.propTypes = {
-  // updateAvailablePlayers: PropTypes.func,
-  // availablePlayers: PropTypes.arrayOf(availablePlayersPropType),
-  selectedPosition: PropTypes.string,
   formation: PropTypes.arrayOf(PropTypes.string),
-  renderForm: PropTypes.bool,
-  setRenderForm: PropTypes.func
+  renderSubFormFromBench: PropTypes.func
 };
 
 export default Bench;

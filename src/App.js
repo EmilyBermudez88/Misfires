@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import DateDropdown from './components/DateDropdown';
 import TeamFormationDropdown from './components/TeamFormationDropdown';
 import Bench from './components/Bench';
+import AddSubForm from './components/AddSubForm';
 import FieldLayout from './assets/fieldLayout.png';
 import SoccerBall from './assets/soccer-ball.png';
 import PlayerPositions from './components/PlayerPositions';
@@ -19,7 +20,7 @@ function App() {
     [renderForm, setRenderForm] = useState(false),
     [selectedPosition, setSelectedPosition] = useState(''),
     [jerseyColour, setJerseyColour] = useState('home'),
-    [formation, setFormation] = useState('');
+    [formation, setFormation] = useState([]);
   const fieldLineClassNames = classnames('field__line', {
     spread: formation.length < 4
   });
@@ -170,12 +171,16 @@ function App() {
               </div>
             </FormationContext.Provider>
           </div>
-          <Bench renderForm={renderForm}
-                 setRenderForm={setRenderForm}
-                 selectedPosition={selectedPosition}
+          <Bench renderSubFormFromBench={renderSubForm}
                  formation={formation} />
         </PlayersContext.Provider>
       </main>
+      {renderForm &&
+        <AddSubForm onSubmit={updateAvailablePlayers}
+                    formationPositions={formationPositions}
+                    selectedPosition={selectedPosition}
+                    setRenderForm={setRenderForm}/>
+        }
     </div>
   );
 }
