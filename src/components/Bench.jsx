@@ -34,7 +34,9 @@ const Bench = ({ renderSubFormFromBench, formation }) => {
         ? removeButtons[removedPlayerBtnIdx + 1]
         : removeButtons[removeButtons.length - 2];
 
-    nextPlayer.focus();
+    if (nextPlayer) {
+      nextPlayer.focus();
+    }
 		updateAvailablePlayers({ action: 'remove', player: removedPlayer })
 	}
 
@@ -51,7 +53,8 @@ const Bench = ({ renderSubFormFromBench, formation }) => {
     <div className="bench">
       <img className="bench__background" src={Background}/>
       <h2 className="bench__title">Bench</h2>
-      <div className="toggle-label-container">
+      <div className="available-list">
+        <div className="toggle-label-container">
         <label className="toggle">
           <span id="toggle-text" className="toggle__text">{toggleText}</span>
           <input className="toggle__input"
@@ -64,39 +67,42 @@ const Bench = ({ renderSubFormFromBench, formation }) => {
             <span className="toggle__slider"/>
           </span>
         </label>
-      </div>
-      <ul ref={benchedPlayersRef}className="bench__player-list">
-        {
-          availablePlayers.map((player) =>
-            <li className="bench__player-option" key={player.name}>
-              <span className="bench__player-name">{player.name}</span>
-              <span className={benchPositionClassnames}>
-                <Select player={player} edit={player.name === playerToEdit} handleSelection={setPlayerToEdit}/>
-                <button onClick={() => setPlayerToEdit(player.name)}className="button--edit update">
-                  <FontAwesomeIcon icon={faPenToSquare}/>
-                </button>
-              </span>
-              <EditButton className={`${player.name}`} onClick={() => removePlayer(player)} type="remove"/>
-            </li>)
+        </div>
+        <ul ref={benchedPlayersRef}className="bench__player-list">
+          {
+            availablePlayers.map((player) =>
+              <li className="bench__player-option" key={player.name}>
+                <span className="bench__player-name">{player.name}</span>
+                <span className={benchPositionClassnames}>
+                  <Select player={player} edit={player.name === playerToEdit} handleSelection={setPlayerToEdit}/>
+                  <button onClick={() => setPlayerToEdit(player.name)}className="button--edit update">
+                    <FontAwesomeIcon icon={faPenToSquare}/>
+                  </button>
+                </span>
+                <EditButton className={`${player.name}`} onClick={() => removePlayer(player)} type="remove"/>
+              </li>)
+          }
+        </ul>
+        {renderSubWarning && !!formationPositions.length &&
+          <>
+            <p className="bench__sub-warning">MORE SUBS NEEDED</p>
+            <button className="bench__sub-button sub-form__button" onClick={() => renderSubFormFromBench(true)}>
+              Add A Sub
+            </button>
+          </>
         }
-      </ul>
-      {renderSubWarning && !!formationPositions.length &&
-        <>
-          <p className="bench__sub-warning">MORE SUBS NEEDED</p>
-          <button className="bench__sub-button sub-form__button" onClick={() => renderSubFormFromBench(true)}>
-            Add A Sub
-          </button>
-        </>
-      }
-      <h2 className="bench__title unavailable">Unavailable</h2>
-      <ul className="bench__player-list">
-        { unavailable.map((player) =>
-          <li className="bench__player-option unavailable" key={player.name}>
-            {player.name}
-            <EditButton onClick={() => addPlayer(player)} type="add" />
-          </li>
-        )}
-      </ul>
+      </div>
+      <div className="unavailable-list">
+        <h2 className="bench__title unavailable">Unavailable</h2>
+        <ul className="bench__player-list">
+          { unavailable.map((player) =>
+            <li className="bench__player-option unavailable" key={player.name}>
+              {player.name}
+              <EditButton onClick={() => addPlayer(player)} type="add" />
+            </li>
+          )}
+        </ul>
+      </div>
     </div>
   )
 }

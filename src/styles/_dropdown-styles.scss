@@ -68,7 +68,14 @@ $buttonVerticalPadding: 4px;
   .no-option-warning {
     font-size: 14px;
     width: 100%;
-    color: rgb(227, 15, 15);
+    color: rgb(255, 144, 144);
+    span {
+      background-color: rgb(49,49,49);
+      display: inline-block;
+      width: 100%;
+      padding: 4px 0;
+      font-weight: bold;
+    }
     &__button {
       margin-top: 4px;
     }

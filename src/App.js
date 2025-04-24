@@ -148,8 +148,10 @@ function App() {
             <h1>Misfires</h1>
             <img className="intro-content__image" src={SoccerBall}/>
           </div>
-          <TeamFormationDropdown chooseFormation={chooseFormation} />
-          <DateDropdown chooseJersey={setJerseyColour} />
+          <div className="intro-content__dropdowns">
+            <TeamFormationDropdown chooseFormation={chooseFormation} />
+            <DateDropdown chooseJersey={setJerseyColour} />
+          </div>
         </section>
         <PlayersContext.Provider value={playersContext} >
           <div className="field">

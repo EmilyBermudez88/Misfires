@@ -19,26 +19,28 @@ body {
     row-gap: 12px;
     max-width: 1200px;
     margin: 0px auto;
-
+    padding: 0 10px;
   }
+}
 
-  .intro-content {
-    grid-area: intro;
-    margin-left: -100px;
+.intro-content {
+  grid-area: intro;
+  margin-left: -100px;
+  position: relative;
+  z-index: 20;
 
-    &__title {
-      display: flex;
-      justify-content: end;
-      align-items: center;
-    }
-    &__image {
-      height: 90px;
-    }
-    h1 {
-      font-family: 'Michroma', 'sans-serif';
-      font-size: 50px;
-      margin: 24px 0;
-    }
+  &__title {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+  }
+  &__image {
+    height: 90px;
+  }
+  h1 {
+    font-family: 'Michroma', 'sans-serif';
+    font-size: 50px;
+    margin: 24px 0;
   }
 }
 

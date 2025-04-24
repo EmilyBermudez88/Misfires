@@ -30,7 +30,8 @@ const Dropdown = ({ updateSelected, options, open, setOpen, labelId, renderSubFo
     return classNames(className, {
       'dropdown--formation': selectionType === 'formation',
       'dropdown--jersey': selectionType === 'jersey',
-      'dropdown--position': selectionType === 'position'
+      'dropdown--position': selectionType === 'position',
+      'unselected': selectionType === 'position' && !selectionMade
     })
   }
 
@@ -189,15 +190,15 @@ const Dropdown = ({ updateSelected, options, open, setOpen, labelId, renderSubFo
             ) :
             // Only relevant to Player dropdown
             <li className="dropdown--position no-option-warning">
-              No Available Players
-              <button className="no-option-warning__button"
+              <span>NO ONE AVAILABLE</span>
+              <button className="no-option-warning__button sub-form__button"
                       onClick={() => renderSubForm(true, position)}>
                 Add a Sub
               </button>
             </li>
           }
         </ul>
-      }
+       }
     </>
   )
 }

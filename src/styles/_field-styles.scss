@@ -5,16 +5,22 @@ $headerHeight: 38px;
   grid-area: field;
   width: 100%;
   position: relative;
-  margin-top: 50px;
+  z-index: 10;
   &__setup {
+    margin: 0 auto;
     width: 80%;
-    margin: $verticalSpacing auto;
+    height: 725px;
+    position: relative;
+    left: 0px;
+    top: 50%;
+    transform: translateY(-53%);
   }
   &__image {
     width: 100%;
     left: 0px;
-    top: 20px;
-    height: 800px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 725px;
     position: absolute;
   }
 
@@ -57,7 +63,7 @@ $headerHeight: 38px;
     margin: 4px auto;
     width: 100%;
     position: absolute;
-    top: 30%;
+    top: 25%;
     &.away {
       color: rgb(131, 10, 10);
     }
