@@ -94,12 +94,6 @@ const players = [
 		position:'LW',
 		secondPosition: 'CF',
 		thirdPosition: 'CM'
-	},
-	{
-		name: 'Nuno',
-		position: 'GK',
-		secondPosition: '',
-		thirdPosition: ''
 	}
 ];
 

@@ -1,8 +1,6 @@
 import React, { useState, useRef, useContext, useEffect } from 'react';
-// import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-// import AddSubForm from './AddSubForm';
 import EditButton from './EditButton';
 import Select from './Select';
 import { PlayersContext } from '../App';
@@ -23,15 +21,23 @@ const Bench = ({ renderSubFormFromBench, formation }) => {
     hidden: !showPlayerPosition
   });
 
-  // when a player is removed, we should set the focus to the NEXT 'x'
 	const removePlayer = (removedPlayer) => {
     if (!removedPlayer.sub) {
       setUnavailable([...unavailable, removedPlayer]);
     }
-      // const arr = Array.from(benchedPlayersRef.current.querySelectorAll('.button--edit'));
-      // console.log(arr);
+    const removeButtons = Array.from(benchedPlayersRef.current.querySelectorAll('.button--edit:not(.update'));
+    const removedPlayerBtnIdx = removeButtons.findIndex((el) =>
+      el.classList.contains(removedPlayer.name)
+    );
+    const nextPlayer =
+      removedPlayerBtnIdx >= 0 && removedPlayerBtnIdx < removeButtons.length - 1
+        ? removeButtons[removedPlayerBtnIdx + 1]
+        : removeButtons[removeButtons.length - 2];
+
+    nextPlayer.focus();
 		updateAvailablePlayers({ action: 'remove', player: removedPlayer })
 	}
+
 	const addPlayer = (addedPlayer) => {
 		updateAvailablePlayers({ action: 'add', player: addedPlayer })
 		setUnavailable(unavailable.filter((ind) => ind.name !== addedPlayer.name))
@@ -94,13 +100,6 @@ const Bench = ({ renderSubFormFromBench, formation }) => {
     </div>
   )
 }
-
-// const availablePlayersPropType = PropTypes.shape({
-//   name: PropTypes.string,
-//   position: PropTypes.string,
-//   secondPosition: PropTypes.string,
-//   thirdPosition: PropTypes.string
-// })
 
 Bench.propTypes = {
   formation: PropTypes.arrayOf(PropTypes.string),

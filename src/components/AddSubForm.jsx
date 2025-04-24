@@ -42,7 +42,9 @@ const AddSubForm =
           recentlyAddedPlayer.focus();
       })
     } else {
-      prevFocusedEl.current.focus();
+      Promise.resolve().then(() => {
+        prevFocusedEl.current.focus();
+      })
     }
   }
 
@@ -50,7 +52,9 @@ const AddSubForm =
     e.preventDefault();
     setAddSub({ name:'', position:'', sub: null });
     closeModal();
-    prevFocusedEl.current.focus();
+    Promise.resolve().then(() => {
+      prevFocusedEl.current.focus();
+    })
   }
 
   const handleKeyDown = (e) => {
@@ -64,7 +68,9 @@ const AddSubForm =
       }
     } else if (e.key === 'Escape') {
       closeModal();
-      prevFocusedEl.current.focus();
+      Promise.resolve().then(() => {
+        prevFocusedEl.current.focus();
+      })
     }
   }
 
