@@ -8,11 +8,11 @@ $buttonVerticalPadding: 4px;
 
   &__container {
     background-color: white;
-    border: 1px solid rgb(149, 149, 149);
+    border: 1px solid rgb(87, 87, 87);
     position: relative;
 
     &:has(button:hover) {
-      border: 1px solid rgb(49, 49, 49);
+      border: 2px solid rgb(49, 49, 49);
     }
   }
 
@@ -89,9 +89,16 @@ $buttonVerticalPadding: 4px;
   }
 }
 
+.dropdown--position {
+  max-height: 110px;
+  overflow: auto;
+}
+
 .dropdown--formation, .dropdown--jersey {
-  &__container {
-    text-align: right
+  &.dropdown__container {
+    text-align: right;
+    border-width: 2px;
+    border-radius: 4px;
   }
   &__select {
     display: inline-block;

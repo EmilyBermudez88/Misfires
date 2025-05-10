@@ -11,9 +11,11 @@ $togglePadding: 6px;
   // background-color: #e7ae27;
   // margin: 20px 20px 0 0;
   grid-area: bench;
+  margin-bottom: 70px;
   padding-right: 15px;
   min-width: 190px;
   width: 20%;
+  // height: fit-content;
   justify-self: end;
   overflow-y: clip;
   position: relative;
@@ -30,9 +32,14 @@ $togglePadding: 6px;
       font-size: 18px;
     }
   }
+
+  &__player-list {
+    margin: 12px 0;
+  }
+
   &__player-option {
-    margin: 8px 0 8px 5%;
-    // margin-left: 5%;
+    // margin: 8px 0 8px 5%;
+    padding: 4px 0 4px 5%;
     text-align: left;
     position: relative;
     display: grid;
@@ -45,7 +52,7 @@ $togglePadding: 6px;
       justify-self: end;
     }
     &:has(button:hover) {
-      background-color: rgba(49, 49,49, 0.08);
+      background-color: rgba(49, 49,49, 0.15);
     }
   }
 
@@ -61,10 +68,15 @@ $togglePadding: 6px;
   }
   
   &__background {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+  &__background-container {
     position: absolute;
     right: 0px;
     top: 0px;
-    height: 100%;
+    width: 390px;
   }
 
   &__sub-warning {
@@ -148,6 +160,6 @@ $togglePadding: 6px;
     border: $border;
     border-radius: $borderRadius;
     padding: calc($togglePadding - $borderWidth);
-    background-color: rgba(49, 49, 49, 0.08);
+    background-color: rgba(49, 49, 49, 0.1);
   }
 }
