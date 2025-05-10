@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import EditButton from './EditButton';
 import Select from './Select';
 import { PlayersContext } from '../App';
-import Background from '../assets/background.png';
+import Background from '../assets/background-measured.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
@@ -12,7 +12,7 @@ const Bench = ({ renderSubFormFromBench, formation }) => {
 	const [unavailable, setUnavailable] = useState([]);
   const [showPlayerPosition, setShowPlayerPosition] = useState(false);
   const { updateAvailablePlayers, availablePlayers, formationPositions } = useContext(PlayersContext);
-  const renderSubWarning = availablePlayers.length < 2;
+  const renderSubWarning = availablePlayers.length < 4;
   const toggleText = showPlayerPosition ? 'Hide Positions' : 'Show Positions';
   const [playerToEdit, setPlayerToEdit] = useState('');
 
@@ -50,23 +50,28 @@ const Bench = ({ renderSubFormFromBench, formation }) => {
   }, [formation]);
 
 	return (
-    <div className="bench">
-      <img className="bench__background" src={Background}/>
+    <section className="bench">
+      <div className="bench__background-container">
+        <img className="bench__background" src={Background}/>
+      </div>
       <h2 className="bench__title">Bench</h2>
       <div className="available-list">
+        <header className="bench__header--available">
+          <h2 className="bench__title unavailable">Available</h2>
+        </header>
         <div className="toggle-label-container">
-        <label className="toggle">
-          <span id="toggle-text" className="toggle__text">{toggleText}</span>
-          <input className="toggle__input"
-                 type="checkbox"
-                 role="switch"
-                 checked={showPlayerPosition}
-                 onChange={() => setShowPlayerPosition(!showPlayerPosition)}
-                 aria-labelledby="toggle-text"/>
-          <span className="toggle__container">
-            <span className="toggle__slider"/>
-          </span>
-        </label>
+          <label className="toggle">
+            <span id="toggle-text" className="toggle__text">{toggleText}</span>
+            <input className="toggle__input"
+                   type="checkbox"
+                   role="switch"
+                   checked={showPlayerPosition}
+                   onChange={() => setShowPlayerPosition(!showPlayerPosition)}
+                   aria-labelledby="toggle-text"/>
+            <span className="toggle__container">
+              <span className="toggle__slider"/>
+            </span>
+          </label>
         </div>
         <ul ref={benchedPlayersRef}className="bench__player-list">
           {
@@ -93,7 +98,9 @@ const Bench = ({ renderSubFormFromBench, formation }) => {
         }
       </div>
       <div className="unavailable-list">
-        <h2 className="bench__title unavailable">Unavailable</h2>
+        <header className="bench__header--unavailable">
+          <h2 className="bench__title unavailable">Unavailable</h2>
+        </header>
         <ul className="bench__player-list">
           { unavailable.map((player) =>
             <li className="bench__player-option unavailable" key={player.name}>
@@ -103,7 +110,7 @@ const Bench = ({ renderSubFormFromBench, formation }) => {
           )}
         </ul>
       </div>
-    </div>
+    </section>
   )
 }
 

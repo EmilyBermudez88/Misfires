@@ -20,7 +20,7 @@ const JerseyColourDropdown = ({ chooseJersey }) => {
 
 	return (
   <div className= "dropdown--jersey__container">
-    <label htmlFor="dropdown" id={labelId}>Home / Away:</label>
+    <label htmlFor="dropdown" id={labelId}>Choose Jersey:</label>
     <div className="dropdown dropdown--jersey__select" ref={dropdownRef} onBlur={handleBlur}>
       <Dropdown open={open}
                 setOpen={setOpen}

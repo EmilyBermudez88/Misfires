@@ -28,8 +28,8 @@ const PlayerPositions = ({ position, renderSubForm, jersey }) => {
 
 	useEffect(() => {
 		setPreferredPlayers(availablePlayers.filter((player) =>
-      player.position === position || player.secondPosition === position));
-		setBackupPlayers(availablePlayers.filter((player) => player.thirdPosition === position));
+      player.position.includes(position)));
+		setBackupPlayers(availablePlayers.filter((player) => player.backupPosition === position));
 	}, [position, availablePlayers])
 
 	const handleBlur=(e) => {

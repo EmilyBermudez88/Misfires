@@ -1,100 +1,88 @@
 const players = [
 	{
 		name: 'German',
-		position: 'LB',
-		secondPosition: 'RB',
-		thirdPosition: 'CB'
+		position: ['LB', 'RB', 'CB'],
+		backupPosition: ''
 	},
 	{
 		name: 'Andrew',
-		position: 'GK',
-		secondPosition: 'CB',
-		thirdPosition: ''
+		position: ['GK', 'CB'],
+		backupPosition: ''
 	},
 	{
 		name: 'Omar',
-		position: 'CM',
-		secondPosition: 'RW',
-		thirdPosition: 'LW'
+		position: ['CM', 'RW'],
+		backupPosition: 'LW'
 	},
 	{
 		name: 'Chris',
-		position: 'CM',
-		secondPosition: 'LW',
-		thirdPosition: 'CF'
+		position: ['CM', 'LW'],
+		backupPosition: 'CF'
 	},
 	{
 		name: 'Christian',
-		position: 'LW',
-		secondPosition: 'CF',
-		thirdPosition: 'CM'
+		position: ['RW', 'CF'],
+		backupPosition: 'CM'
 	},
 	{
 		name: 'Bogdan',
-		position: 'CB',
-		secondPosition: 'LB',
-		thirdPosition: 'LW'
+		position: ['CB', 'LB'],
+		backupPosition: 'LW'
 	},
 	{
 		name: 'Alex',
-		position:'LW',
-		secondPosition: 'CF',
-		thirdPosition: 'RB'
+		position:['LW', 'LB'],
+		backupPosition: 'CF'
 	},
 	{
 		name: 'Carlos',
-		position:'LW',
-		secondPosition: 'CF',
-		thirdPosition: 'LB'
+		position: ['LW', 'LB'],
+		backupPosition: 'CF'
 	},
 	{
 		name: 'Ratsel',
-		position:'CF',
-		secondPosition: 'LW',
-		thirdPosition: 'RW'
+		position:['CF', 'RW'],
+		backupPosition: 'LW'
 	},
 	{
 		name: 'Adrian',
-		position:'CB',
-		secondPosition: 'LW',
-		thirdPosition: 'CF'
+		position: ['CB', 'LW'],
+		backupPosition: 'CF'
 	},
 	{
 		name: 'Daniel',
-		position:'CB',
-		secondPosition: 'LW',
-		thirdPosition: 'CF'
+		position: ['CB', 'LB'],
+		backupPosition: 'LW'
 	},
 	{
 		name: 'John',
-		position:'RB',
-		secondPosition: 'CB',
-		thirdPosition: 'RW'
+		position: ['RB', 'CB'],
+		backupPosition: 'RW'
 	},
 	{
 		name: 'Josh',
-		position:'CM',
-		secondPosition: 'LW',
-		thirdPosition: 'RW'
+		position: ['CM', 'LW'],
+		backupPosition: 'RW'
 	},
 	{
 		name: 'Nicolas',
-		position:'CB',
-		secondPosition: 'LB',
-		thirdPosition: 'LW'
+		position: ['CB', 'LB'],
+		backupPosition: 'LW'
 	},
 	{
 		name: 'Julian',
-		position:'RW',
-		secondPosition: 'CF',
-		thirdPosition: 'GK'
+		position: ['CF', 'RW'],
+		backupPosition: 'GK'
 	},
 	{
 		name: 'Sanjay',
-		position:'LW',
-		secondPosition: 'CF',
-		thirdPosition: 'CM'
-	}
+		position: ['LW', 'CM'],
+		backupPosition: 'CF'
+	}, {
+    name: 'Liam',
+    position: ['GK'],
+    backupPosition:''
+  }
 ];
 
 export default players;

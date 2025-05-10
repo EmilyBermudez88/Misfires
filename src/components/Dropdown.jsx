@@ -16,7 +16,7 @@ const Dropdown = ({ updateSelected, options, open, setOpen, labelId, renderSubFo
       ? 'select formation'
       : selectionType === 'position'
         ? 'select player'
-        : 'select jersey',
+        : 'home',
     userSelectionDropdownVal = selectionType ===
     'position' ? userSelection.name : userSelection.dropdownValue;
 
