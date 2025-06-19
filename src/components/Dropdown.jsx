@@ -6,10 +6,11 @@ import EditButton from './EditButton';
 import { FormationContext } from '../App';
 import classNames from 'classnames';
 
-const Dropdown = ({ updateSelected, options, open, setOpen, labelId, renderSubForm, position, selectionType }) => {
+const Dropdown = ({ updateSelected, options, labelId, renderSubForm, position, selectionType }) => {
 
   const [userSelection, setUserSelection] = useState({}),
     [visualSelectionIndex, setVisualSelectionIndex] = useState(null),
+    [open, setOpen] = useState(false),
     selectionMade = Object.keys(userSelection).length > 0,
     caret = open ? faAngleUp : faAngleDown,
     defaultDropdownVal = selectionType === 'formation'
@@ -24,16 +25,19 @@ const Dropdown = ({ updateSelected, options, open, setOpen, labelId, renderSubFo
   const menuId= useId();
   const optionId = useId();
   const buttonRef = useRef(null);
+  const dropdownRef = useRef(null);
+  const ref = useRef(null);
 	const activeDescendent = visualSelectionIndex !== null ? `${optionId}${visualSelectionIndex}` : null;
 
-  const calculateClassName = (className) => {
-    return classNames(className, {
-      'dropdown--formation': selectionType === 'formation',
-      'dropdown--jersey': selectionType === 'jersey',
-      'dropdown--position': selectionType === 'position',
-      'unselected': selectionType === 'position' && !selectionMade
-    })
-  }
+  const buttonClassNames = classNames('dropdown__button', {
+    'unselected' : selectionType === 'position' && !selectionMade
+  });
+
+  const handleBlur=(e) => {
+		if (!ref.current.contains(e.relatedTarget)) {
+			setOpen(false)
+		}
+	}
 
   const handleSelection = (selected) => {
     if (selected.dropdownValue) {
@@ -67,9 +71,11 @@ const Dropdown = ({ updateSelected, options, open, setOpen, labelId, renderSubFo
 	}
 
   const handleOnKeyDown = (e) => {
+    if (e.key !== 'Tab') {
+      e.preventDefault();
+    }
 		const openKeys = [' ', 'ArrowDown', 'ArrowUp', 'Enter', 'Home', 'End'];
 		if (!open && openKeys.includes(e.key)) {
-			e.preventDefault();
 			setOpen(true)
 			if (e.key === 'ArrowUp'|| e.key === 'Home') {
 				setVisualSelectionIndex(0)
@@ -121,7 +127,6 @@ const Dropdown = ({ updateSelected, options, open, setOpen, labelId, renderSubFo
 					break
 				case 'Enter':
 				case ' ':
-					e.preventDefault();
 					if (visualSelectionIndex === null) {
 						setOpen(false);
 					}
@@ -136,6 +141,13 @@ const Dropdown = ({ updateSelected, options, open, setOpen, labelId, renderSubFo
 	}
 
   useEffect(() => {
+    if (dropdownRef && visualSelectionIndex !== null) {
+      const focusedVal= dropdownRef.current?.children[visualSelectionIndex];
+      focusedVal.scrollIntoView({ block: 'nearest' });
+    }
+  }, [visualSelectionIndex])
+
+  useEffect(() => {
     if (selectionType === 'formation') {
       buttonRef.current.focus();
     }
@@ -147,11 +159,11 @@ const Dropdown = ({ updateSelected, options, open, setOpen, labelId, renderSubFo
   }, [formation])
 
   return(
-    <>
-      <div className={calculateClassName('dropdown__container')}>
+    <div className="dropdown__container"ref={ref} onBlur={handleBlur}>
+      <div className="dropdown">
         <button id={dropdownId}
                 ref={buttonRef}
-                className={calculateClassName('dropdown__button')}
+                className={buttonClassNames}
                 role="combobox"
                 aria-controls={menuId}
                 aria-expanded={open}
@@ -161,17 +173,18 @@ const Dropdown = ({ updateSelected, options, open, setOpen, labelId, renderSubFo
                 onClick={() => setOpen(!open)}
                 onKeyDown={handleOnKeyDown}
                 onFocus={handleFocus}>
-          { selectionMade ? userSelectionDropdownVal : defaultDropdownVal }
-          { !selectionMade &&
-            <FontAwesomeIcon icon={caret} className="dropdown-caret"/>
-          }
+          { selectionMade
+            ? userSelectionDropdownVal
+            :
+            <>
+              <span>{defaultDropdownVal}</span>
+              <FontAwesomeIcon icon={caret} className="dropdown-caret"/>
+            </>}
         </button>
-        { selectionMade &&
-          <EditButton onClick={handleClear} type= "remove" />
-        }
+        { selectionMade && <EditButton onClick={handleClear} type= "remove" />}
       </div>
       { open &&
-        <ul className={calculateClassName('dropdown__menu')} role="listbox" id={menuId}>
+        <ul ref={dropdownRef} className="dropdown__menu" role="listbox" id={menuId}>
           {options.length
             ? options.map((option, i) =>
               <li role="option"
@@ -179,10 +192,10 @@ const Dropdown = ({ updateSelected, options, open, setOpen, labelId, renderSubFo
                   className="dropdown__option"
                   key={`${optionId}${i}`}
                   id={`${optionId}${i}`}>
-                <button className={calculateClassName('dropdown__option__button')}
+                <button className="dropdown__option__button"
                         tabIndex={-1}
                         onClick={() => handleSelection(option)}>
-                  <span className={calculateClassName('dropdown__value')}>
+                  <span className="dropdown__value">
                     { option.name ? option.name: option.dropdownValue }
                   </span>
                 </button>
@@ -199,15 +212,13 @@ const Dropdown = ({ updateSelected, options, open, setOpen, labelId, renderSubFo
           }
         </ul>
        }
-    </>
+    </div>
   )
 }
 
 Dropdown.propTypes = {
   options: PropTypes.array,
   labelId: PropTypes.string,
-  open: PropTypes.bool,
-  setOpen: PropTypes.func,
   updateSelected: PropTypes.func,
   renderSubForm: PropTypes.func,
   position: PropTypes.string,

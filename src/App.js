@@ -1,7 +1,7 @@
 import React, { useState, createContext } from 'react';
 import './styles/_base.scss';
 import classnames from 'classnames';
-import DateDropdown from './components/DateDropdown';
+import JerseyDropdown from './components/JerseyDropdown';
 import TeamFormationDropdown from './components/TeamFormationDropdown';
 import Bench from './components/Bench';
 import AddSubForm from './components/AddSubForm';
@@ -150,7 +150,7 @@ function App() {
           </div>
           <div className="intro-content__dropdowns">
             <TeamFormationDropdown chooseFormation={chooseFormation} />
-            <DateDropdown chooseJersey={setJerseyColour} />
+            <JerseyDropdown chooseJersey={setJerseyColour} />
           </div>
         </section>
         <PlayersContext.Provider value={playersContext} >

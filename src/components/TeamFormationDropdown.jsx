@@ -1,32 +1,20 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Dropdown from './Dropdown';
 import { formations } from '../util/lineupData';
 
 const TeamFormationDropdown = (props) => {
 	const { chooseFormation: chooseFormationProp } = props;
-  const [open, setOpen] = useState(false);
   const labelId = 'team-formation-label';
-  const dropdownRef = useRef(null);
-
-  const handleBlur=(e) => {
-		if (!dropdownRef.current.contains(e.relatedTarget)) {
-			setOpen(false)
-		}
-	}
 
 	return (
   <div className= "dropdown--formation__container">
     <label htmlFor="dropdown" id={labelId}>Choose a formation:</label>
-    <div className="dropdown dropdown--formation__select" ref={dropdownRef} onBlur={handleBlur}>
-      <Dropdown open={open}
-                setOpen={setOpen}
-                labelId={labelId}
-                options={formations}
-                selectionType="formation"
-                updateSelected={chooseFormationProp}
-                />
-    </div>
+    <Dropdown labelId={labelId}
+              options={formations}
+              selectionType="formation"
+              updateSelected={chooseFormationProp}
+              />
   </div>
 	);
 }

@@ -130,6 +130,9 @@
           &:focus {
             border-color: white;
           }
+          &:hover {
+            background-color: rgb(129, 129, 129);
+          }
         }
       }
     }
@@ -178,10 +181,6 @@
     }
   }
 
-  .dropdown--formation__select,
-  .dropdown--jersey__select {
-    margin: 0 0 0 5px;
-  }
 
 
   .bench {
@@ -246,17 +245,8 @@
       "unavailable";
     row-gap: 24px;
     grid-template-columns: 1fr;
-    width: 60%;
-  }
-
-  .dropdown--formation__container,
-  .dropdown--jersey__container {
-    text-align: center;
-    label{
-      display: block;
-      margin-bottom: 4px;
-    }
-    
+    width: 65%;
+    min-width: 235px;
   }
 
   .field {

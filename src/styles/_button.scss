@@ -11,25 +11,24 @@ $buttonPadding: 2px;
 .button--edit, .dropdown-caret {
   position: absolute;
   padding: $buttonPadding;
-  right: 2px;
-  height: 100%;
-  width: 20px;
-  font-size: 14px;
+  right: 4px;
+  font-size: 16px;
   background-color: transparent;
   border: none;
 }
 
 .button--edit {
+  border-radius: $borderRadius;
+  height: 20px;
+  width: 20px;
+
   &:focus {
     border: $border;
-    border-radius: $borderRadius;
     outline: none;
   }
   &:hover {
     cursor: pointer;
-    border: $border;
-    border-radius: $borderRadius;
-    background-color: rgba(49, 49, 49, 0.08);
+    background-color: rgba(49, 49, 49, 0.2);
   }
   &.update {
     font-size: 12px;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import JerseyRed from '../assets/JerseyRed.png';
@@ -11,7 +11,6 @@ const PlayerPositions = ({ position, renderSubForm, jersey }) => {
 	// make the choice easier of which player should go where
 	const [preferredPlayers, setPreferredPlayers] = useState([]),
 		[backupPlayers, setBackupPlayers] = useState([]),
-		[open, setOpen] = useState(false),
     { updateAvailablePlayers, availablePlayers } = useContext(PlayersContext),
     dropdownOptions = preferredPlayers.length
       ? preferredPlayers
@@ -19,7 +18,6 @@ const PlayerPositions = ({ position, renderSubForm, jersey }) => {
         ? backupPlayers
         : [];
 
-	const dropdownRef = useRef(null);
 	const labelId = `field-position-${position}`;
   const jerseyImg = jersey.dropdownValue === 'away' ? JerseyWhite : JerseyRed;
   const titleClassName = classnames('field-position__title', {
@@ -32,27 +30,17 @@ const PlayerPositions = ({ position, renderSubForm, jersey }) => {
 		setBackupPlayers(availablePlayers.filter((player) => player.backupPosition === position));
 	}, [position, availablePlayers])
 
-	const handleBlur=(e) => {
-		if (!dropdownRef.current.contains(e.relatedTarget)) {
-			setOpen(false)
-		}
-	}
-
 	return (
     <div className="field-position">
       <div className="field-position__icon-container">
         <img src={jerseyImg} alt="" className="field-position__icon"/>
         <p className={titleClassName} id={labelId}>{position}</p>
-        <div className="dropdown" ref={dropdownRef} onBlur={handleBlur}>
-          <Dropdown open={open}
-                    setOpen={setOpen}
-                    updateSelected={updateAvailablePlayers}
-                    labelId={labelId}
-                    options={dropdownOptions}
-                    renderSubForm={renderSubForm}
-                    position={position}
-                    selectionType="position"/>
-        </div>
+        <Dropdown updateSelected={updateAvailablePlayers}
+                  labelId={labelId}
+                  options={dropdownOptions}
+                  renderSubForm={renderSubForm}
+                  position={position}
+                  selectionType="position"/>
       </div>
     </div>
 	);
