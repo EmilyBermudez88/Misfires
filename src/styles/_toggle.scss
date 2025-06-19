@@ -1,0 +1,65 @@
+.toggle-label-container {
+  width: 100%;
+}
+.toggle {
+  //local variables
+  --toggle-width: 45px;
+  --toggle-slider-width: 16px;
+  --toggle-spacing: 6px; 
+
+  padding: var(--toggle-spacing);
+
+  &__container {
+    box-sizing: border-box;
+    display: inline-block;
+    position: relative;
+    top: var(--toggle-spacing);
+    width: var(--toggle-width);
+    height: 24px;
+    background-color: var(--white);
+    border: var(--border);
+    border-radius: var(--border-radius-round);
+  }
+
+  &__slider {
+    &::before {
+      position: absolute;
+      left: var(--border-width);
+      top:  var(--border-width);
+      height: var(--toggle-slider-width);
+      width: var(--toggle-slider-width);
+      background-color: var(--black);
+      border-radius: var(--border-radius-round);
+      content: '';
+    }
+  }
+
+  &__input {
+    appearance: none;
+    outline: none;
+    margin: 0;
+    &:checked + .toggle__container .toggle__slider::before {
+      // Move slider to the right when checked
+      // border * 3 refers to L& R borders + padding
+      left: calc(var(--toggle-width) - calc(var(--border-width) * 3) - var(--toggle-slider-width));
+    }
+  }
+
+  &__text {
+    display: inline-block;
+    width: 130px;
+  }
+
+  // Focus and hover states
+  &:has(.toggle__input:focus-visible),
+  &:has(.toggle__input:active),
+  &:hover {
+    border: var(--border);
+    border-radius: var(--border-radius);
+    padding: calc(var(--toggle-spacing) - var(--border-width));
+  }
+  &:hover {
+    background: rgba(49, 49, 49, 0.1);
+    cursor: pointer;
+  }
+}

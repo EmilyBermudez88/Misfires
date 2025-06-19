@@ -1,6 +1,3 @@
-$form-spacing: 4px;
-$borderWidth: 2px;
-
 .sub-form {
   text-align: left;
 
@@ -9,26 +6,30 @@ $borderWidth: 2px;
   }
 
   &__field {
-    padding: $form-spacing calc($form-spacing * 2);
-    border: 1px solid rgb(49,49,49);
-    &:focus, &:focus-visible {
-      outline: $borderWidth solid rgb(49, 49,49);
-      outline-offset: calc(0px - $borderWidth - 2px); //inset border by 1px
+    padding: var(--spacing-base) var(--spacing-2x);
+    border: 1px solid var(--border-color);
+    &:focus,
+    &:focus-visible {
+      outline: var(--border);
+      outline-offset: calc(0px - var(--border-width) - 2px); //inset border by 1px
     }
     &.name {
-      width: calc(180px - ($form-spacing * 6) - 6px);
+      width: calc(180px - var(--spacing-6x) - 6px);
     }
   }
   &__button {
     background-color:rgba(255,255,255,0.9);
-    border: 1px solid rgb(49,49,49);
-    padding: $form-spacing calc($form-spacing * 2);
-    border-radius: 2px;
-    margin:  $form-spacing;
+    border: 1px solid var(--button-border);
+    padding: var(--spacing-base) var(--spacing-2x);
+    border-radius: var(--border-radius);
+    margin:  var(--spacing-base);
     &:disabled {
       background-color:rgba(232, 232, 232, 0.9);
-      color: rgb(117, 117, 117);
-      border-color:rgb(117, 117, 117);
+      color: var(--text-disabled);
+      border-color:var(--text-disabled);
+    }
+    &:hover {
+      border-color: var(--border-color);
     }
   }
 
@@ -47,8 +48,8 @@ $borderWidth: 2px;
 .modal {
   &__container {
     position: relative;
-    border: 2px solid rgb(49,49,49);
-    padding: $form-spacing * 4 $form-spacing * 8 $form-spacing * 6 $form-spacing * 8;
+    border: var(--border);
+    padding: var(--spacing-4x) var(--spacing-8x) var(--spacing-3x);
   }
 
   &::backdrop {

@@ -1,89 +1,63 @@
-$borderWidth: 2px;
-$border: $borderWidth solid rgb(49, 49,49);
-$borderRadius: 4px;
-$marginWidth: 10px;
-$toggleWidth: 45px;
-$toggleSliderWidth: 16px;
-$togglePadding: 6px;
+@use './mixins';
 
 .bench {
   grid-area: bench;
-  padding-right: 15px;
   width: 100%;
-  z-index: 0;
-  // border: 2px solid blue;
+  text-align: left;
 
-  &__title {
-    margin: 5px 0;
-    font-family: 'Michroma', sans-serif;
-    text-align: left;
-    position: relative;
-    padding-right: 5px;
+  &__title, &__subtitle {
+    @include mixins.bench-titles;
   }
-
   &__subtitle {
-    font-family: 'Michroma', sans-serif;
-    font-size: 18px;
     &.unavailable {
       text-align: right;
     }
   }
 
-  &__player-list {
-    .bench__player-option {
-      width: 190px;
-      color: white;
-      @for $i from 17 through 1 {
-        &:nth-child(#{$i}) {
-          margin-left: calc(-10px + ($i - 1) * 8px);
-          background-color: rgb(42, 42, 42);
-          border-radius: 14px;
-          margin-bottom: 4px;
-        }
-      }
-      &.unavailable {
-        background-color: rgb(70, 70, 70);
-        color: rgb(190, 190, 190);
-        .button--edit.add {
-          color: rgb(190, 190, 190);
-          &:hover {
-            color: rgb(230, 230, 230);
-            background-color: rgb(129, 129, 129);
-            border-radius: 12px;
-          }
-        }
-      }
-      .button--edit {
-        color: white;
-        &:not(.update) {
-            border-radius: 12px;
-          }
-          &:focus {
-            border-color: white;
-          }
-          &:hover {
-            background-color: rgb(129, 129, 129);
-          }
-      }
-    }
-  }
-
   &__player-option {
-    padding: 4px 0 4px 5%;
-    text-align: left;
     position: relative;
     display: grid;
-    grid-template-columns: max-content auto 16px;
-    column-gap: $marginWidth;
+    grid-template-columns: max-content auto var(--spacing-4x);
+    column-gap: var(--spacing-2x);
     align-items: center;
+    width: 190px;
+    padding: var(--spacing-base) 0 var(--spacing-base) 5%;
+    color: white;
+
+    @for $i from 17 through 1 {
+      &:nth-child(#{$i}) {
+        margin-left: calc((0px - var(--spacing-4x)) + ($i - 1) * var(--spacing-2x));
+        background-color: var(--player-options-background);
+        border-radius: 14px;
+        margin-bottom: var(--spacing-base);
+      }
+    }
 
     &.unavailable {
-      font-size: 14px;
-      width: 50%;
       justify-self: end;
+      width: 50%;
+      background-color: var(--unavailable-list-background);
+      font-size: 14px;
+      color: var(--unavailable-player-text);
+      .button--edit {
+        color: var(--unavailable-player-text);
+        &:hover {
+          color: var(--unavailable-player-text-hover);
+        }
+      }
     }
-    &:has(button:hover) {
-      background-color: rgba(49, 49,49, 0.15);
+
+    .button--edit {
+      color: white;
+      &:not(.update) {
+        border-radius: var(--border-radius-round);
+      }
+      &:focus {
+        border-color: var(--white);
+      }
+      &:hover {
+        background-color: var(--player-options-button-hover);
+      }
     }
   }
 
@@ -93,107 +67,24 @@ $togglePadding: 6px;
     &.hidden {
       visibility: hidden;
     }
-    .button--edit {
-      position: static;
-    }
-  }
-
-  &__position-options {
-    height: 18px;
-  }
-  
-  &__background {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-  }
-  &__background-container {
-    position: absolute;
-    right: 0px;
-    top: 0px;
-    width: 390px;
   }
 
   &__sub-warning {
     position: relative;
-    padding: 4px 0;
-    margin: 4px auto;
-    background-color: rgb(49, 49, 49);
-    color: white;
+    padding: var(--spacing-base) 0;
+    margin: var(--spacing-base) auto;
+    background-color: var(--player-options-background);
+    color: var(--white);
     font-weight: bold;
   }
 
   &__sub-button.sub-form__button {
-    position: relative;
-    border-width: $borderWidth;
+    border-width: var(--border-width);
+    border-radius: var(--border-radius);
     &:focus, &:focus-within &:focus-visible {
-      outline: $border;
-      outline-offset: calc(0px - ($borderWidth * 2) - 1px);
+      outline: var(--border);
+      outline-offset: calc(0px - (var(--border-width) * 2) - 1px);
     }
   }
 }
 
-.toggle-label-container {
-  width: 100%;
-  text-align: left;
-  position: relative;
-}
-.toggle {
-  box-sizing: border-box;
-  text-align: left;
-  padding: $togglePadding;
-  line-height: 24px;
-  &__container {
-    box-sizing: border-box;
-    display: inline-block;
-    background-color: white;
-    border: $border;
-    border-radius: 20px;
-    width: $toggleWidth;
-    height: 24px;
-    position: relative;
-    top: $togglePadding;
-    right: -2px;
-  }
-  &__slider {
-    &::before {
-      position: absolute;
-      left: $borderWidth;
-      top:  $borderWidth;
-      content: '';
-      height: $toggleSliderWidth;
-      width: $toggleSliderWidth;
-      border-radius: 50%;
-      background-color: black;
-    }
-  }
-  &__input {
-    appearance: none;
-    outline: none;
-    margin: 0;
-    &:checked {
-      &+ .toggle__container {
-        .toggle__slider::before {
-          // border * 3 refers to L & R borders and the 2px inner padding
-          left: calc( $toggleWidth - calc($borderWidth * 3) - $toggleSliderWidth);
-        }
-      }
-    } 
-  }
-  &__text {
-    display: inline-block;
-    width: 130px;
-  }
-  &:has(.toggle__input:focus, .toggle__input:active) {
-    border: $border;
-    border-radius: $borderRadius;
-    padding: calc($togglePadding - $borderWidth);
-  }
-  &:hover {
-    cursor: pointer;
-    border: $border;
-    border-radius: $borderRadius;
-    padding: calc($togglePadding - $borderWidth);
-    background-color: rgba(49, 49, 49, 0.1);
-  }
-}
