@@ -4,7 +4,7 @@ import { PlayersContext } from '../App';
 
 const Select = ({ player, edit, handleSelection }) => {
   const [availablePlayerPositions, setAvailablePlayerPositions] = useState([]);
-  const [selected, setSelected]= useState(player.position);
+  const [selected, setSelected]= useState(player.position[0]);
   const selectRef = useRef();
   const { formationPositions } = useContext(PlayersContext);
 
@@ -13,8 +13,13 @@ const Select = ({ player, edit, handleSelection }) => {
       let positions = [];
       for(const prop in player) {
         if (prop !== 'name')
-          {positions.push(player[prop]);}
-      }
+          // eslint-disable-next-line curly
+          if (typeof player[prop] === 'string') {
+            positions.push(player[prop]);
+          } else if (typeof player[prop] === 'object') {
+            positions.push(...player[prop]);
+          }
+        }
       setAvailablePlayerPositions(positions);
     }
     handlePositions();
@@ -29,6 +34,7 @@ const Select = ({ player, edit, handleSelection }) => {
       { edit ?
         <select ref={selectRef}
                 id="position-options"
+                className="bench__position-options"
                 name="position-options"
                 onBlur={() => handleSelection('')}
                 onChange={(e) => setSelected(e.target.value)}
@@ -46,9 +52,8 @@ const Select = ({ player, edit, handleSelection }) => {
 
 const player = PropTypes.shape({
   name: PropTypes.string,
-  position: PropTypes.string,
-  secondPosition: PropTypes.string,
-  thirdPosition: PropTypes.string,
+  position: PropTypes.arrayOf(PropTypes.string),
+  backupPosition: PropTypes.string,
   sub: PropTypes.bool
 })
 

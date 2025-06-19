@@ -115,7 +115,7 @@ const Bench = ({ renderSubFormFromBench, formation }) => {
 }
 
 Bench.propTypes = {
-  formation: PropTypes.arrayOf(PropTypes.string),
+  formation: PropTypes.arrayOf(PropTypes.number),
   renderSubFormFromBench: PropTypes.func
 };
 

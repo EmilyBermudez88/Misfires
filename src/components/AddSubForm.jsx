@@ -5,7 +5,7 @@ const AddSubForm =
 ({ onSubmit: onSubmitProp, selectedPosition, formationPositions, openModal, closeModal }) => {
   const defaultPosition = selectedPosition ? selectedPosition : '';
 
-  const [addSub, setAddSub] = useState({ name:'', position: defaultPosition, sub: null });
+  const [addSub, setAddSub] = useState({ name:'', position: [defaultPosition], sub: null });
   const [renderValidationError, setRenderValidationError] = useState(false);
   const dialogEl = useRef(null);
   const firstFocusableEl = useRef(null);
@@ -13,7 +13,7 @@ const AddSubForm =
   const prevFocusedEl = useRef(null);
   const submitDisabled = Object.values(addSub).some((val) => !val);
 
-  const handleFormChange = (value, key) => setAddSub({ ...addSub, [key]: value, sub: true });
+  const handleFormChange = (value, key) => setAddSub({ ...addSub, [key]: [value], sub: true });
 
   if (!prevFocusedEl.current) {
     if (document.activeElement.className.includes('no-option-warning__button')) {
@@ -33,7 +33,7 @@ const AddSubForm =
       setRenderValidationError(false);
     }
     onSubmitProp({ action: 'add', player: addSub });
-    setAddSub({ name:'', position:'', sub: null });
+    setAddSub({ name:'', position:[''], sub: null });
     closeModal();
     if(!defaultPosition) {
       Promise.resolve().then(() => {
@@ -50,7 +50,7 @@ const AddSubForm =
 
   const onCancel = (e) => {
     e.preventDefault();
-    setAddSub({ name:'', position:'', sub: null });
+    setAddSub({ name:'', position:[''], sub: null });
     closeModal();
     Promise.resolve().then(() => {
       prevFocusedEl.current.focus();
