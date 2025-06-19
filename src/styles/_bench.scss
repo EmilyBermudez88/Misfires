@@ -7,48 +7,79 @@ $toggleSliderWidth: 16px;
 $togglePadding: 6px;
 
 .bench {
-  // background-color: #9fc76a;
-  // background-color: #e7ae27;
-  // margin: 20px 20px 0 0;
   grid-area: bench;
-  margin-bottom: 70px;
   padding-right: 15px;
-  min-width: 190px;
-  width: 20%;
-  // height: fit-content;
-  justify-self: end;
-  overflow-y: clip;
-  position: relative;
+  width: 100%;
   z-index: 0;
+  // border: 2px solid blue;
 
   &__title {
-    margin: 5px 0 10px 0;
+    margin: 5px 0;
     font-family: 'Michroma', sans-serif;
-    text-align: right;
+    text-align: left;
     position: relative;
     padding-right: 5px;
+  }
 
+  &__subtitle {
+    font-family: 'Michroma', sans-serif;
+    font-size: 18px;
     &.unavailable {
-      font-size: 18px;
+      text-align: right;
     }
   }
 
   &__player-list {
-    margin: 12px 0;
+    .bench__player-option {
+      width: 190px;
+      color: white;
+      @for $i from 17 through 1 {
+        &:nth-child(#{$i}) {
+          margin-left: calc(-10px + ($i - 1) * 8px);
+          background-color: rgb(42, 42, 42);
+          border-radius: 14px;
+          margin-bottom: 4px;
+        }
+      }
+      &.unavailable {
+        background-color: rgb(70, 70, 70);
+        color: rgb(190, 190, 190);
+        .button--edit.add {
+          color: rgb(190, 190, 190);
+          &:hover {
+            color: rgb(230, 230, 230);
+            background-color: rgb(129, 129, 129);
+            border-radius: 12px;
+          }
+        }
+      }
+      .button--edit {
+        color: white;
+        &:not(.update) {
+            border-radius: 12px;
+          }
+          &:focus {
+            border-color: white;
+          }
+          &:hover {
+            background-color: rgb(129, 129, 129);
+          }
+      }
+    }
   }
 
   &__player-option {
-    // margin: 8px 0 8px 5%;
     padding: 4px 0 4px 5%;
     text-align: left;
     position: relative;
     display: grid;
     grid-template-columns: max-content auto 16px;
     column-gap: $marginWidth;
+    align-items: center;
 
     &.unavailable {
       font-size: 14px;
-      width: 70%;
+      width: 50%;
       justify-self: end;
     }
     &:has(button:hover) {
@@ -66,6 +97,10 @@ $togglePadding: 6px;
       position: static;
     }
   }
+
+  &__position-options {
+    height: 18px;
+  }
   
   &__background {
     object-fit: cover;
@@ -82,7 +117,7 @@ $togglePadding: 6px;
   &__sub-warning {
     position: relative;
     padding: 4px 0;
-    margin-bottom: 4px;
+    margin: 4px auto;
     background-color: rgb(49, 49, 49);
     color: white;
     font-weight: bold;
@@ -101,7 +136,6 @@ $togglePadding: 6px;
 .toggle-label-container {
   width: 100%;
   text-align: left;
-  margin-left: calc(5% - 6px);
   position: relative;
 }
 .toggle {

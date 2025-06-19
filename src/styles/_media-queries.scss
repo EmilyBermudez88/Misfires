@@ -27,7 +27,6 @@
 
   .bench {
     min-width: 175px;
-    margin-bottom: 105px;
     
     &__background-container {
       display: flex;
@@ -93,14 +92,15 @@
     &__title {
       text-align: left;
       grid-area: title;
-      &.unavailable {
-        text-align: center;
-      }
     }
 
-    &__player-list {
+    .bench__player-list {
       margin: 0;
       padding: 12px 24px 24px 24px;
+      .bench__player-option {
+        margin-left: 0px;
+        width: 100%;
+      }
     }
 
     &__player-name {
@@ -117,13 +117,7 @@
     .available-list {
       grid-area: available;
       .bench__player-option {
-        background-color: rgb(50, 50, 50);
-        color: white;
-        border-radius: 14px;
-        margin-bottom: 6px;
         .button--edit {
-          color: white;
-          width: 24px;
           &:not(.update) {
             border-radius: 12px;
           }
@@ -137,25 +131,21 @@
       }
     }
 
-    &__header--unavailable ,
-    &__header--available {
+    &__header {
       background-color: rgb(42, 42, 42);
       color: white;
       padding: 8px;
+      .bench__subtitle {
+        text-align: center;
+        margin: 0;
+      }
     }
     .unavailable-list {
       grid-area: unavailable;
       background-color: rgba(0,0,0,0.1);
 
-      .bench__player-option.unavailable {
+      .bench__player-option {
         width: 100%;
-        color: rgb(70, 70, 70);
-        .button--edit.add {
-          color: rgb(70, 70, 70);
-          &:hover {
-            color: black;
-          }
-        }
       }
     }
   }

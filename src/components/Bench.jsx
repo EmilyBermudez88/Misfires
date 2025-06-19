@@ -4,9 +4,6 @@ import classnames from 'classnames';
 import EditButton from './EditButton';
 import Select from './Select';
 import { PlayersContext } from '../App';
-import Background from '../assets/background-measured.png';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
 const Bench = ({ renderSubFormFromBench, formation }) => {
 	const [unavailable, setUnavailable] = useState([]);
@@ -51,14 +48,8 @@ const Bench = ({ renderSubFormFromBench, formation }) => {
 
 	return (
     <section className="bench">
-      <div className="bench__background-container">
-        <img className="bench__background" src={Background}/>
-      </div>
       <h2 className="bench__title">Bench</h2>
       <div className="available-list">
-        <header className="bench__header--available">
-          <h2 className="bench__title unavailable">Available</h2>
-        </header>
         <div className="toggle-label-container">
           <label className="toggle">
             <span id="toggle-text" className="toggle__text">{toggleText}</span>
@@ -80,11 +71,9 @@ const Bench = ({ renderSubFormFromBench, formation }) => {
                 <span className="bench__player-name">{player.name}</span>
                 <span className={benchPositionClassnames}>
                   <Select player={player} edit={player.name === playerToEdit} handleSelection={setPlayerToEdit}/>
-                  <button onClick={() => setPlayerToEdit(player.name)}className="button--edit update">
-                    <FontAwesomeIcon icon={faPenToSquare}/>
-                  </button>
+                  <EditButton onClick={() => setPlayerToEdit(player.name)} type="update"/>
                 </span>
-                <EditButton className={`${player.name}`} onClick={() => removePlayer(player)} type="remove"/>
+                <EditButton className={`${player.name}`} onClick={() => removePlayer(player)}/>
               </li>)
           }
         </ul>
@@ -98,14 +87,14 @@ const Bench = ({ renderSubFormFromBench, formation }) => {
         }
       </div>
       <div className="unavailable-list">
-        <header className="bench__header--unavailable">
-          <h2 className="bench__title unavailable">Unavailable</h2>
+        <header className="bench__header">
+          <h3 className="bench__subtitle unavailable">Unavailable</h3>
         </header>
         <ul className="bench__player-list">
           { unavailable.map((player) =>
             <li className="bench__player-option unavailable" key={player.name}>
               {player.name}
-              <EditButton onClick={() => addPlayer(player)} type="add" />
+              <EditButton onClick={() => addPlayer(player)} type="add"/>
             </li>
           )}
         </ul>

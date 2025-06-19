@@ -28,6 +28,7 @@ const Dropdown = ({ updateSelected, options, labelId, renderSubForm, position, s
   const dropdownRef = useRef(null);
   const ref = useRef(null);
 	const activeDescendent = visualSelectionIndex !== null ? `${optionId}${visualSelectionIndex}` : null;
+  const openKeys = [' ', 'ArrowDown', 'ArrowUp', 'Enter', 'Home', 'End'];
 
   const buttonClassNames = classNames('dropdown__button', {
     'unselected' : selectionType === 'position' && !selectionMade
@@ -74,7 +75,6 @@ const Dropdown = ({ updateSelected, options, labelId, renderSubForm, position, s
     if (e.key !== 'Tab') {
       e.preventDefault();
     }
-		const openKeys = [' ', 'ArrowDown', 'ArrowUp', 'Enter', 'Home', 'End'];
 		if (!open && openKeys.includes(e.key)) {
 			setOpen(true)
 			if (e.key === 'ArrowUp'|| e.key === 'Home') {
@@ -181,7 +181,7 @@ const Dropdown = ({ updateSelected, options, labelId, renderSubForm, position, s
               <FontAwesomeIcon icon={caret} className="dropdown-caret"/>
             </>}
         </button>
-        { selectionMade && <EditButton onClick={handleClear} type= "remove" />}
+        { selectionMade && <EditButton onClick={handleClear}/>}
       </div>
       { open &&
         <ul ref={dropdownRef} className="dropdown__menu" role="listbox" id={menuId}>

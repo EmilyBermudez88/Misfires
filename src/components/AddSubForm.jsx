@@ -17,7 +17,8 @@ const AddSubForm =
 
   if (!prevFocusedEl.current) {
     if (document.activeElement.className.includes('no-option-warning__button')) {
-      const dropdownBtn = document.activeElement.closest('.dropdown').querySelector('.dropdown__button');
+      const dropdownBtn =
+        document.activeElement.closest('.dropdown__container').querySelector('.dropdown__button');
       prevFocusedEl.current = dropdownBtn;
     } else {
       prevFocusedEl.current = document.activeElement;
