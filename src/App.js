@@ -141,50 +141,55 @@ function App() {
   const formationContext = { formation }
 
   return (
-    <div className="app">
-      <main className="app__main">
-        <section className="intro-content">
-          <div className="intro-content__title">
-            <h1>Misfires</h1>
-            <img className="intro-content__image" src={SoccerBall}/>
-          </div>
-          <div className="intro-content__dropdowns">
-            <TeamFormationDropdown chooseFormation={chooseFormation} />
-            <JerseyDropdown chooseJersey={setJerseyColour} />
-          </div>
-        </section>
-        <PlayersContext.Provider value={playersContext} >
-          <div className="field">
-            <img className="field__image" src={FieldLayout}/>
-            <FormationContext.Provider value={formationContext}>
-              <div className="field__setup">
-                { formation ?
-                  <>
-                    <div className={fieldLineClassNames}>{renderGoalie(formation[0])}</div>
-                    <div className={fieldLineClassNames}>{renderDefense(formation[1])}</div>
-                    <div className={fieldLineClassNames}>{renderMidfield(formation[2])}</div>
-                    <div className={fieldLineClassNames}>{renderAttack(formation[3])}</div>
-                  </>
-                  :
-                  <h3 className="field__warning">
-                    <span>Please Select a Formation</span>
-                  </h3>
-                  }
-              </div>
-            </FormationContext.Provider>
-          </div>
-          <Bench renderSubFormFromBench={renderSubForm}
-                 formation={formation} />
-        </PlayersContext.Provider>
-      </main>
-      {renderForm &&
-        <AddSubForm onSubmit={updateAvailablePlayers}
-                    formationPositions={formationPositions}
-                    selectedPosition={selectedPosition}
-                    openModal={renderForm}
-                    closeModal={()=> setRenderForm(false)}/>
+    <>
+      <div className="app">
+        <main className="app__main">
+          <section className="intro-content">
+            <div className="intro-content__title">
+              <h1>Misfires</h1>
+              <img className="intro-content__image" src={SoccerBall}/>
+            </div>
+            <div className="intro-content__dropdowns">
+              <TeamFormationDropdown chooseFormation={chooseFormation} />
+              <JerseyDropdown chooseJersey={setJerseyColour} />
+            </div>
+          </section>
+          <PlayersContext.Provider value={playersContext} >
+            <div className="field">
+              <img className="field__image" src={FieldLayout}/>
+              <FormationContext.Provider value={formationContext}>
+                <div className="field__setup">
+                  { formation.length &&
+                    <>
+                      <div className={fieldLineClassNames}>{renderGoalie(formation[0])}</div>
+                      <div className={fieldLineClassNames}>{renderDefense(formation[1])}</div>
+                      <div className={fieldLineClassNames}>{renderMidfield(formation[2])}</div>
+                      <div className={fieldLineClassNames}>{renderAttack(formation[3])}</div>
+                    </>
+                    }
+                </div>
+              </FormationContext.Provider>
+            </div>
+            <Bench renderSubFormFromBench={renderSubForm}
+                  formation={formation} />
+          </PlayersContext.Provider>
+        </main>
+        {renderForm &&
+          <AddSubForm onSubmit={updateAvailablePlayers}
+                      formationPositions={formationPositions}
+                      selectedPosition={selectedPosition}
+                      openModal={renderForm}
+                      closeModal={()=> setRenderForm(false)}/>
+        }
+      </div>
+      { !formation.length &&
+        <div className="overlay">
+          <h3 className="overlay__warning">
+            <span>Please Select a Formation</span>
+          </h3>
+        </div>
       }
-    </div>
+    </>
   );
 }
 

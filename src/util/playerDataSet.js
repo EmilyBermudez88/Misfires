@@ -78,7 +78,8 @@ const players = [
 		name: 'Sanjay',
 		position: ['LW', 'CM'],
 		backupPosition: 'CF'
-	}, {
+	},
+  {
     name: 'Liam',
     position: ['GK'],
     backupPosition:''

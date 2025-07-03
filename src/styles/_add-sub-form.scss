@@ -1,8 +1,28 @@
+.modal {
+  &__container {
+    position: relative;
+    padding: var(--spacing-6x) var(--spacing-8x);
+    border: var(--border);
+  }
+
+  &__title {
+    margin: 0 0 var(--spacing-2x) 0;
+  }
+
+  &__header {
+    margin-bottom: var(--spacing-4x);
+    border-bottom: 1px solid var(--modal-divider-color)
+  }
+}
+
 .sub-form {
   text-align: left;
 
   &__group {
-    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-3x);
   }
 
   &__field {
@@ -13,50 +33,86 @@
       outline: var(--border);
       outline-offset: calc(0px - var(--border-width) - 2px); //inset border by 1px
     }
-    &.name {
-      width: calc(180px - var(--spacing-6x) - 6px);
-    }
   }
+
+  &__button-bar {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: var(--spacing-2x);
+    margin-top: var(--spacing-4x);
+    border-top: 1px solid var(--modal-divider-color);
+  }
+
   &__button {
-    background-color:rgba(255,255,255,0.9);
-    border: 1px solid var(--button-border);
-    padding: var(--spacing-base) var(--spacing-2x);
-    border-radius: var(--border-radius);
     margin:  var(--spacing-base);
-    &:disabled {
-      background-color:rgba(232, 232, 232, 0.9);
-      color: var(--text-disabled);
-      border-color:var(--text-disabled);
+    padding: var(--spacing-base) var(--spacing-2x);
+    border: 1px solid var(--button-border);
+    border-radius: var(--border-radius);
+    font-weight: bold;
+
+    &:last-child {
+      margin-right: 0;
     }
     &:hover {
-      border-color: var(--border-color);
+      cursor: pointer;
+      background-color: var(--button-background-hover);
+    }
+    &:focus {
+      outline: var(--border);
+      outline-offset: -4px;
+    }
+
+     &--submit {
+      background-color: rgb(43, 155, 29);
+      color: var(--white);
+      border-color:transparent;
+      &.disabled {
+        background-color: var(--background-disabled);
+        color: var(--text-disabled);
+        border-color:var(--text-disabled);
+        &:focus {
+          outline-color: transparent;
+        }
+        &:hover {
+          background-color: var(--background-disabled);
+        }
+      }
+      &:focus {
+        outline-color: var(--white);
+      }
+      &:hover {
+        background-color:rgb(37, 133, 25);
+      }
     }
   }
 
   label {
-    font-size: 14px;
+    font-size: var(--font-small);
+  }
+
+  &__input,
+  &__select {
+    padding: var(--spacing-base);
+    border: 1px solid var(--border-color);
+    &.invalid {
+      border-color: var(--alert-message);
+    }
+    &:focus {
+      outline: 2px solid black;
+      outline-offset: -4px;
+    }
+  }
+
+  .asterisk {
+    padding: 0 var(--spacing-base);
+    color: var(--alert-message);
+    font-weight: bold;
   }
 
   .validation-message {
-    font-size: 12px;
-    color: rgb(227, 15, 15);
     position: absolute;
     margin-top: 0;
-  }
-}
-
-.modal {
-  &__container {
-    position: relative;
-    border: var(--border);
-    padding: var(--spacing-4x) var(--spacing-8x) var(--spacing-3x);
-  }
-
-  &::backdrop {
-    background-color: rgba(0,0,0,0.5);
-  }
-
-  h2 {
-    margin-top: 0;
+    font-size: var(--font-xsmall);
+    color: var(--alert-message);
   }
 }

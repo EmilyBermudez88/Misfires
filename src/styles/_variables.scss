@@ -4,15 +4,23 @@
   --player-options-button-hover: rgb(130, 130, 130);
   --unavailable-list-background: rgb(70, 70, 70);
   --unavailable-player-text: rgb(190, 190, 190);
-  --unavailable-player-text-hover: rgb(230, 230, 230);
+  --unavailable-player-text-hover: var(--background-disabled);
 
   --white: rgb(250, 250, 250);
   --black: rgb(5, 5, 5);
 
   --text-disabled: rgb(120, 120, 120);
+  --background-disabled: rgb(230, 230, 230);
   
   --border-color: rgb(49, 49, 49);
   --button-border: rgb(90, 90, 90);
+  --button-background-hover: rgb(210, 210, 210);
+
+  --dropdown-background: rgb(230, 230, 230);
+
+  --modal-divider-color: rgb(200, 200, 200);
+
+  --alert-message: rgb(206, 11, 11);
 
   //borders
   --border-width: 2px;
@@ -28,4 +36,14 @@
   --spacing-5x: calc(var(--spacing-base) * 5);
   --spacing-6x: calc(var(--spacing-base) * 6);
   --spacing-8x: calc(var(--spacing-base) * 8);
+
+  //font sizes
+  --font-xsmall: 12px;
+  --font-small: 14px;
+  --font-regular: 16px;
+  --font-large: 18px;
+  --font-xlarge: 24px;
+  --font-h1: 50px;
+
+  --form-element-width: 190px;
 }

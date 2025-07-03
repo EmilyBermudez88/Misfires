@@ -11,7 +11,7 @@ const JerseyColourDropdown = ({ chooseJersey }) => {
   ];
 
 	return (
-  <div className= "dropdown--jersey__container">
+  <div className= "dropdown--jersey">
     <label htmlFor="dropdown" id={labelId}>Choose Jersey:</label>
     <Dropdown labelId={labelId}
               options={options}

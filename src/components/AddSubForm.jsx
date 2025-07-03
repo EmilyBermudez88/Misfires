@@ -1,17 +1,28 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 const AddSubForm =
 ({ onSubmit: onSubmitProp, selectedPosition, formationPositions, openModal, closeModal }) => {
   const defaultPosition = selectedPosition ? selectedPosition : '';
 
-  const [addSub, setAddSub] = useState({ name:'', position: [defaultPosition], sub: null });
+  const [addSub, setAddSub] = useState({ name:'', position: defaultPosition, sub: null });
   const [renderValidationError, setRenderValidationError] = useState(false);
+
   const dialogEl = useRef(null);
   const firstFocusableEl = useRef(null);
   const lastFocusableEl = useRef(null);
   const prevFocusedEl = useRef(null);
   const submitDisabled = Object.values(addSub).some((val) => !val);
+  const inputClassNames = classnames('sub-form__input', {
+    invalid: !addSub.name && renderValidationError
+  });
+  const selectClassNames = classnames('sub-form__select', {
+    invalid: !addSub.position && renderValidationError
+  });
+  const submitBtnClassNames = classnames('sub-form__button sub-form__button--submit', {
+    disabled: renderValidationError && submitDisabled
+  });
 
   const handleFormChange = (value, key) => setAddSub({ ...addSub, [key]: [value], sub: true });
 
@@ -33,8 +44,8 @@ const AddSubForm =
     } else {
       setRenderValidationError(false);
     }
-    onSubmitProp({ action: 'add', player: addSub });
-    setAddSub({ name:'', position:[''], sub: null });
+    onSubmitProp({ action: 'add', player: { ...addSub, position: [addSub.position]}});
+    setAddSub({ name:'', position:'', sub: null });
     closeModal();
     if(!defaultPosition) {
       Promise.resolve().then(() => {
@@ -51,7 +62,7 @@ const AddSubForm =
 
   const onCancel = (e) => {
     e.preventDefault();
-    setAddSub({ name:'', position:[''], sub: null });
+    setAddSub({ name:'', position:'', sub: null });
     closeModal();
     Promise.resolve().then(() => {
       prevFocusedEl.current.focus();
@@ -92,19 +103,29 @@ const AddSubForm =
             className="modal__container"
             onKeyDown={handleKeyDown}>
       <div className="modal">
-        <h2 id="modal__title">Add A Sub</h2>
-        <form aria-label="Add a Sub" className="sub-form" onSubmit= {onSubmit}>
+        <header className="modal__header">
+          <h2 className="modal__title">Add A Sub</h2>
+        </header>
+        <form aria-label="Add a Sub" className="sub-form" onSubmit={onSubmit}>
           <div className="sub-form__group">
-            <label htmlFor="sub-name">Player Name* </label>
+            <label htmlFor="sub-name">
+              Player Name
+              <span className="asterisk">*</span>
+            </label>
             <input id="sub-name"
+                   className={inputClassNames}
                    ref={firstFocusableEl}
                    type="text"
                    onChange={(e) => handleFormChange(e.target.value, 'name')}
                    value={addSub.name}/>
           </div>
           <div className="sub-form__group">
-            <label htmlFor="sub-position">Player Position* </label>
+            <label htmlFor="sub-position">
+              Player Position
+              <span className="asterisk">*</span>
+            </label>
             <select id="sub-position"
+                    className={selectClassNames}
                     name="sub-position"
                     onChange={(e) => handleFormChange(e.target.value, 'position')}
                     value={addSub.position}>
@@ -112,11 +133,18 @@ const AddSubForm =
               {formationPositions.map((position) => <option key={position}>{position}</option>)}
             </select>
           </div>
-          <button className="sub-form__button">
-            Add Player
-          </button>
-          <button className="sub-form__button" ref={lastFocusableEl} type="reset" onClick={onCancel}>Cancel</button>
-          {renderValidationError && <p className="validation-message">Fill out all fields</p>}
+          <div className="sub-form__button-bar">
+            <button className={submitBtnClassNames}>
+              Add Player
+            </button>
+            <button className="sub-form__button" ref={lastFocusableEl} type="reset" onClick={onCancel}>Cancel</button>
+            {renderValidationError &&
+              <p className="validation-message">
+                <span className="asterisk">*</span>
+                Fill all fields
+              </p>
+            }
+          </div>
         </form>
       </div>
     </dialog>

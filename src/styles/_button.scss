@@ -8,7 +8,7 @@
   position: absolute;
   padding: 2px;
   right: var(--spacing-base);
-  font-size: 16px;
+  font-size: var(--font-regular);
   background-color: transparent;
   border: none;
 }
@@ -24,10 +24,10 @@
   }
   &:hover {
     cursor: pointer;
-    background-color: rgba(49, 49, 49, 0.2);
+    background-color:var(--button-background-hover);
   }
   &.update {
-    font-size: 12px;
+    font-size: var(--font-xsmall);
     position: static;
     &:hover,
     &:focus {

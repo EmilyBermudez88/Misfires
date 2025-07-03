@@ -8,7 +8,7 @@ const TeamFormationDropdown = (props) => {
   const labelId = 'team-formation-label';
 
 	return (
-  <div className= "dropdown--formation__container">
+  <div className= "dropdown--formation">
     <label htmlFor="dropdown" id={labelId}>Choose a formation:</label>
     <Dropdown labelId={labelId}
               options={formations}

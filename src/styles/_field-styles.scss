@@ -1,49 +1,35 @@
-$verticalSpacing: 20px;
-$headerHeight: 38px;
-
 .field {
   grid-area: field;
-  width: 100%;
   position: relative;
-  z-index: 10;
+  width: 100%;
+  // z-index: 10;
   &__setup {
+    position: relative;
+    left: 0;
+    top: 50%;
+    transform: translateY(-52%);
     margin: 0 auto;
     width: 80%;
     height: 725px;
-    position: relative;
-    left: 0px;
-    top: 50%;
-    transform: translateY(-53%);
   }
   &__image {
     width: 100%;
-    left: 0px;
     top: 50%;
+    left:0;
     transform: translateY(-50%);
     height: 750px;
     position: absolute;
   }
 
   &__line {
-    padding: $verticalSpacing 0px;
+    padding: var(--spacing-5x) 0;
     display: flex;
     justify-content: space-around;
     &:first-child {
-      padding-top: 0px;
+      padding-top: 0;
     }
     &.spread {
       padding-bottom: 40px;
-    }
-  }
-
-  &__warning {
-    position: absolute;
-    top: calc(50% - $headerHeight);
-    left: 50%;
-    transform: translate(-50%, -50%);
-    span {
-      background-color: rgba(244, 244, 244, 0.5);
-      padding: 5px 10px;
     }
   }
 }
@@ -57,13 +43,14 @@ $headerHeight: 38px;
     position: relative;
   }
   &__title {
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
-    margin: 4px auto;
-    width: 100%;
     position: absolute;
     top: 25%;
+    margin: var(--spacing-base) auto;
+    width: 100%;
+    color: var(--white);
+    font-size: var(--font-xlarge);
+    font-weight: bold;
+
     &.away {
       color: rgb(131, 10, 10);
     }

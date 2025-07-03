@@ -139,7 +139,7 @@ const Dropdown = ({ updateSelected, options, labelId, renderSubForm, position, s
 			}
 		}
 	}
-
+  // const open2 = true;
   useEffect(() => {
     if (dropdownRef && visualSelectionIndex !== null) {
       const focusedVal= dropdownRef.current?.children[visualSelectionIndex];
@@ -157,7 +157,7 @@ const Dropdown = ({ updateSelected, options, labelId, renderSubForm, position, s
   useEffect(() => {
     setUserSelection({});
   }, [formation])
-
+  // const open2 = true;
   return(
     <div className="dropdown__container"ref={ref} onBlur={handleBlur}>
       <div className="dropdown">
@@ -206,7 +206,7 @@ const Dropdown = ({ updateSelected, options, labelId, renderSubForm, position, s
               <span>NO ONE AVAILABLE</span>
               <button className="no-option-warning__button sub-form__button"
                       onClick={() => renderSubForm(true, position)}>
-                Add a Sub
+                Add Sub
               </button>
             </li>
           }

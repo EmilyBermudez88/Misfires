@@ -1,8 +1,11 @@
+@use './mixins';
+
 body {
   // background-color: rgb(246, 243, 237);
   background-color: #E9F2DF;
   text-align: center;
-  font-size: 16px;
+  font-size: var(--font-regular);
+  box-sizing: border-box;
 }
 
 .app {
@@ -16,10 +19,45 @@ body {
       "field bench";
     grid-template-columns: 1fr 300px;
     grid-template-rows: max-content 1fr;
-    row-gap: 6px;
     max-width: 1200px;
-    margin: 0px auto;
-    padding: 0 10px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-3x);
+  }
+}
+
+.overlay {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.54);
+  z-index: 15;
+
+  &__warning {
+    @include mixins.bench-titles;
+    span {
+      color: white;
+    }
+    animation: fade-in-out 1500ms 50 ease-in alternate;
+  }
+}
+
+@keyframes fade-in-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+@media (prefers-reduced-motion) {
+  .overlay__warning {
+    animation: none;
+    opacity: 1;
   }
 }
 
@@ -27,7 +65,7 @@ body {
   grid-area: intro;
   margin-left: -100px;
   position: relative;
-  z-index: 20;
+  // z-index: 20;
 
   &__title {
     display: flex;
@@ -39,12 +77,12 @@ body {
   }
   h1 {
     font-family: 'Michroma', 'sans-serif';
-    font-size: 50px;
-    margin: 24px 0;
+    font-size: var(--font-h1);
+    margin: var(--spacing-6x) 0;
   }
 }
 
 ul {
   list-style: none;
-  padding-left: 0px;
+  padding-left: 0;
 }

@@ -21,7 +21,7 @@
   }
 
   .intro-content h1 {
-    font-size: 45px;
+    --font-h1: 45px;
     margin-bottom: 16px;
   }
 
@@ -98,13 +98,17 @@
       margin: 0;
       padding: 12px 24px 24px 24px;
       .bench__player-option {
-        margin-left: 0px;
+        margin-left: 0;
         width: 100%;
       }
     }
 
     &__player-name {
       font-weight: bold;
+    }
+
+    .bench__sub-warning {
+      width: 100%;
     }
 
     .available-list,
@@ -158,7 +162,7 @@
 
 @media (max-width: 655px) {
   body {
-    font-size: 14px;
+    font-size: var(--font-small);
   }
 
   .app__main {
@@ -174,7 +178,7 @@
 
 
   .bench {
-    font-size: 16px;
+    font-size: var(--font-regular);
     width: 90%;
     grid-template-columns: 3fr 2fr;
   }
@@ -200,16 +204,12 @@
       &__icon {
         height: 90px;
       }
-      &__title {
-        font-size: 20px
-      }
 
       .dropdown__button {
         &.unselected {
           text-align: left;
         }
         .dropdown-caret {
-          // font-size: 10px;
           height: 60%;
           top: 3px;
           right: 0;
@@ -222,7 +222,7 @@
 @media (max-width: 490px) {
   .intro-content {
     h1 {
-      font-size: 40px;
+      --font-h1: 40px;
     }
     &__image {
       height: 70px;

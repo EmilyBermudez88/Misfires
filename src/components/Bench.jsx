@@ -76,28 +76,28 @@ const Bench = ({ renderSubFormFromBench, formation }) => {
                 <EditButton className={`${player.name}`} onClick={() => removePlayer(player)}/>
               </li>)
           }
+          {renderSubWarning && !!formationPositions.length &&
+            <li className="bench__player-option bench__sub-warning">
+              <span>SUBS NEEDED</span>
+              <EditButton onClick={() => renderSubFormFromBench(true)} type="add"/>
+            </li>
+          }
         </ul>
-        {renderSubWarning && !!formationPositions.length &&
-          <>
-            <p className="bench__sub-warning">MORE SUBS NEEDED</p>
-            <button className="bench__sub-button sub-form__button" onClick={() => renderSubFormFromBench(true)}>
-              Add A Sub
-            </button>
-          </>
-        }
       </div>
       <div className="unavailable-list">
         <header className="bench__header">
           <h3 className="bench__subtitle unavailable">Unavailable</h3>
         </header>
-        <ul className="bench__player-list">
-          { unavailable.map((player) =>
-            <li className="bench__player-option unavailable" key={player.name}>
-              {player.name}
-              <EditButton onClick={() => addPlayer(player)} type="add"/>
-            </li>
-          )}
-        </ul>
+        { !!unavailable.length && (
+          <ul className="bench__player-list">
+            { unavailable.map((player) =>
+              <li className="bench__player-option unavailable" key={player.name}>
+                {player.name}
+                <EditButton onClick={() => addPlayer(player)} type="add"/>
+              </li>
+            )}
+          </ul>
+        )}
       </div>
     </section>
   )

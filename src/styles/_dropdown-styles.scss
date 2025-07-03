@@ -1,107 +1,109 @@
-$borderWidth: 2px;
-$buttonVerticalPadding: 4px;
-
 .dropdown {
   display: flex;
   align-items: center;
-  width: 100%;
-  background-color: white;
-  border: 2px solid rgb(87, 87, 87);
-  text-align: right;
+  background: var(--white);
+  border: 2px solid var(--button-border);
 
   &:has(button:hover) {
       border-color: rgb(30, 30, 30);
     }
 
+  &__container {
+    width: var(--form-element-width);
+  }
+
   &__button {
     box-sizing: border-box;
-    background-color: white;
-    border: none;
-    border-radius: 4px;
-    padding: $buttonVerticalPadding calc($buttonVerticalPadding * 2);
-    height: 100%;
-    width: 100%;
     position: relative;
     display: grid;
     align-items: center;
-    &:focus, &:focus-visible {
-      outline: $borderWidth solid rgb(49, 49,49);
-      outline-offset: calc(0px - $borderWidth - 1px); //inset border by 1px
+    height: 100%;
+    width: 100%;
+    padding: var(--spacing-base) var(--spacing-2x);
+    background: var(--white);
+    border: none;
+    border-radius: 4px;
+
+    &:focus,
+    &:focus-visible {
+      outline: var(--border);
+      outline-offset: calc(0px - var(--border-width) - 1px); //inset border by 1px
     }
   }
 
   &__menu {
-    max-height: 110px;
-    overflow: auto;
-    position: absolute;
     box-sizing: border-box;
-    background-color: rgb(240, 240, 240);
-    border: 1px solid rgb(149, 149, 149);
-    border-top: none;
-    margin-top: 0;
-    width: 100%;
-    padding: 4px;
+    max-height: 110px;
+    
+    position: absolute;
+    width: 195px;
+    overflow: auto;
+    margin: 0;
+    padding: var(--spacing-base);
+    background: var(--dropdown-background);
+    border: 1px solid var(--border-color);
     z-index: 1;
-  }
 
-  &__option {
-    border: $borderWidth solid transparent;
-    margin-bottom: 2px;
-    &[aria-selected="true"] {
-      border: $borderWidth solid rgb(49, 49,49);
-    }
-    &__button {
-      border: none;
+    .no-option-warning {
       width: 100%;
-      background-color: white;
-      text-align: center;
-      padding: $buttonVerticalPadding calc($buttonVerticalPadding / 2);
-      &:hover {
-        background-color: rgba(49, 49, 49, 0.08);
+      font-size: var(--font-small);
+      color: rgb(249, 109, 109);
+
+      span {
+        display: inline-block;
+        width: 100%;
+        padding: var(--spacing-base) 0;
+        background: var(--unavailable-list-background);
+        font-weight: bold;
+      }
+
+      &__button {
+        font-weight: 400;
+        width: 100%;
+        margin: var(--spacing-base) 0 0 0;
       }
     }
   }
 
-  .no-option-warning {
-    font-size: 14px;
-    width: 100%;
-    color: rgb(255, 144, 144);
-    span {
-      background-color: rgb(49,49,49);
-      display: inline-block;
-      width: 100%;
-      padding: 4px 0;
-      font-weight: bold;
+  &__option {
+    border: var(--border-width) solid transparent;
+
+    &[aria-selected="true"] {
+      border: var(--border);
     }
+
     &__button {
-      margin-top: 4px;
+      width: 100%;
+      padding: var(--spacing-base);
+      background: var(--white);
+      border: none;
+      text-align: center;
+
+      &:hover {
+        background: var(--button-background-hover);
+      }
     }
   }
-  &__value {
-    width: 100%;
 
+  &__value {
     &:hover {
-      background-color: rgba(49, 49, 49, 0.08);
+      background: var(--button-background-hover);
     }
   }
 }
 
-.dropdown--formation, .dropdown--jersey {
-  &__container {
-    position: relative;
-    display: flex;
-    justify-content: end;
-    gap: 4px;
-    margin: 5px 0 5px 10px;
+//Modifier classes for dropdown
+.dropdown--formation,
+.dropdown--jersey {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-base);
+  margin: var(--spacing-base) 0 var(--spacing-base) var(--spacing-2x);
+}
 
-    .dropdown {
-      width: 195px;
-    }
-
-    .dropdown__menu {
-      width: 195px;
-    }
-  }
+.dropdown--formation {
+  z-index: 30;
 }
 
 .field-position {
@@ -109,5 +111,9 @@ $buttonVerticalPadding: 4px;
     position: absolute;
     bottom: -10px;
     width: 100%;
+
+    .dropdown__menu {
+      width: 100%;
+    }
   }
 }
