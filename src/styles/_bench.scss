@@ -11,12 +11,18 @@
   &__title {
     @include mixins.bench-titles(var(--font-xlarge));
   }
+
   &__subtitle {
     @include mixins.bench-titles;
     text-align: right;
   }
 
+  &__player-list {
+    margin: var(--spacing-2x) 0 var(--spacing-4x);
+  }
+
   &__player-option {
+    box-sizing: border-box;
     position: relative;
     display: grid;
     grid-template-columns: max-content auto var(--spacing-4x);
@@ -24,7 +30,7 @@
     align-items: center;
     width: var(--form-element-width);
     padding: var(--spacing-base) 0 var(--spacing-base) var(--spacing-3x);
-    color: white;
+    color: var(--white);
     background-color: var(--player-options-background);
     border-radius: 14px;
     margin-bottom: var(--spacing-base);
@@ -41,8 +47,10 @@
       background-color: var(--unavailable-list-background);
       font-size: var(--font-small);
       color: var(--unavailable-player-text);
+
       .button--edit {
         color: var(--unavailable-player-text);
+
         &:hover {
           color: var(--unavailable-player-text-hover);
         }
@@ -51,37 +59,49 @@
 
     .button--edit {
       color: var(--white);
+
       &:not(.update) {
         border-radius: var(--border-radius-round);
       }
+
       &:focus {
         border-color: var(--white);
       }
+
       &:hover {
         background-color: var(--player-options-button-hover);
       }
     }
   }
 
+  &__player-name {
+    font-weight: bold;
+  }
+
   &__position-container {
     display: flex;
     justify-content: space-between;
+
     &.hidden {
       visibility: hidden;
     }
   }
 
-  &__sub-warning.bench__player-option {
-    display: flex;
-    align-items: center;
-    background-color: var(--alert-message);
-    color: var(--white);
-    font-weight: bold;
+  &__sub-warning {
+    &.bench__player-option {
+      display: flex;
+      align-items: center;
+      background-color: var(--alert-message);
+      font-weight: bold;
+      .button--edit:hover {
+        background-color: var(--alert-message-hover);
+      }
+    }
   }
 }
 
 @media (max-width: 1100px) {
   .bench {
-    --init-margin-value: -30px;
+    --init-margin-value: -50px;
   }
 }

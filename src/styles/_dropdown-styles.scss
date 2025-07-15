@@ -34,7 +34,6 @@
   &__menu {
     box-sizing: border-box;
     max-height: 110px;
-    
     position: absolute;
     width: 195px;
     overflow: auto;
@@ -98,8 +97,9 @@
   position: relative;
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   gap: var(--spacing-base);
-  margin: var(--spacing-base) 0 var(--spacing-base) var(--spacing-2x);
+  margin-bottom: var(--spacing-2x);
 }
 
 .dropdown--formation {

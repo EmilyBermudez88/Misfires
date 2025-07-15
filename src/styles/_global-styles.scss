@@ -1,8 +1,7 @@
 @use './mixins';
 
 body {
-  // background-color: rgb(246, 243, 237);
-  background-color: #E9F2DF;
+  background-color: var(--app-background);
   text-align: center;
   font-size: var(--font-regular);
   box-sizing: border-box;
@@ -26,6 +25,7 @@ body {
 }
 
 .overlay {
+  @include mixins.adjustBlackOpacity(0.5);
   width: 100%;
   height: 100%;
   display: flex;
@@ -33,15 +33,15 @@ body {
   align-items: center;
   position: fixed;
   top: 0;
-  background-color: rgba(0, 0, 0, 0.54);
   z-index: 15;
 
   &__warning {
     @include mixins.bench-titles;
+    animation: fade-in-out 1500ms 50 ease-in alternate;
+
     span {
       color: white;
     }
-    animation: fade-in-out 1500ms 50 ease-in alternate;
   }
 }
 
@@ -61,24 +61,25 @@ body {
   }
 }
 
-.intro-content {
+.hero-section {
   grid-area: intro;
   margin-left: -100px;
   position: relative;
-  // z-index: 20;
 
   &__title {
     display: flex;
     justify-content: end;
     align-items: center;
   }
-  &__image {
-    height: 90px;
-  }
-  h1 {
+
+  &__title-text {
     font-family: 'Michroma', 'sans-serif';
     font-size: var(--font-h1);
     margin: var(--spacing-6x) 0;
+  }
+
+  &__image {
+    height: 90px;
   }
 }
 

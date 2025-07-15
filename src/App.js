@@ -144,12 +144,12 @@ function App() {
     <>
       <div className="app">
         <main className="app__main">
-          <section className="intro-content">
-            <div className="intro-content__title">
-              <h1>Misfires</h1>
-              <img className="intro-content__image" src={SoccerBall}/>
+          <section className="hero-section">
+            <div className="hero-section__title">
+              <h1 className="hero-section__title-text">Misfires</h1>
+              <img className="hero-section__image" src={SoccerBall}/>
             </div>
-            <div className="intro-content__dropdowns">
+            <div className="hero-section__dropdowns">
               <TeamFormationDropdown chooseFormation={chooseFormation} />
               <JerseyDropdown chooseJersey={setJerseyColour} />
             </div>
@@ -159,7 +159,7 @@ function App() {
               <img className="field__image" src={FieldLayout}/>
               <FormationContext.Provider value={formationContext}>
                 <div className="field__setup">
-                  { formation.length &&
+                  { !!formation.length &&
                     <>
                       <div className={fieldLineClassNames}>{renderGoalie(formation[0])}</div>
                       <div className={fieldLineClassNames}>{renderDefense(formation[1])}</div>
@@ -171,7 +171,7 @@ function App() {
               </FormationContext.Provider>
             </div>
             <Bench renderSubFormFromBench={renderSubForm}
-                  formation={formation} />
+                   formation={formation} />
           </PlayersContext.Provider>
         </main>
         {renderForm &&
@@ -197,3 +197,5 @@ export default App;
 
 // TO DO
 // how to screenshot / capture the field layout with players
+//create a mixing for black with a specific & of opacity
+//look at naming conventions for toggle & dropdown

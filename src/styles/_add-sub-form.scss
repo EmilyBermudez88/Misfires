@@ -1,3 +1,5 @@
+@use './mixins';
+
 .modal {
   &__container {
     position: relative;
@@ -15,6 +17,10 @@
   }
 }
 
+dialog::backdrop {
+  @include mixins.adjustBlackOpacity(0.5);
+}
+
 .sub-form {
   text-align: left;
 
@@ -28,6 +34,7 @@
   &__field {
     padding: var(--spacing-base) var(--spacing-2x);
     border: 1px solid var(--border-color);
+
     &:focus,
     &:focus-visible {
       outline: var(--border);
@@ -38,6 +45,7 @@
   &__button-bar {
     display: flex;
     justify-content: flex-end;
+    display: relative;
     padding-top: var(--spacing-2x);
     margin-top: var(--spacing-4x);
     border-top: 1px solid var(--modal-divider-color);
@@ -53,10 +61,12 @@
     &:last-child {
       margin-right: 0;
     }
+
     &:hover {
       cursor: pointer;
       background-color: var(--button-background-hover);
     }
+
     &:focus {
       outline: var(--border);
       outline-offset: -4px;
@@ -66,20 +76,25 @@
       background-color: rgb(43, 155, 29);
       color: var(--white);
       border-color:transparent;
+
       &.disabled {
         background-color: var(--background-disabled);
         color: var(--text-disabled);
         border-color:var(--text-disabled);
+                                                                                                                                 
         &:focus {
           outline-color: transparent;
         }
+
         &:hover {
           background-color: var(--background-disabled);
         }
       }
+
       &:focus {
         outline-color: var(--white);
       }
+
       &:hover {
         background-color:rgb(37, 133, 25);
       }
@@ -94,9 +109,11 @@
   &__select {
     padding: var(--spacing-base);
     border: 1px solid var(--border-color);
+
     &.invalid {
       border-color: var(--alert-message);
     }
+
     &:focus {
       outline: 2px solid black;
       outline-offset: -4px;
@@ -111,6 +128,7 @@
 
   .validation-message {
     position: absolute;
+    left: var(--spacing-6x);
     margin-top: 0;
     font-size: var(--font-xsmall);
     color: var(--alert-message);

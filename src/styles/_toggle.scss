@@ -1,6 +1,9 @@
+@use './mixins';
+
 .toggle-label-container {
   //local variable
-  --init-margin-value: 0px;
+  --init-margin-value: -16px;
+
   width: 100%;
   margin-left: var(--init-margin-value);
 }
@@ -9,16 +12,16 @@
   //local variables
   --toggle-width: 45px;
   --toggle-slider-width: 16px;
-  --toggle-spacing: 6px; 
 
-  padding: var(--toggle-spacing);
-  
+  padding: var(--spacing-base);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: var(--form-element-width);
 
   &__container {
     box-sizing: border-box;
-    display: inline-block;
     position: relative;
-    top: var(--toggle-spacing);
     width: var(--toggle-width);
     height: 24px;
     background-color: var(--white);
@@ -43,16 +46,12 @@
     appearance: none;
     outline: none;
     margin: 0;
+
     &:checked + .toggle__container .toggle__slider::before {
       // Move slider to the right when checked
       // border * 3 refers to L& R borders + padding
       left: calc(var(--toggle-width) - calc(var(--border-width) * 3) - var(--toggle-slider-width));
     }
-  }
-
-  &__text {
-    display: inline-block;
-    width: 130px;
   }
 
   // Focus and hover states
@@ -61,16 +60,17 @@
   &:hover {
     border: var(--border);
     border-radius: var(--border-radius);
-    padding: calc(var(--toggle-spacing) - var(--border-width));
+    padding: calc(var(--spacing-base) - var(--border-width));
   }
+
   &:hover {
-    background: rgba(49, 49, 49, 0.1);
+    @include mixins.adjustBlackOpacity(0.1);
     cursor: pointer;
   }
 }
 
 @media (max-width: 1100px) and (min-width: 925px) {
   .toggle-label-container {
-    --init-margin-value: -20px;
+    --init-margin-value: -66px;
   }
 }

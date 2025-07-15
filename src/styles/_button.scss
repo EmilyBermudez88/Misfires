@@ -22,13 +22,16 @@
     border: var(--border);
     outline: none;
   }
+
   &:hover {
     cursor: pointer;
     background-color:var(--button-background-hover);
   }
+
   &.update {
     font-size: var(--font-xsmall);
     position: static;
+
     &:hover,
     &:focus {
       padding: calc(2px - var(--border-width));

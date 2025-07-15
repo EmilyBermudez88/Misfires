@@ -13,7 +13,8 @@ const AddSubForm =
   const firstFocusableEl = useRef(null);
   const lastFocusableEl = useRef(null);
   const prevFocusedEl = useRef(null);
-  const submitDisabled = Object.values(addSub).some((val) => !val);
+  const missingFormValues = Object.values(addSub).some((val) => !val);
+  const submitDisabled = missingFormValues && renderValidationError;
   const inputClassNames = classnames('sub-form__input', {
     invalid: !addSub.name && renderValidationError
   });
@@ -21,7 +22,7 @@ const AddSubForm =
     invalid: !addSub.position && renderValidationError
   });
   const submitBtnClassNames = classnames('sub-form__button sub-form__button--submit', {
-    disabled: renderValidationError && submitDisabled
+    disabled: submitDisabled
   });
 
   const handleFormChange = (value, key) => setAddSub({ ...addSub, [key]: [value], sub: true });
@@ -95,6 +96,12 @@ const AddSubForm =
     }
   }, [openModal])
 
+  useEffect(() => {
+    if(!missingFormValues && renderValidationError) {
+      setRenderValidationError(false);
+    }
+  }, [renderValidationError, submitDisabled]);
+
   return (
     <dialog ref={dialogEl}
             role="dialog"
@@ -134,16 +141,18 @@ const AddSubForm =
             </select>
           </div>
           <div className="sub-form__button-bar">
-            <button className={submitBtnClassNames}>
-              Add Player
-            </button>
-            <button className="sub-form__button" ref={lastFocusableEl} type="reset" onClick={onCancel}>Cancel</button>
             {renderValidationError &&
               <p className="validation-message">
                 <span className="asterisk">*</span>
                 Fill all fields
               </p>
             }
+            <button className={submitBtnClassNames}
+                    aria-disabled={submitDisabled}
+                    disabled={submitDisabled}>
+              Add Player
+            </button>
+            <button className="sub-form__button" ref={lastFocusableEl} type="reset" onClick={onCancel}>Cancel</button>
           </div>
         </form>
       </div>

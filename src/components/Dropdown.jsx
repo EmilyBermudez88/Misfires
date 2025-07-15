@@ -131,6 +131,7 @@ const Dropdown = ({ updateSelected, options, labelId, renderSubForm, position, s
 						setOpen(false);
 					}
 					else {
+            console.log(options, visualSelectionIndex)
 						handleSelection(options[visualSelectionIndex])
 					}
 					break

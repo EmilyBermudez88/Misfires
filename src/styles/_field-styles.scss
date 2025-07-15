@@ -2,7 +2,7 @@
   grid-area: field;
   position: relative;
   width: 100%;
-  // z-index: 10;
+
   &__setup {
     position: relative;
     left: 0;
@@ -12,6 +12,7 @@
     width: 80%;
     height: 725px;
   }
+
   &__image {
     width: 100%;
     top: 50%;
@@ -25,9 +26,11 @@
     padding: var(--spacing-5x) 0;
     display: flex;
     justify-content: space-around;
+
     &:first-child {
       padding-top: 0;
     }
+
     &.spread {
       padding-bottom: 40px;
     }
@@ -36,12 +39,15 @@
 
 .field-position {
   width: 150px;
+
   &__icon {
     height: 120px;
   }
+
   &__icon-container {
     position: relative;
   }
+
   &__title {
     position: absolute;
     top: 25%;
