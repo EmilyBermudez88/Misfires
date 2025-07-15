@@ -1,19 +1,18 @@
-import React, { useState, createContext } from 'react';
-import './styles/_base.scss';
+import React, { useState } from 'react';
 import classnames from 'classnames';
-import JerseyDropdown from './components/JerseyDropdown';
-import TeamFormationDropdown from './components/TeamFormationDropdown';
+
+import HeroSection from './components/HeroSection';
 import Bench from './components/Bench';
+import PlayerPositions from './components/PlayerPositions';
 import AddSubForm from './components/AddSubForm';
 import FieldLayout from './assets/fieldLayout.png';
-import SoccerBall from './assets/soccer-ball.png';
-import PlayerPositions from './components/PlayerPositions';
+
 import { positions } from './util/lineupData';
 import playerDataSet from './util/playerDataSet';
+import { FormationContext } from './contexts/FormationContext';
+import { PlayersContext } from './contexts/PlayersContext';
 
-export const FormationContext = createContext({ formation: null });
-export const PlayersContext =
-  createContext({ availablePlayers: null, updateAvailablePlayers: null, formationPositions: null });
+import './styles/_base.scss';
 
 function App() {
   const [availablePlayers, setAvailablePlayers] = useState(playerDataSet),
@@ -24,26 +23,6 @@ function App() {
   const fieldLineClassNames = classnames('field__line', {
     spread: formation.length < 4
   });
-
-  const updateAvailablePlayers = (...actions) => {
-    let availablePlayersCopy = availablePlayers;
-
-    const removePlayer = (playerToRemove, playerArr) =>
-      availablePlayersCopy = playerArr.filter((ind) => ind.name !== playerToRemove.name);
-
-      const addPlayer = (playerToAdd, playerArr) => {
-      //player to add may not exist in dataset because they're an extra sub
-      const playerFromRoster = playerDataSet.find((player) => player.name === playerToAdd.name);
-      const playerInfo = playerFromRoster ? playerFromRoster : playerToAdd;
-      return availablePlayersCopy = playerArr.concat(playerInfo);
-    }
-
-    actions.forEach((update) => update.action === 'remove'
-      ? removePlayer(update.player, availablePlayersCopy)
-      : addPlayer(update.player, availablePlayersCopy)
-    )
-    setAvailablePlayers(availablePlayersCopy);
-  }
 
   let formationPositions = [];
   const definePosition = (line, idx) => {
@@ -131,33 +110,20 @@ function App() {
     position ? setSelectedPosition(position): setSelectedPosition('');
   };
 
-  const chooseFormation = (selection) => {
-    const formationArr = selection.dropdownValue.split(' - ').map((line) => parseInt(line));
-    setFormation(formationArr)
-    setAvailablePlayers(playerDataSet);
-  };
-
-  const playersContext = { availablePlayers, updateAvailablePlayers, formationPositions };
+  const playersContext = { availablePlayers, setAvailablePlayers, formationPositions };
   const formationContext = { formation }
 
   return (
     <>
       <div className="app">
         <main className="app__main">
-          <section className="hero-section">
-            <div className="hero-section__title">
-              <h1 className="hero-section__title-text">Misfires</h1>
-              <img className="hero-section__image" src={SoccerBall}/>
-            </div>
-            <div className="hero-section__dropdowns">
-              <TeamFormationDropdown chooseFormation={chooseFormation} />
-              <JerseyDropdown chooseJersey={setJerseyColour} />
-            </div>
-          </section>
+          <HeroSection setJerseyColour={setJerseyColour}
+                       setFormation={setFormation}
+                       setAvailablePlayers={setAvailablePlayers}/>
           <PlayersContext.Provider value={playersContext} >
-            <div className="field">
-              <img className="field__image" src={FieldLayout}/>
-              <FormationContext.Provider value={formationContext}>
+            <FormationContext.Provider value={formationContext}>
+              <div className="field">
+                <img className="field__image" src={FieldLayout}/>
                 <div className="field__setup">
                   { !!formation.length &&
                     <>
@@ -168,14 +134,13 @@ function App() {
                     </>
                     }
                 </div>
-              </FormationContext.Provider>
-            </div>
-            <Bench renderSubFormFromBench={renderSubForm}
-                   formation={formation} />
+              </div>
+              <Bench renderSubFormFromBench={renderSubForm} formation={formation}/>
+            </FormationContext.Provider>
           </PlayersContext.Provider>
         </main>
         {renderForm &&
-          <AddSubForm onSubmit={updateAvailablePlayers}
+          <AddSubForm setAvailablePlayers={setAvailablePlayers}
                       formationPositions={formationPositions}
                       selectedPosition={selectedPosition}
                       openModal={renderForm}
@@ -197,5 +162,4 @@ export default App;
 
 // TO DO
 // how to screenshot / capture the field layout with players
-//create a mixing for black with a specific & of opacity
 //look at naming conventions for toggle & dropdown

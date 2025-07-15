@@ -1,13 +1,16 @@
 import React, { useState, useId, useRef, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
+
 import EditButton from './EditButton';
-import { FormationContext } from '../App';
-import classNames from 'classnames';
+
+import { FormationContext } from '../contexts/FormationContext';
+import { PlayersContext } from '../contexts/PlayersContext';
+import { updateAvailablePlayers } from '../util/playerUtils';
 
 const Dropdown = ({ updateSelected, options, labelId, renderSubForm, position, selectionType }) => {
-
   const [userSelection, setUserSelection] = useState({}),
     [visualSelectionIndex, setVisualSelectionIndex] = useState(null),
     [open, setOpen] = useState(false),
@@ -20,6 +23,9 @@ const Dropdown = ({ updateSelected, options, labelId, renderSubForm, position, s
         : 'home',
     userSelectionDropdownVal = selectionType ===
     'position' ? userSelection.name : userSelection.dropdownValue;
+
+  const { formation } = useContext(FormationContext)
+  const { setAvailablePlayers } = useContext(PlayersContext);
 
   const dropdownId = useId();
   const menuId= useId();
@@ -44,9 +50,15 @@ const Dropdown = ({ updateSelected, options, labelId, renderSubForm, position, s
     if (selected.dropdownValue) {
       updateSelected(selected);
     } else {
-      selectionMade ?
-			updateSelected({ action:'remove', player: selected }, { action:'add', player: userSelection })
-			: updateSelected({ action:'remove', player: selected });
+      if (selectionMade) {
+        setAvailablePlayers((prev) =>
+          updateAvailablePlayers(prev, { action: 'remove', player: selected }, { action: 'add', player: userSelection })
+        )
+      } else {
+        setAvailablePlayers((prev) =>
+          updateAvailablePlayers(prev, { action: 'remove', player: selected })
+        );
+      }
     }
 
 		setUserSelection(selected);
@@ -62,7 +74,9 @@ const Dropdown = ({ updateSelected, options, labelId, renderSubForm, position, s
   const reset = () => {
     setUserSelection({});
     if (userSelection.name) {
-      updateSelected({ action: 'add', player: userSelection });
+      setAvailablePlayers((prev) =>
+        updateAvailablePlayers(prev, { action: 'add', player: userSelection })
+      );
     }
   }
 
@@ -131,7 +145,6 @@ const Dropdown = ({ updateSelected, options, labelId, renderSubForm, position, s
 						setOpen(false);
 					}
 					else {
-            console.log(options, visualSelectionIndex)
 						handleSelection(options[visualSelectionIndex])
 					}
 					break
@@ -154,7 +167,6 @@ const Dropdown = ({ updateSelected, options, labelId, renderSubForm, position, s
     }
   }, [])
 
-  const { formation } = useContext(FormationContext)
   useEffect(() => {
     setUserSelection({});
   }, [formation])

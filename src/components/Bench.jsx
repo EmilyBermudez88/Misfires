@@ -1,14 +1,19 @@
 import React, { useState, useRef, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+
 import EditButton from './EditButton';
 import Select from './Select';
-import { PlayersContext } from '../App';
 
-const Bench = ({ renderSubFormFromBench, formation }) => {
+import { updateAvailablePlayers } from '../util/playerUtils';
+import { PlayersContext } from '../contexts/PlayersContext';
+import { FormationContext } from '../contexts/FormationContext';
+
+const Bench = ({ renderSubFormFromBench }) => {
 	const [unavailable, setUnavailable] = useState([]);
   const [showPlayerPosition, setShowPlayerPosition] = useState(false);
-  const { updateAvailablePlayers, availablePlayers, formationPositions } = useContext(PlayersContext);
+  const { setAvailablePlayers, availablePlayers, formationPositions } = useContext(PlayersContext);
+  const { formation } = useContext(FormationContext);
   const renderSubWarning = availablePlayers.length < 4;
   const toggleText = showPlayerPosition ? 'Hide Positions' : 'Show Positions';
   const [playerToEdit, setPlayerToEdit] = useState('');
@@ -34,11 +39,12 @@ const Bench = ({ renderSubFormFromBench, formation }) => {
     if (nextPlayer) {
       nextPlayer.focus();
     }
-		updateAvailablePlayers({ action: 'remove', player: removedPlayer })
+    setAvailablePlayers(prev => updateAvailablePlayers(prev, { action: 'remove', player: removedPlayer }))
 	}
 
 	const addPlayer = (addedPlayer) => {
-		updateAvailablePlayers({ action: 'add', player: addedPlayer })
+    setAvailablePlayers(prev => updateAvailablePlayers(prev, { action: 'add', player: addedPlayer }))
+		// updateAvailablePlayers({ action: 'add', player: addedPlayer })
 		setUnavailable(unavailable.filter((ind) => ind.name !== addedPlayer.name))
 	}
 
@@ -104,7 +110,6 @@ const Bench = ({ renderSubFormFromBench, formation }) => {
 }
 
 Bench.propTypes = {
-  formation: PropTypes.arrayOf(PropTypes.number),
   renderSubFormFromBench: PropTypes.func
 };
 

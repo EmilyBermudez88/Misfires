@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { PlayersContext } from '../App';
+
+import { PlayersContext } from '../contexts/PlayersContext';
 
 const Select = ({ player, edit, handleSelection }) => {
   const [availablePlayerPositions, setAvailablePlayerPositions] = useState([]);

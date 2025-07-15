@@ -1,17 +1,20 @@
 import React, { useEffect, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+
+import Dropdown from './Dropdown';
 import JerseyRed from '../assets/JerseyRed.png';
 import JerseyWhite from '../assets/JerseyWhite.png'
-import Dropdown from './Dropdown';
-import { PlayersContext } from '../App';
+
+import { PlayersContext } from '../contexts/PlayersContext';
+import { updateAvailablePlayers } from '../util/playerUtils';
 
 const PlayerPositions = ({ position, renderSubForm, jersey }) => {
 	// We still want to parse the availablePlayers array into preferred positions to
 	// make the choice easier of which player should go where
 	const [preferredPlayers, setPreferredPlayers] = useState([]),
 		[backupPlayers, setBackupPlayers] = useState([]),
-    { updateAvailablePlayers, availablePlayers } = useContext(PlayersContext),
+    { availablePlayers } = useContext(PlayersContext),
     dropdownOptions = preferredPlayers.length
       ? preferredPlayers
       : backupPlayers.length

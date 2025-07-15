@@ -2,8 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
+import { updateAvailablePlayers } from '../util/playerUtils';
+
 const AddSubForm =
-({ onSubmit: onSubmitProp, selectedPosition, formationPositions, openModal, closeModal }) => {
+({ setAvailablePlayers, selectedPosition, formationPositions, openModal, closeModal }) => {
   const defaultPosition = selectedPosition ? selectedPosition : '';
 
   const [addSub, setAddSub] = useState({ name:'', position: defaultPosition, sub: null });
@@ -45,7 +47,10 @@ const AddSubForm =
     } else {
       setRenderValidationError(false);
     }
-    onSubmitProp({ action: 'add', player: { ...addSub, position: [addSub.position]}});
+    setAvailablePlayers(prev =>
+        updateAvailablePlayers(prev, { action: 'add', player: { ...addSub, position: [addSub.position]}})
+    )
+    // onSubmitProp({ action: 'add', player: { ...addSub, position: [addSub.position]}});
     setAddSub({ name:'', position:'', sub: null });
     closeModal();
     if(!defaultPosition) {
@@ -161,7 +166,7 @@ const AddSubForm =
 }
 
 AddSubForm.propTypes = {
-  onSubmit: PropTypes.func,
+  setAvailablePlayers: PropTypes.func,
   formationPositions: PropTypes.arrayOf(PropTypes.string),
   selectedPosition: PropTypes.string,
   openModal: PropTypes.bool,
