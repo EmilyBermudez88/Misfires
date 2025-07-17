@@ -77,26 +77,22 @@ dialog::backdrop {
       color: var(--white);
       border-color:transparent;
 
-      &.disabled {
-        background-color: var(--background-disabled);
-        color: var(--text-disabled);
-        border-color:var(--text-disabled);
-                                                                                                                                 
-        &:focus {
-          outline-color: transparent;
-        }
-
-        &:hover {
-          background-color: var(--background-disabled);
-        }
-      }
-
       &:focus {
         outline-color: var(--white);
       }
 
       &:hover {
         background-color:rgb(37, 133, 25);
+      }
+    }
+
+    &--disabled {
+      background-color: var(--background-disabled);
+      color: var(--text-disabled);
+      border-color:var(--text-disabled);
+
+      &:hover {
+        background-color: var(--background-disabled);
       }
     }
   }
@@ -110,7 +106,7 @@ dialog::backdrop {
     padding: var(--spacing-base);
     border: 1px solid var(--border-color);
 
-    &.invalid {
+    &--invalid {
       border-color: var(--alert-message);
     }
 

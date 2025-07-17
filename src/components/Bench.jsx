@@ -4,6 +4,7 @@
 
   import IconButton from './IconButton';
   import Select from './Select';
+  import Toggle from './Toggle';
 
   import { updateAvailablePlayers, calculateButtonClassName } from '../util/playerUtils';
   import { PlayersContext } from '../contexts/PlayersContext';
@@ -17,7 +18,6 @@ const Bench = ({ renderSubFormFromBench }) => {
   const { formation } = useContext(FormationContext);
 
   const renderSubWarning = availablePlayers.length < 4;
-  const toggleText = showPlayerPosition ? 'Hide Positions' : 'Show Positions';
 
   const benchedPlayersRef = useRef(null);
   const unavailablePlayersRef = useRef(null);
@@ -65,20 +65,7 @@ const Bench = ({ renderSubFormFromBench }) => {
     <section className="bench">
       <h2 className="bench__title">Bench</h2>
       <div className="available-list">
-        <div className="toggle-label-container">
-          <label className="toggle">
-            <span id="toggle-text" className="toggle__text">{toggleText}</span>
-            <input className="toggle__input"
-                   type="checkbox"
-                   role="switch"
-                   checked={showPlayerPosition}
-                   onChange={() => setShowPlayerPosition(!showPlayerPosition)}
-                   aria-labelledby="toggle-text"/>
-            <span className="toggle__container">
-              <span className="toggle__slider"/>
-            </span>
-          </label>
-        </div>
+        <Toggle showValue={showPlayerPosition} setShowValue={setShowPlayerPosition}/>
         <ul ref={benchedPlayersRef} className="bench__player-list">
           {
             availablePlayers.map((player) =>

@@ -17,13 +17,13 @@ const AddSubForm =
   const missingFormValues = !addSub.name || !addSub.position;
   const submitDisabled = missingFormValues && renderValidationError;
   const inputClassNames = classnames('sub-form__input', {
-    invalid: !addSub.name && renderValidationError
+    'sub-form__input--invalid': !addSub.name && renderValidationError
   });
   const selectClassNames = classnames('sub-form__select', {
-    invalid: !addSub.position && renderValidationError
+    'sub-form__select--invalid': !addSub.position && renderValidationError
   });
   const submitBtnClassNames = classnames('sub-form__button sub-form__button--submit', {
-    disabled: submitDisabled
+    'sub-form__button--disabled': submitDisabled
   });
 
   const handleFormChange = (value, key) => setAddSub({ ...addSub, [key]: value, sub: true });
