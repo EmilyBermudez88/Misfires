@@ -1,4 +1,4 @@
-.dropdown {
+    .dropdown {
   display: flex;
   align-items: center;
   background: var(--white);
@@ -12,7 +12,7 @@
     width: var(--form-element-width);
   }
 
-  &__button {
+  &__button--main {
     box-sizing: border-box;
     position: relative;
     display: grid;
@@ -43,23 +43,25 @@
     border: 1px solid var(--border-color);
     z-index: 1;
 
-    .no-option-warning {
+    .dropdown__option--warning {
       width: 100%;
       font-size: var(--font-small);
       color: rgb(249, 109, 109);
 
-      span {
-        display: inline-block;
-        width: 100%;
-        padding: var(--spacing-base) 0;
-        background: var(--unavailable-list-background);
-        font-weight: bold;
-      }
-
-      &__button {
-        font-weight: 400;
-        width: 100%;
-        margin: var(--spacing-base) 0 0 0;
+      .dropdown {
+        &__value {
+          display: inline-block;
+          width: 100%;
+          padding: var(--spacing-base) 0;
+          background: var(--unavailable-list-background);
+          font-weight: bold;
+        }
+        
+        &__button--warning {
+          font-weight: 400;
+          width: 100%;
+          margin: var(--spacing-base) 0 0 0;
+        }
       }
     }
   }
@@ -70,17 +72,17 @@
     &[aria-selected="true"] {
       border: var(--border);
     }
+  }
 
-    &__button {
-      width: 100%;
-      padding: var(--spacing-base);
-      background: var(--white);
-      border: none;
-      text-align: center;
+  &__button--option {
+    width: 100%;
+    padding: var(--spacing-base);
+    background: var(--white);
+    border: none;
+    text-align: center;
 
-      &:hover {
-        background: var(--button-background-hover);
-      }
+    &:hover {
+      background: var(--button-background-hover);
     }
   }
 

@@ -30,9 +30,9 @@ const AddSubForm =
   const handleFormChange = (value, key) => setAddSub({ ...addSub, [key]: [value], sub: true });
 
   if (!prevFocusedEl.current) {
-    if (document.activeElement.className.includes('no-option-warning__button')) {
+    if (document.activeElement.className.includes('dropdown__button--warning')) {
       const dropdownBtn =
-        document.activeElement.closest('.dropdown__container').querySelector('.dropdown__button');
+        document.activeElement.closest('.dropdown__container').querySelector('.dropdown__button--main');
       prevFocusedEl.current = dropdownBtn;
     } else {
       prevFocusedEl.current = document.activeElement;
@@ -56,7 +56,7 @@ const AddSubForm =
     if(!defaultPosition) {
       Promise.resolve().then(() => {
         const recentlyAddedPlayer =
-          document.querySelector(`.button--edit.${addSub.name}`);
+          document.querySelector(`.icon-button.${addSub.name}`);
           recentlyAddedPlayer.focus();
       })
     } else {

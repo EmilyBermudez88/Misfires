@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 
-import EditButton from './EditButton';
+import IconButton from './IconButton';
 
 import { FormationContext } from '../contexts/FormationContext';
 import { PlayersContext } from '../contexts/PlayersContext';
@@ -15,14 +15,11 @@ const Dropdown = ({ updateSelected, options, labelId, renderSubForm, position, s
     [visualSelectionIndex, setVisualSelectionIndex] = useState(null),
     [open, setOpen] = useState(false),
     selectionMade = Object.keys(userSelection).length > 0,
-    caret = open ? faAngleUp : faAngleDown,
     defaultDropdownVal = selectionType === 'formation'
       ? 'select formation'
       : selectionType === 'position'
         ? 'select player'
-        : 'home',
-    userSelectionDropdownVal = selectionType ===
-    'position' ? userSelection.name : userSelection.dropdownValue;
+        : 'home';
 
   const { formation } = useContext(FormationContext)
   const { setAvailablePlayers } = useContext(PlayersContext);
@@ -33,21 +30,28 @@ const Dropdown = ({ updateSelected, options, labelId, renderSubForm, position, s
   const buttonRef = useRef(null);
   const dropdownRef = useRef(null);
   const ref = useRef(null);
-	const activeDescendent = visualSelectionIndex !== null ? `${optionId}${visualSelectionIndex}` : null;
+  const activeDescendent = visualSelectionIndex !== null ? `${optionId}${visualSelectionIndex}` : null;
   const openKeys = [' ', 'ArrowDown', 'ArrowUp', 'Enter', 'Home', 'End'];
 
-  const buttonClassNames = classNames('dropdown__button', {
-    'unselected' : selectionType === 'position' && !selectionMade
+  const buttonClassNames = classNames('dropdown__button--main', {
+    'unselected': selectionType === 'position' && !selectionMade
   });
 
+  // We don't want to ever 'clear' the Jersey colour, so never render a closeBtn
+  const showCaret = selectionType !== 'position' || !selectionMade;
+  const showCancelButton = selectionType === 'position' && selectionMade;
+
   const handleBlur=(e) => {
-		if (!ref.current.contains(e.relatedTarget)) {
-			setOpen(false)
-		}
-	}
+    if (!ref.current.contains(e.relatedTarget)) {
+      setOpen(false)
+    }
+  }
 
   const handleSelection = (selected) => {
-    if (selected.dropdownValue) {
+    if (!selected) {
+      return;
+    }
+    if (selectionType !== 'position') {
       updateSelected(selected);
     } else {
       if (selectionMade) {
@@ -61,118 +65,127 @@ const Dropdown = ({ updateSelected, options, labelId, renderSubForm, position, s
       }
     }
 
-		setUserSelection(selected);
-		setVisualSelectionIndex(null);
-		setOpen(false);
-		handleFocus();
-	}
+    setUserSelection(selected);
+    setVisualSelectionIndex(null);
+    setOpen(false);
+    handleFocus();
+  }
 
   const handleFocus= () => {
-		buttonRef.current.focus();
-	}
+    buttonRef.current.focus();
+  }
 
   const reset = () => {
     setUserSelection({});
-    if (userSelection.name) {
+    if (selectionType === 'position') {
       setAvailablePlayers((prev) =>
         updateAvailablePlayers(prev, { action: 'add', player: userSelection })
       );
     }
   }
 
-	const handleClear = () => {
+  const handleClear = () => {
     reset();
     handleFocus();
-	}
+  }
+
+  const openDropdown = (key) => {
+    setOpen(true);
+    if (key === 'ArrowUp' || key === 'Home') {
+      setVisualSelectionIndex(0);
+    } else if (key === 'End') {
+      setVisualSelectionIndex(options.length - 1);
+    }
+    else {
+      setVisualSelectionIndex(null);
+    }
+  }
+
+  const moveToStart = () => setVisualSelectionIndex(0);
+  const moveToEnd = () => setVisualSelectionIndex(options.length - 1);
+  const moveToNext = () => setVisualSelectionIndex(visualSelectionIndex + 1);
+  const moveToPrev = () => setVisualSelectionIndex(visualSelectionIndex - 1);
 
   const handleOnKeyDown = (e) => {
     if (e.key !== 'Tab') {
       e.preventDefault();
     }
-		if (!open && openKeys.includes(e.key)) {
-			setOpen(true)
-			if (e.key === 'ArrowUp'|| e.key === 'Home') {
-				setVisualSelectionIndex(0)
-			}
-			else if (e.key ==='End') {
-				setVisualSelectionIndex(options.length - 1)
-			}
-			else {
-				setVisualSelectionIndex(null)
-			}
-		}
-		else if (open) {
-			switch (e.key) {
-				case 'Escape':
-					setOpen(false)
-					break
-				case'ArrowDown':
-					if (visualSelectionIndex === null) {
-						setVisualSelectionIndex(0)
-					}
-					else if (options.length &&
-            (visualSelectionIndex === 0 || visualSelectionIndex < options.length - 1)) {
-						setVisualSelectionIndex(visualSelectionIndex + 1)
-					}
-					break
-				case 'ArrowUp':
-					if (visualSelectionIndex === null) {
-						setVisualSelectionIndex(0)
-					}
-					else if (visualSelectionIndex > 0) {
-						setVisualSelectionIndex(visualSelectionIndex - 1);
-					}
-					break
-				case 'Home':
-				case 'PageUp':
-					setVisualSelectionIndex(0);
-					break
-				case 'End':
-				case 'PageDown':
-          setVisualSelectionIndex(options.length - 1);
-					break
-				case 'Tab':
-					if (visualSelectionIndex === null) {
-						return
-					}
-					else {
-						handleSelection(options[visualSelectionIndex])
-					}
-					break
-				case 'Enter':
-				case ' ':
-					if (visualSelectionIndex === null) {
-						setOpen(false);
-					}
-					else {
-						handleSelection(options[visualSelectionIndex])
-					}
-					break
-				default:
-					break;
-			}
-		}
-	}
-  // const open2 = true;
-  useEffect(() => {
-    if (dropdownRef && visualSelectionIndex !== null) {
-      const focusedVal= dropdownRef.current?.children[visualSelectionIndex];
-      focusedVal.scrollIntoView({ block: 'nearest' });
+    if (!open && openKeys.includes(e.key)) {
+      openDropdown(e.key);
     }
-  }, [visualSelectionIndex])
+    else if (open) {
+      switch (e.key) {
+        case 'Tab':
+          if (visualSelectionIndex !== null) {
+            handleSelection(options[visualSelectionIndex])
+          }
+          break
+        case 'Enter':
+        case ' ':
+          setOpen(false);
+          if (visualSelectionIndex !== null) {
+            handleSelection(options[visualSelectionIndex])
+          }
+          break
+        case'ArrowDown':
+          if (visualSelectionIndex === null) {
+            moveToStart();
+          }
+          else if (options.length &&
+            (visualSelectionIndex === 0 || visualSelectionIndex < options.length - 1)) {
+            moveToNext();
+          }
+          break
+        case 'ArrowUp':
+          if (visualSelectionIndex === null) {
+            moveToStart();
+          }
+          else if (visualSelectionIndex > 0) {
+            moveToPrev();
+          }
+          break
+        case 'Home':
+        case 'PageUp':
+          moveToStart();
+          break
+        case 'End':
+        case 'PageDown':
+          moveToEnd();
+          break
+
+        case 'Escape':
+          setOpen(false)
+          break
+        default:
+          break;
+      }
+    }
+  }
 
   useEffect(() => {
     if (selectionType === 'formation') {
       buttonRef.current.focus();
     }
+    setUserSelection({});
   }, [])
+
+  useEffect(() => {
+    if (dropdownRef && visualSelectionIndex !== null) {
+      const focusedVal= dropdownRef.current?.children[visualSelectionIndex];
+      focusedVal?.scrollIntoView({ block: 'nearest' });
+    }
+  }, [visualSelectionIndex])
 
   useEffect(() => {
     setUserSelection({});
   }, [formation])
-  // const open2 = true;
+
+  useEffect(() => {
+    console.log(visualSelectionIndex)
+  }, [visualSelectionIndex])
+
   return(
-    <div className="dropdown__container"ref={ref} onBlur={handleBlur}>
+    <div className="dropdown__container" ref={ref} onBlur={handleBlur}>
       <div className="dropdown">
         <button id={dropdownId}
                 ref={buttonRef}
@@ -185,16 +198,16 @@ const Dropdown = ({ updateSelected, options, labelId, renderSubForm, position, s
                 aria-labelledby={labelId}
                 onClick={() => setOpen(!open)}
                 onKeyDown={handleOnKeyDown}
-                onFocus={handleFocus}>
-          { selectionMade
-            ? userSelectionDropdownVal
-            :
-            <>
-              <span>{defaultDropdownVal}</span>
-              <FontAwesomeIcon icon={caret} className="dropdown-caret"/>
-            </>}
+                onFocus={handleFocus}
+              >
+          {selectionMade ? (
+            <span>{userSelection.dropdownValue}</span>
+          ) : (
+            <span>{defaultDropdownVal}</span>
+          )}
+          {showCaret && <FontAwesomeIcon icon={open ? faAngleUp : faAngleDown} className="dropdown-caret" />}
         </button>
-        { selectionMade && <EditButton onClick={handleClear}/>}
+        {showCancelButton && <IconButton onClick={handleClear} />}
       </div>
       { open &&
         <ul ref={dropdownRef} className="dropdown__menu" role="listbox" id={menuId}>
@@ -205,19 +218,19 @@ const Dropdown = ({ updateSelected, options, labelId, renderSubForm, position, s
                   className="dropdown__option"
                   key={`${optionId}${i}`}
                   id={`${optionId}${i}`}>
-                <button className="dropdown__option__button"
+                <button className="dropdown__button--option"
                         tabIndex={-1}
                         onClick={() => handleSelection(option)}>
                   <span className="dropdown__value">
-                    { option.name ? option.name: option.dropdownValue }
+                    { option.dropdownValue }
                   </span>
                 </button>
               </li>
             ) :
             // Only relevant to Player dropdown
-            <li className="dropdown--position no-option-warning">
-              <span>NO ONE AVAILABLE</span>
-              <button className="no-option-warning__button sub-form__button"
+            <li role="option" className="dropdown__option--warning">
+              <span className="dropdown__value">NO ONE AVAILABLE</span>
+              <button className="dropdown__button--warning sub-form__button"
                       onClick={() => renderSubForm(true, position)}>
                 Add Sub
               </button>

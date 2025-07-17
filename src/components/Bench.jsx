@@ -2,7 +2,7 @@ import React, { useState, useRef, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-import EditButton from './EditButton';
+import IconButton from './IconButton';
 import Select from './Select';
 
 import { updateAvailablePlayers } from '../util/playerUtils';
@@ -27,7 +27,8 @@ const Bench = ({ renderSubFormFromBench }) => {
     if (!removedPlayer.sub) {
       setUnavailable([...unavailable, removedPlayer]);
     }
-    const removeButtons = Array.from(benchedPlayersRef.current.querySelectorAll('.button--edit:not(.update'));
+    const removeButtons =
+      Array.from(benchedPlayersRef.current.querySelectorAll('.icon-button:not(.icon-button--update'));
     const removedPlayerBtnIdx = removeButtons.findIndex((el) =>
       el.classList.contains(removedPlayer.name)
     );
@@ -44,7 +45,6 @@ const Bench = ({ renderSubFormFromBench }) => {
 
 	const addPlayer = (addedPlayer) => {
     setAvailablePlayers(prev => updateAvailablePlayers(prev, { action: 'add', player: addedPlayer }))
-		// updateAvailablePlayers({ action: 'add', player: addedPlayer })
 		setUnavailable(unavailable.filter((ind) => ind.name !== addedPlayer.name))
 	}
 
@@ -77,15 +77,15 @@ const Bench = ({ renderSubFormFromBench }) => {
                 <span className="bench__player-name">{player.name}</span>
                 <span className={benchPositionClassnames}>
                   <Select player={player} edit={player.name === playerToEdit} handleSelection={setPlayerToEdit}/>
-                  <EditButton onClick={() => setPlayerToEdit(player.name)} type="update"/>
+                  <IconButton onClick={() => setPlayerToEdit(player.name)} type="update"/>
                 </span>
-                <EditButton className={`${player.name}`} onClick={() => removePlayer(player)}/>
+                <IconButton className={`${player.name}`} onClick={() => removePlayer(player)}/>
               </li>)
           }
           {renderSubWarning && !!formationPositions.length &&
             <li className="bench__player-option bench__sub-warning">
               <span>SUBS NEEDED</span>
-              <EditButton onClick={() => renderSubFormFromBench(true)} type="add"/>
+              <IconButton onClick={() => renderSubFormFromBench(true)} type="add"/>
             </li>
           }
         </ul>
@@ -99,7 +99,7 @@ const Bench = ({ renderSubFormFromBench }) => {
             { unavailable.map((player) =>
               <li className="bench__player-option unavailable" key={player.name}>
                 {player.name}
-                <EditButton onClick={() => addPlayer(player)} type="add"/>
+                <IconButton onClick={() => addPlayer(player)} type="add"/>
               </li>
             )}
           </ul>

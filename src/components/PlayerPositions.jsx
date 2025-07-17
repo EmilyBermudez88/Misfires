@@ -40,7 +40,7 @@ const PlayerPositions = ({ position, renderSubForm, jersey }) => {
         <p className={titleClassName} id={labelId}>{position}</p>
         <Dropdown updateSelected={updateAvailablePlayers}
                   labelId={labelId}
-                  options={dropdownOptions}
+                  options={dropdownOptions.map((opt) => ({ ...opt, dropdownValue: opt.name }))}
                   renderSubForm={renderSubForm}
                   position={position}
                   selectionType="position"/>

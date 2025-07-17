@@ -1,9 +1,4 @@
-.button__icon {
-  position: absolute;
-  transform: translate(-50%, -50%);
-}
-
-.button--edit,
+.icon-button,
 .dropdown-caret {
   position: absolute;
   padding: 2px;
@@ -13,10 +8,15 @@
   border: none;
 }
 
-.button--edit {
+.icon-button {
   border-radius: var(--border-radius);
   height: 20px;
   width: 20px;
+
+  &__icon {
+    position: absolute;
+    transform: translate(-50%, -50%);
+  }
 
   &:focus {
     border: var(--border);
@@ -28,7 +28,7 @@
     background-color:var(--button-background-hover);
   }
 
-  &.update {
+  &--update {
     font-size: var(--font-xsmall);
     position: static;
 

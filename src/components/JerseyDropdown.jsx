@@ -7,8 +7,8 @@ const JerseyColourDropdown = ({ chooseJersey }) => {
   const labelId = 'jersey-labl';
 
   const options = [
-    { dropdownValue: 'home' },
-    { dropdownValue: 'away' }
+    { dropdownValue: 'away' },
+    { dropdownValue: 'home' }
   ];
 
 	return (
