@@ -11,15 +11,9 @@ import { PlayersContext } from '../contexts/PlayersContext';
 import { updateAvailablePlayers } from '../util/playerUtils';
 
 const Dropdown = ({ updateSelected, options, labelId, renderSubForm, position, selectionType }) => {
-  const [userSelection, setUserSelection] = useState({}),
-    [visualSelectionIndex, setVisualSelectionIndex] = useState(null),
-    [open, setOpen] = useState(false),
-    selectionMade = Object.keys(userSelection).length > 0,
-    defaultDropdownVal = selectionType === 'formation'
-      ? 'select formation'
-      : selectionType === 'position'
-        ? 'select player'
-        : 'home';
+  const [userSelection, setUserSelection] = useState({});
+  const [visualSelectionIndex, setVisualSelectionIndex] = useState(null);
+  const [open, setOpen] = useState(false);
 
   const { formation } = useContext(FormationContext)
   const { setAvailablePlayers } = useContext(PlayersContext);
@@ -30,16 +24,22 @@ const Dropdown = ({ updateSelected, options, labelId, renderSubForm, position, s
   const buttonRef = useRef(null);
   const dropdownRef = useRef(null);
   const ref = useRef(null);
+
+  const selectionMade = Object.keys(userSelection).length > 0;
+  const defaultDropdownVal = selectionType === 'formation'
+      ? 'select formation'
+      : selectionType === 'position'
+        ? 'select player'
+        : 'home';
   const activeDescendent = visualSelectionIndex !== null ? `${optionId}${visualSelectionIndex}` : null;
   const openKeys = [' ', 'ArrowDown', 'ArrowUp', 'Enter', 'Home', 'End'];
+  // We don't want to ever 'clear' the Jersey colour, so never render a closeBtn
+  const showCaret = selectionType !== 'position' || !selectionMade;
+  const showCancelButton = selectionType === 'position' && selectionMade;
 
   const buttonClassNames = classNames('dropdown__button--main', {
     'unselected': selectionType === 'position' && !selectionMade
   });
-
-  // We don't want to ever 'clear' the Jersey colour, so never render a closeBtn
-  const showCaret = selectionType !== 'position' || !selectionMade;
-  const showCancelButton = selectionType === 'position' && selectionMade;
 
   const handleBlur=(e) => {
     if (!ref.current.contains(e.relatedTarget)) {
@@ -180,10 +180,6 @@ const Dropdown = ({ updateSelected, options, labelId, renderSubForm, position, s
     setUserSelection({});
   }, [formation])
 
-  useEffect(() => {
-    console.log(visualSelectionIndex)
-  }, [visualSelectionIndex])
-
   return(
     <div className="dropdown__container" ref={ref} onBlur={handleBlur}>
       <div className="dropdown">
@@ -207,7 +203,7 @@ const Dropdown = ({ updateSelected, options, labelId, renderSubForm, position, s
           )}
           {showCaret && <FontAwesomeIcon icon={open ? faAngleUp : faAngleDown} className="dropdown-caret" />}
         </button>
-        {showCancelButton && <IconButton onClick={handleClear} />}
+        {showCancelButton && <IconButton onClick={handleClear} type="clear selected"/>}
       </div>
       { open &&
         <ul ref={dropdownRef} className="dropdown__menu" role="listbox" id={menuId}>

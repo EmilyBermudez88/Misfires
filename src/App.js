@@ -18,7 +18,7 @@ function App() {
   const [availablePlayers, setAvailablePlayers] = useState(playerDataSet),
     [renderForm, setRenderForm] = useState(false),
     [selectedPosition, setSelectedPosition] = useState(''),
-    [jerseyColour, setJerseyColour] = useState('home'),
+    [jerseyColour, setJerseyColour] = useState({ dropdownValue: 'home' }),
     [formation, setFormation] = useState([]);
   const fieldLineClassNames = classnames('field__line', {
     spread: formation.length < 4
@@ -159,7 +159,3 @@ function App() {
 }
 
 export default App;
-
-// TO DO
-// how to screenshot / capture the field layout with players
-//look at naming conventions for toggle & dropdown

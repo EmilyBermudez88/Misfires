@@ -5,7 +5,7 @@
   import IconButton from './IconButton';
   import Select from './Select';
 
-  import { updateAvailablePlayers } from '../util/playerUtils';
+  import { updateAvailablePlayers, calculateButtonClassName } from '../util/playerUtils';
   import { PlayersContext } from '../contexts/PlayersContext';
   import { FormationContext } from '../contexts/FormationContext';
 
@@ -25,8 +25,6 @@ const Bench = ({ renderSubFormFromBench }) => {
   const benchPositionClassnames = classnames('bench__position-container', {
     hidden: !showPlayerPosition
   });
-  const calculateButtonClassName = (player, action) =>
-    `bench__${action}-btn--${player.replace(/\s+/g, '-').toLowerCase()}`
 
   const handleFocusChange = (action, playerName, buttonSelector) => {
     const listRef = action === 'add' ? unavailablePlayersRef : benchedPlayersRef;
