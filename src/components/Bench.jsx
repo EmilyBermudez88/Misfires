@@ -1,58 +1,69 @@
-import React, { useState, useRef, useContext, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import classnames from 'classnames';
+  import React, { useState, useRef, useContext, useEffect } from 'react';
+  import PropTypes from 'prop-types';
+  import classnames from 'classnames';
 
-import IconButton from './IconButton';
-import Select from './Select';
+  import IconButton from './IconButton';
+  import Select from './Select';
 
-import { updateAvailablePlayers } from '../util/playerUtils';
-import { PlayersContext } from '../contexts/PlayersContext';
-import { FormationContext } from '../contexts/FormationContext';
+  import { updateAvailablePlayers } from '../util/playerUtils';
+  import { PlayersContext } from '../contexts/PlayersContext';
+  import { FormationContext } from '../contexts/FormationContext';
 
 const Bench = ({ renderSubFormFromBench }) => {
-	const [unavailable, setUnavailable] = useState([]);
+  const [unavailable, setUnavailable] = useState([]);
   const [showPlayerPosition, setShowPlayerPosition] = useState(false);
-  const { setAvailablePlayers, availablePlayers, formationPositions } = useContext(PlayersContext);
+  const [playerToEdit, setPlayerToEdit] = useState('');
+  const { setAvailablePlayers, availablePlayers } = useContext(PlayersContext);
   const { formation } = useContext(FormationContext);
+
   const renderSubWarning = availablePlayers.length < 4;
   const toggleText = showPlayerPosition ? 'Hide Positions' : 'Show Positions';
-  const [playerToEdit, setPlayerToEdit] = useState('');
 
   const benchedPlayersRef = useRef(null);
+  const unavailablePlayersRef = useRef(null);
+
   const benchPositionClassnames = classnames('bench__position-container', {
     hidden: !showPlayerPosition
   });
+  const calculateButtonClassName = (player, action) =>
+    `bench__${action}-btn--${player.replace(/\s+/g, '-').toLowerCase()}`
 
-	const removePlayer = (removedPlayer) => {
+  const handleFocusChange = (action, playerName, buttonSelector) => {
+    const listRef = action === 'add' ? unavailablePlayersRef : benchedPlayersRef;
+    const removeButtons = Array.from(listRef.current?.querySelectorAll(buttonSelector)) || [];
+    const removedBtnIdx = removeButtons.findIndex((el) =>
+      el.classList.contains(calculateButtonClassName(playerName, action)));
+
+    //If button is last in array, focus on the previous button. Otherwise, focus on next button
+    const buttonToFocus =
+      removedBtnIdx === removeButtons.length - 1
+        ? removeButtons[removeButtons.length - 2]
+        : removeButtons[removedBtnIdx + 1];
+
+    if (buttonToFocus) {
+      buttonToFocus.focus();
+    }
+  }
+
+  const removePlayer = (removedPlayer) => {
+    setAvailablePlayers(prev => updateAvailablePlayers(prev, { action: 'remove', player: removedPlayer }));
     if (!removedPlayer.sub) {
-      setUnavailable([...unavailable, removedPlayer]);
+      setUnavailable(prevUnavailable => [...prevUnavailable, removedPlayer]);
     }
-    const removeButtons =
-      Array.from(benchedPlayersRef.current.querySelectorAll('.icon-button:not(.icon-button--update'));
-    const removedPlayerBtnIdx = removeButtons.findIndex((el) =>
-      el.classList.contains(removedPlayer.name)
-    );
-    const nextPlayer =
-      removedPlayerBtnIdx >= 0 && removedPlayerBtnIdx < removeButtons.length - 1
-        ? removeButtons[removedPlayerBtnIdx + 1]
-        : removeButtons[removeButtons.length - 2];
+    handleFocusChange('remove', removedPlayer.name, '.icon-button:not(.icon-button--update)');
+  }
 
-    if (nextPlayer) {
-      nextPlayer.focus();
-    }
-    setAvailablePlayers(prev => updateAvailablePlayers(prev, { action: 'remove', player: removedPlayer }))
-	}
-
-	const addPlayer = (addedPlayer) => {
-    setAvailablePlayers(prev => updateAvailablePlayers(prev, { action: 'add', player: addedPlayer }))
-		setUnavailable(unavailable.filter((ind) => ind.name !== addedPlayer.name))
-	}
+  const addPlayer = (addedPlayer) => {
+    setAvailablePlayers(prev => updateAvailablePlayers(prev, { action: 'add', player: addedPlayer }));
+    setUnavailable(unavailable.filter((player) => player.name !== addedPlayer.name));
+    handleFocusChange('add', addedPlayer.name, '.icon-button--add');
+  }
 
   useEffect(() => {
     setUnavailable([]);
   }, [formation]);
 
-	return (
+  return (
     <section className="bench">
       <h2 className="bench__title">Bench</h2>
       <div className="available-list">
@@ -70,7 +81,7 @@ const Bench = ({ renderSubFormFromBench }) => {
             </span>
           </label>
         </div>
-        <ul ref={benchedPlayersRef}className="bench__player-list">
+        <ul ref={benchedPlayersRef} className="bench__player-list">
           {
             availablePlayers.map((player) =>
               <li className="bench__player-option" key={player.name}>
@@ -79,10 +90,12 @@ const Bench = ({ renderSubFormFromBench }) => {
                   <Select player={player} edit={player.name === playerToEdit} handleSelection={setPlayerToEdit}/>
                   <IconButton onClick={() => setPlayerToEdit(player.name)} type="update"/>
                 </span>
-                <IconButton className={`${player.name}`} onClick={() => removePlayer(player)}/>
+                <IconButton className={calculateButtonClassName(player.name, 'remove')}
+                            onClick={() => removePlayer(player)}
+                            type="remove"/>
               </li>)
           }
-          {renderSubWarning && !!formationPositions.length &&
+          {renderSubWarning &&
             <li className="bench__player-option bench__sub-warning">
               <span>SUBS NEEDED</span>
               <IconButton onClick={() => renderSubFormFromBench(true)} type="add"/>
@@ -90,16 +103,18 @@ const Bench = ({ renderSubFormFromBench }) => {
           }
         </ul>
       </div>
-      <div className="unavailable-list">
+      <div className="unavailable-list" aria-label="Unavailable players">
         <header className="bench__header">
           <h3 className="bench__subtitle unavailable">Unavailable</h3>
         </header>
-        { !!unavailable.length && (
-          <ul className="bench__player-list">
+        { unavailable.length > 0 && (
+          <ul className="bench__player-list" ref={unavailablePlayersRef}>
             { unavailable.map((player) =>
               <li className="bench__player-option unavailable" key={player.name}>
                 {player.name}
-                <IconButton onClick={() => addPlayer(player)} type="add"/>
+                <IconButton className={calculateButtonClassName(player.name, 'add')}
+                            onClick={() => addPlayer(player)}
+                            type="add"/>
               </li>
             )}
           </ul>
@@ -110,7 +125,7 @@ const Bench = ({ renderSubFormFromBench }) => {
 }
 
 Bench.propTypes = {
-  renderSubFormFromBench: PropTypes.func
+  renderSubFormFromBench: PropTypes.func.isRequired
 };
 
 export default Bench;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
@@ -10,16 +10,7 @@ import { PlayersContext } from '../contexts/PlayersContext';
 import { updateAvailablePlayers } from '../util/playerUtils';
 
 const PlayerPositions = ({ position, renderSubForm, jersey }) => {
-	// We still want to parse the availablePlayers array into preferred positions to
-	// make the choice easier of which player should go where
-	const [preferredPlayers, setPreferredPlayers] = useState([]),
-		[backupPlayers, setBackupPlayers] = useState([]),
-    { availablePlayers } = useContext(PlayersContext),
-    dropdownOptions = preferredPlayers.length
-      ? preferredPlayers
-      : backupPlayers.length
-        ? backupPlayers
-        : [];
+  const { availablePlayers } = useContext(PlayersContext);
 
 	const labelId = `field-position-${position}`;
   const jerseyImg = jersey.dropdownValue === 'away' ? JerseyWhite : JerseyRed;
@@ -27,20 +18,30 @@ const PlayerPositions = ({ position, renderSubForm, jersey }) => {
     away: jersey.dropdownValue === 'away'
   });
 
-	useEffect(() => {
-		setPreferredPlayers(availablePlayers.filter((player) =>
-      player.position.includes(position)));
-		setBackupPlayers(availablePlayers.filter((player) => player.backupPosition === position));
-	}, [position, availablePlayers])
+  const getDropdownOptions = () => {
+    // We still want to parse the availablePlayers array into preferred positions to
+    // make the choice easier of which player should go where
+    const preferred = availablePlayers.filter(player => player.position.includes(position));
+    if (preferred.length) {
+      return preferred.map((player) => ({ ...player, dropdownValue: player.name }));
+    } else {
+      const backup = availablePlayers.filter(player => player.backupPosition === position);
+      if (backup.length) {
+        return backup.map((player) => ({ ...player, dropdownValue: player.name }));
+      } else {
+        return [];
+      }
+    }
+  }
 
 	return (
     <div className="field-position">
       <div className="field-position__icon-container">
-        <img src={jerseyImg} alt="" className="field-position__icon"/>
+        <img role="presentation" src={jerseyImg} className="field-position__icon"/>
         <p className={titleClassName} id={labelId}>{position}</p>
         <Dropdown updateSelected={updateAvailablePlayers}
                   labelId={labelId}
-                  options={dropdownOptions.map((opt) => ({ ...opt, dropdownValue: opt.name }))}
+                  options={getDropdownOptions()}
                   renderSubForm={renderSubForm}
                   position={position}
                   selectionType="position"/>
@@ -52,7 +53,9 @@ const PlayerPositions = ({ position, renderSubForm, jersey }) => {
 PlayerPositions.propTypes = {
   position: PropTypes.string,
   renderSubForm: PropTypes.func,
-  jersey: PropTypes.string
+  jersey: PropTypes.shape({
+    dropdownValue: PropTypes.string
+  })
 };
 
 export default PlayerPositions;
