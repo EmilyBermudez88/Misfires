@@ -35,18 +35,18 @@ const PlayerPositions = ({ position, renderSubForm, jersey }) => {
   }
 
 	return (
-    <div className="field-position">
-      <div className="field-position__icon-container">
-        <img role="presentation" src={jerseyImg} className="field-position__icon"/>
-        <p className={titleClassName} id={labelId}>{position}</p>
-        <Dropdown updateSelected={updateAvailablePlayers}
-                  labelId={labelId}
-                  options={getDropdownOptions()}
-                  renderSubForm={renderSubForm}
-                  position={position}
-                  selectionType="position"/>
-      </div>
+  <div className="field-position">
+    <div className="field-position__icon-container">
+      <img role="presentation" src={jerseyImg} className="field-position__icon"/>
+      <p className={titleClassName} id={labelId}>{position}</p>
+      <Dropdown updateSelected={updateAvailablePlayers}
+                labelId={labelId}
+                options={getDropdownOptions()}
+                renderSubForm={renderSubForm}
+                position={position}
+                selectionType="position"/>
     </div>
+  </div>
 	);
 };
 
