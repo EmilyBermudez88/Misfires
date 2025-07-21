@@ -56,7 +56,10 @@ dialog::backdrop {
     padding: var(--spacing-base) var(--spacing-2x);
     border: 1px solid var(--button-border);
     border-radius: var(--border-radius);
-    font-weight: bold;
+
+    &--submit {
+      font-weight: 600;
+    }
 
     &:last-child {
       margin-right: 0;
@@ -105,6 +108,8 @@ dialog::backdrop {
   &__select {
     padding: var(--spacing-base);
     border: 1px solid var(--border-color);
+    font-family: "Inter", "sans-serif";
+    font-weight: 300;
 
     &--invalid {
       border-color: var(--alert-message);

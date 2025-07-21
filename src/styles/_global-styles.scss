@@ -3,8 +3,11 @@
 body {
   background-color: var(--app-background);
   text-align: center;
+  font-family: "Inter", sans-serif;
   font-size: var(--font-regular);
+  font-weight: 400;
   box-sizing: border-box;
+  margin: 0;
 }
 
 .app {
@@ -36,7 +39,7 @@ body {
   z-index: 15;
 
   &__warning {
-    @include mixins.bench-titles;
+    @include mixins.title-text;
     animation: fade-in-out 1500ms 50 ease-in alternate;
 
     span {
@@ -73,9 +76,7 @@ body {
   }
 
   &__title-text {
-    font-family: 'Michroma', 'sans-serif';
-    font-size: var(--font-h1);
-    margin: var(--spacing-6x) 0;
+    @include mixins.title-text(var(--font-h1), var(--spacing-6x));
   }
 
   &__image {

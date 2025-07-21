@@ -1,7 +1,7 @@
-@mixin bench-titles($font-size: var(--font-large)) {
+@mixin title-text($font-size: var(--font-large), $margin-top-bottom: var(--spacing-2x)) {
   font-family: 'Michroma', sans-serif;
   font-size: $font-size;
-  margin: var(--spacing-2x) 0;
+  margin: $margin-top-bottom 0;
 }
 
 @mixin adjustBlackOpacity($opacity) {

@@ -1,4 +1,4 @@
-    .dropdown {
+.dropdown {
   display: flex;
   align-items: center;
   background: var(--white);
@@ -24,6 +24,10 @@
     border: none;
     border-radius: 4px;
 
+    &:not(.unselected) {
+      font-weight: 500;
+    }
+  
     &:focus,
     &:focus-visible {
       outline: var(--border);
@@ -54,7 +58,7 @@
           width: 100%;
           padding: var(--spacing-base) 0;
           background: var(--unavailable-list-background);
-          font-weight: bold;
+          font-weight:600;
         }
         
         &__button--warning {
@@ -90,6 +94,14 @@
     &:hover {
       background: var(--button-background-hover);
     }
+  }
+
+  //user agent stylesheet overriding default font, so re-defining here
+  &__button--main,
+  &__value,
+  &__button--warning {
+    font-family: "Inter", sans-serif;
+    font-weight: 300;
   }
 }
 

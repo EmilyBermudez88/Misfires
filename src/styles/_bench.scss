@@ -9,11 +9,11 @@
   text-align: left;
 
   &__title {
-    @include mixins.bench-titles(var(--font-xlarge));
+    @include mixins.title-text(var(--font-xlarge));
   }
 
   &__subtitle {
-    @include mixins.bench-titles;
+    @include mixins.title-text;
     text-align: right;
   }
 
@@ -46,6 +46,7 @@
       width: 120px;
       background-color: var(--unavailable-list-background);
       font-size: var(--font-small);
+      font-weight: 300;
       color: var(--unavailable-player-text);
 
       .icon-button {
@@ -75,7 +76,11 @@
   }
 
   &__player-name {
-    font-weight: bold;
+    font-weight: 500;
+  }
+
+  &__player-position {
+    font-weight: 200;
   }
 
   &__position-container {

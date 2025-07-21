@@ -12,8 +12,6 @@ import playerDataSet from './util/playerDataSet';
 import { FormationContext } from './contexts/FormationContext';
 import { PlayersContext } from './contexts/PlayersContext';
 
-import './styles/_base.scss';
-
 function App() {
   const [availablePlayers, setAvailablePlayers] = useState(playerDataSet),
     [renderForm, setRenderForm] = useState(false),
@@ -40,7 +38,8 @@ function App() {
 		const children= []
 		for (let i = 0; i < num; i++) {
       const goalie = definePosition('goalie', i);
-      children.push(<PlayerPositions position={goalie}
+      children.push(<PlayerPositions key="goalie"
+                                     position={goalie}
                                      renderSubForm={renderSubForm}
                                      jersey={jerseyColour} />);
 		}
@@ -52,14 +51,16 @@ function App() {
 		if (num === 3) {
       for (let i = 0; i < num; i++) {
         const defense = definePosition('defense', i);
-				children.push(<PlayerPositions position={defense}
+				children.push(<PlayerPositions key={`defense-${i}`}
+                                   position={defense}
                                    renderSubForm={renderSubForm}
                                    jersey={jerseyColour}/>);
 			}
 		} else {
       for (let i = 0; i < num; i++) {
         const defense = definePosition('defense', 1);
-        children.push(<PlayerPositions position={defense}
+        children.push(<PlayerPositions key={`defense-${i}`}
+                                       position={defense}
                                        renderSubForm={renderSubForm}
                                        jersey={jerseyColour}/>);
       }
@@ -71,14 +72,16 @@ function App() {
 		const children = []
 		if (num === 1) {
       const midfield = definePosition('midfield', num);
-			children.push(<PlayerPositions position={midfield}
+			children.push(<PlayerPositions key="midfield"
+                                  position={midfield}
                                   renderSubForm={renderSubForm}
                                   jersey={jerseyColour}/>);
 		}
 		else if (num === 2) {
 			for (let i = 0; i <= num; i = i + 2) {
         const midfield = definePosition('midfield', i);
-				children.push(<PlayerPositions position={midfield}
+				children.push(<PlayerPositions key={`midfield-${i}`}
+                                   position={midfield}
                                    renderSubForm={renderSubForm}
                                    jersey={jerseyColour}/>);
 			}
@@ -86,7 +89,8 @@ function App() {
 		else {
 			for (let i = 0; i < num; i++) {
         const midfield = definePosition('midfield', i);
-				children.push(<PlayerPositions position={midfield}
+				children.push(<PlayerPositions key={`midfield-${i}`}
+                                   position={midfield}
                                    renderSubForm={renderSubForm}
                                    jersey={jerseyColour}/>);
 			}
@@ -98,7 +102,8 @@ function App() {
 		const children = []
 		for (let i = 0; i < num; i++) {
       const attack = definePosition('attack', i);
-			children.push(<PlayerPositions position={attack}
+			children.push(<PlayerPositions key={`attack-${i}`}
+                                  position={attack}
                                   renderSubForm={renderSubForm}
                                   jersey={jerseyColour}/>);
 		}
