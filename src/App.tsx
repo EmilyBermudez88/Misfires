@@ -7,34 +7,38 @@ import PlayerPositions from './components/PlayerPositions';
 import AddSubForm from './components/AddSubForm';
 import FieldLayout from './assets/fieldLayout.png';
 
-import { positions } from './util/lineupData';
-import playerDataSet from './util/playerDataSet';
-import { FormationContext } from './contexts/FormationContext';
+import { positions, LineType } from './util/lineupData';
+import playerDataSet, { PlayerType } from './util/playerDataSet';
+import { FormationContext, FormationContextType } from './contexts/FormationContext';
 import { PlayersContext } from './contexts/PlayersContext';
 
+type JerseyColorType = 'home' | 'away';
+interface JerseyColour {
+  dropdownValue: JerseyColorType;
+}
+
 function App() {
-  const [availablePlayers, setAvailablePlayers] = useState(playerDataSet),
+  const [availablePlayers, setAvailablePlayers] = useState<PlayerType[]>(playerDataSet),
     [renderForm, setRenderForm] = useState(false),
     [selectedPosition, setSelectedPosition] = useState(''),
-    [jerseyColour, setJerseyColour] = useState({ dropdownValue: 'home' }),
-    [formation, setFormation] = useState([]);
+    [jerseyColour, setJerseyColour] = useState<JerseyColour>({ dropdownValue: 'home' }),
+    [formation, setFormation] = useState<number[]>([]);
   const fieldLineClassNames = classnames('field__line', {
     spread: formation.length < 4
   });
 
-  let formationPositions = [];
-  const definePosition = (line, idx) => {
-    for (const prop in positions) {
-      if (prop === line) {
-        if (!formationPositions.includes(positions[prop][idx])) {
-          formationPositions.push(positions[prop][idx]);
-        }
-        return positions[prop][idx]
-      }
+  const formationPositions: string[] = [];
+
+  const definePosition = (line: LineType, idx: number) => {
+    const positionName = positions[line][idx];
+    if (!formationPositions.includes(positionName)) {
+      formationPositions.push(positionName);
     }
+    return positionName;
+
   }
 
-	const renderGoalie = (num) => {
+	const renderGoalie = (num: number): React.JSX.Element[] => {
 		const children= []
 		for (let i = 0; i < num; i++) {
       const goalie = definePosition('goalie', i);
@@ -46,7 +50,7 @@ function App() {
 		return children;
 	}
 
-	const renderDefense = (num) => {
+	const renderDefense = (num: number): React.JSX.Element[] => {
 		const children = []
 		if (num === 3) {
       for (let i = 0; i < num; i++) {
@@ -67,8 +71,7 @@ function App() {
     }
 		return children;
 	}
-
-	const renderMidfield = (num) => {
+	const renderMidfield = (num: number): React.JSX.Element[] => {
 		const children = []
 		if (num === 1) {
       const midfield = definePosition('midfield', num);
@@ -98,7 +101,7 @@ function App() {
 		return children;
 	}
 
-	const renderAttack = (num) => {
+	const renderAttack = (num: number): React.JSX.Element[] => {
 		const children = []
 		for (let i = 0; i < num; i++) {
       const attack = definePosition('attack', i);
@@ -110,13 +113,13 @@ function App() {
 		return children;
 	}
 
-  const renderSubForm = (show, position) => {
+  const renderSubForm = (show: boolean, position: string | undefined): void => {
     setRenderForm(show);
     position ? setSelectedPosition(position): setSelectedPosition('');
   };
 
   const playersContext = { availablePlayers, setAvailablePlayers, formationPositions };
-  const formationContext = { formation }
+  const formationContext: FormationContextType = { formation }
 
   return (
     <>
@@ -140,7 +143,7 @@ function App() {
                     }
                 </div>
               </div>
-              <Bench renderSubFormFromBench={renderSubForm} formation={formation}/>
+              <Bench renderSubFormFromBench={renderSubForm}/>
             </FormationContext.Provider>
           </PlayersContext.Provider>
         </main>

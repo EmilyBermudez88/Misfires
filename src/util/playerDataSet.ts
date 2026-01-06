@@ -1,13 +1,20 @@
-const players = [
+export interface PlayerType {
+	name: string;
+	position: string[];
+	backupPosition?: string;
+	sub?: boolean;
+}
+
+const playerDataSet = [
 	{
 		name: 'German',
 		position: ['LB', 'RB', 'CB'],
-		backupPosition: ''
+		backupPosition: undefined
 	},
 	{
 		name: 'Andrew',
 		position: ['GK', 'CB'],
-		backupPosition: ''
+		backupPosition: undefined
 	},
 	{
 		name: 'Omar',
@@ -82,8 +89,8 @@ const players = [
   {
     name: 'Liam',
     position: ['GK'],
-    backupPosition:''
+    backupPosition: undefined
   }
 ];
 
-export default players;
+export default playerDataSet;

@@ -1,60 +1,70 @@
-  import React, { useState, useRef, useContext, useEffect } from 'react';
-  import PropTypes from 'prop-types';
-  import classnames from 'classnames';
+import React, { useState, useRef, useContext, useEffect } from 'react';
+import classnames from 'classnames';
 
-  import IconButton from './IconButton';
-  import Select from './Select';
-  import Toggle from './Toggle';
+import IconButton from './IconButton';
+import Select from './Select';
+import Toggle from './Toggle';
 
-  import { updateAvailablePlayers, calculateButtonClassName } from '../util/playerUtils';
-  import { PlayersContext } from '../contexts/PlayersContext';
-  import { FormationContext } from '../contexts/FormationContext';
+import { updateAvailablePlayers } from '../util/playerUtils';
+import { PlayerType } from '../util/playerDataSet';
+import { PlayersContext } from '../contexts/PlayersContext';
+import { FormationContext } from '../contexts/FormationContext';
 
-const Bench = ({ renderSubFormFromBench }) => {
-  const [unavailable, setUnavailable] = useState([]);
+interface BenchProps {
+  renderSubFormFromBench: (show: boolean, position?: string) => void;
+}
+
+const Bench = ({ renderSubFormFromBench }: BenchProps) => {
+  const [unavailable, setUnavailable] = useState<PlayerType[]>([]);
   const [showPlayerPosition, setShowPlayerPosition] = useState(false);
   const [playerToEdit, setPlayerToEdit] = useState('');
+
   const { setAvailablePlayers, availablePlayers } = useContext(PlayersContext);
   const { formation } = useContext(FormationContext);
 
   const renderSubWarning = availablePlayers.length < 4;
 
-  const benchedPlayersRef = useRef(null);
-  const unavailablePlayersRef = useRef(null);
-
   const benchPositionClassnames = classnames('bench__position-container', {
     hidden: !showPlayerPosition
   });
 
-  const handleFocusChange = (action, playerName, buttonSelector) => {
-    const listRef = action === 'add' ? unavailablePlayersRef : benchedPlayersRef;
-    const removeButtons = Array.from(listRef.current?.querySelectorAll(buttonSelector)) || [];
-    const removedBtnIdx = removeButtons.findIndex((el) =>
-      el.classList.contains(calculateButtonClassName(playerName, action)));
+  const buttonRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
+  const setButtonRef = (key: string, el: HTMLButtonElement | null) => {
+      if (el) {
+        buttonRefs.current.set(key, el);
+      } else {
+        buttonRefs.current.delete(key);
+      }
+    }
 
+  const handleFocusChange = (playerName: string, playerList: PlayerType[]): void => {
+    const btnIdx = playerList.findIndex(player => player.name === playerName);
     //If button is last in array, focus on the previous button. Otherwise, focus on next button
-    const buttonToFocus =
-      removedBtnIdx === removeButtons.length - 1
-        ? removeButtons[removeButtons.length - 2]
-        : removeButtons[removedBtnIdx + 1];
+    const nextPlayer =
+      btnIdx === playerList.length - 1
+        ? playerList[btnIdx - 1]
+        : playerList[btnIdx + 1];
 
-    if (buttonToFocus) {
-      buttonToFocus.focus();
+    console.log(btnIdx, nextPlayer);
+
+    if (nextPlayer) {
+     const btnToFocus = buttonRefs.current.get(nextPlayer.name);
+     btnToFocus?.focus();
     }
   }
 
-  const removePlayer = (removedPlayer) => {
+  const removePlayer = (removedPlayer: PlayerType) => {
+    handleFocusChange(removedPlayer.name, availablePlayers);
     setAvailablePlayers(prev => updateAvailablePlayers(prev, { action: 'remove', player: removedPlayer }));
     if (!removedPlayer.sub) {
-      setUnavailable(prevUnavailable => [...prevUnavailable, removedPlayer]);
+      setUnavailable(prev => [...prev, removedPlayer]);
     }
-    handleFocusChange('remove', removedPlayer.name, '.icon-button:not(.icon-button--update)');
   }
 
-  const addPlayer = (addedPlayer) => {
+  const addPlayer = (addedPlayer: PlayerType) => {
+    handleFocusChange(addedPlayer.name, unavailable);
     setAvailablePlayers(prev => updateAvailablePlayers(prev, { action: 'add', player: addedPlayer }));
     setUnavailable(unavailable.filter((player) => player.name !== addedPlayer.name));
-    handleFocusChange('add', addedPlayer.name, '.icon-button--add');
   }
 
   useEffect(() => {
@@ -66,7 +76,7 @@ const Bench = ({ renderSubFormFromBench }) => {
       <h2 className="bench__title">Bench</h2>
       <div className="available-list">
         <Toggle showValue={showPlayerPosition} setShowValue={setShowPlayerPosition}/>
-        <ul ref={benchedPlayersRef} className="bench__player-list">
+        <ul className="bench__player-list">
           {
             availablePlayers.map((player) =>
               <li className="bench__player-option" key={player.name}>
@@ -75,7 +85,7 @@ const Bench = ({ renderSubFormFromBench }) => {
                   <Select player={player} edit={player.name === playerToEdit} handleSelection={setPlayerToEdit}/>
                   <IconButton onClick={() => setPlayerToEdit(player.name)} type="update"/>
                 </span>
-                <IconButton className={calculateButtonClassName(player.name, 'remove')}
+                <IconButton ref={(el) => setButtonRef(player.name, el)}
                             onClick={() => removePlayer(player)}
                             type="remove"/>
               </li>)
@@ -93,11 +103,11 @@ const Bench = ({ renderSubFormFromBench }) => {
           <h3 className="bench__subtitle unavailable">Unavailable</h3>
         </header>
         { unavailable.length > 0 && (
-          <ul className="bench__player-list" ref={unavailablePlayersRef}>
+          <ul className="bench__player-list">
             { unavailable.map((player) =>
               <li className="bench__player-option unavailable" key={player.name}>
                 {player.name}
-                <IconButton className={calculateButtonClassName(player.name, 'add')}
+                <IconButton ref={(el) => setButtonRef(player.name, el)}
                             onClick={() => addPlayer(player)}
                             type="add"/>
               </li>
@@ -108,9 +118,5 @@ const Bench = ({ renderSubFormFromBench }) => {
     </section>
   )
 }
-
-Bench.propTypes = {
-  renderSubFormFromBench: PropTypes.func.isRequired
-};
 
 export default Bench;

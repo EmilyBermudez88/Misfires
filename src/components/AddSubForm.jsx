@@ -6,6 +6,7 @@ import { updateAvailablePlayers, calculateButtonClassName } from '../util/player
 
 const AddSubForm =
 ({ setAvailablePlayers, selectedPosition, formationPositions, openModal, closeModal }) => {
+  console.log('passed along', formationPositions)
   const defaultPosition = selectedPosition ? selectedPosition : '';
   const [addSub, setAddSub] = useState({ name:'', position: defaultPosition, sub: null });
   const [renderValidationError, setRenderValidationError] = useState(false);

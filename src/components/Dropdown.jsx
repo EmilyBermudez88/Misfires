@@ -203,7 +203,7 @@ const Dropdown = ({ updateSelected, options, labelId, renderSubForm, position, s
           )}
           {showCaret && <FontAwesomeIcon icon={open ? faAngleUp : faAngleDown} className="dropdown-caret" />}
         </button>
-        {showCancelButton && <IconButton onClick={handleClear} type="clear selected"/>}
+        {showCancelButton && <IconButton onClick={handleClear} type="clear"/>}
       </div>
       { open &&
         <ul ref={dropdownRef} className="dropdown__menu" role="listbox" id={menuId}>

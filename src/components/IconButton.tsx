@@ -1,10 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { forwardRef } from 'react';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faPlus, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
-const IconButton = ({ type, onClick, className }) => {
+interface IconButtonProps {
+  type: 'add' | 'remove' | 'update' | 'clear';
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  className?: string;
+}
+
+const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(({ type, onClick, className }, ref) => {
   const icon = type === 'add'
     ? faPlus
     : type === 'update'
@@ -18,16 +23,10 @@ const IconButton = ({ type, onClick, className }) => {
     });
 
   return (
-    <button className={buttonClassNames} onClick={onClick} aria-label={label}>
+    <button ref={ref} className={buttonClassNames} onClick={onClick} aria-label={label}>
       <FontAwesomeIcon className="icon-button__icon"icon={icon}/>
     </button>
   )
-}
-
-IconButton.propTypes = {
-  type: PropTypes.string,
-  onClick: PropTypes.func,
-  className: PropTypes.string
-};
+});
 
 export default IconButton;
