@@ -15,8 +15,9 @@ interface AddSubFormProps {
 
 const AddSubForm =
 ({ setAvailablePlayers, selectedPosition, formationPositions, openModal, closeModal }: AddSubFormProps) => {
+  const defaultPosition = selectedPosition || '';
   const [subName, setSubName] = useState('');
-  const [subPosition, setSubPosition] = useState<AvailablePositions | ''>(selectedPosition || '');
+  const [subPosition, setSubPosition] = useState<AvailablePositions | ''>(defaultPosition);
   const [renderValidationError, setRenderValidationError] = useState(false);
 
   const dialogEl = useRef<HTMLDialogElement>(null);

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Dropdown2 from './Dropdown2';
+import Dropdown from './Dropdown';
 import { formations } from '../util/lineupData';
 
 interface DropdownProps {
@@ -14,7 +14,7 @@ const TeamFormationDropdown = ({ chooseFormation, selectedFormation }: DropdownP
 	return (
   <div className= "dropdown--formation">
     <label htmlFor="dropdown" id={labelId}>Choose a formation:</label>
-    <Dropdown2 labelId={labelId}
+    <Dropdown labelId={labelId}
               options={formations}
               selectedValue={selectedFormation}
               onSelect={chooseFormation}

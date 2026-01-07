@@ -1,24 +1,21 @@
 import React, { useState, useId, useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 
 import IconButton from './IconButton';
-import { JerseyColourType } from '../App';
-
-export type DropdownOption = JerseyColourType | string;
 
 interface DropdownProps {
-  options: DropdownOption[];
-  onSelect: (option: DropdownOption) => void;
-  selectedValue?: string;
+  options: string[];
+  onSelect: (option: string) => void;
+  selectedValue?: string | null;
   placeholder: string;
   labelId: string;
   className?: string;
-  showCaret?: boolean;
-  emptyState?: React.ReactNode; // Custom UI when options are empty (e.g., "Add Sub")
   autoFocus?: boolean;
+  emptyState?: React.ReactElement; // Custom UI when no available players
+  renderResetBtn?: boolean;
+  reset?: () => void;
 }
 
 const Dropdown = ({ options,
@@ -27,9 +24,10 @@ const Dropdown = ({ options,
     placeholder,
     labelId,
     className,
-    showCaret = true,
     emptyState,
-    autoFocus
+    autoFocus,
+    renderResetBtn,
+    reset
   }: DropdownProps) => {
   const [open, setOpen] = useState(false);
   const [visualSelectionIndex, setVisualSelectionIndex] = useState<number | null>(null);
@@ -40,20 +38,8 @@ const Dropdown = ({ options,
   const menuRef = useRef<HTMLUListElement>(null);
   const ref = useRef<HTMLDivElement>(null);
 
-  // const selectionMade = Object.keys(userSelection).length > 0;
-  // const defaultDropdownVal = selectionType === 'formation'
-  //     ? 'select formation'
-  //     : selectionType === 'position'
-  //       ? 'select player'
-  //       : 'home';
   const activeDescendent = visualSelectionIndex?.toString() || undefined;
   const openKeys = [' ', 'ArrowDown', 'ArrowUp', 'Enter', 'Home', 'End'];
-  // We don't want to ever 'clear' the Jersey colour, so never render a closeBtn
-  // const showCancelButton = selectionType === 'position' && selectionMade;
-
-  // const buttonClassNames = classNames('dropdown__button--main', {
-  //   'unselected': selectionType === 'position' && !selectionMade
-  // });
 
   const handleBlur=(e: React.FocusEvent<HTMLDivElement>) => {
     if (!ref.current?.contains(e.relatedTarget as Node)) {
@@ -61,11 +47,17 @@ const Dropdown = ({ options,
     }
   }
 
-  const handleSelection = (option: DropdownOption) => {
-    console.log(option);
+  const handleSelection = (option: string) => {
     onSelect(option);
     setVisualSelectionIndex(null);
     setOpen(false);
+    handleFocus();
+  }
+
+  const handleReset = () => {
+    if (reset) {
+      reset();
+    }
     handleFocus();
   }
 
@@ -176,9 +168,9 @@ const Dropdown = ({ options,
                 onFocus={handleFocus}
               >
           <span>{selectedValue || placeholder}</span>
-          {showCaret && <FontAwesomeIcon icon={open ? faAngleUp : faAngleDown} className="dropdown-caret" />}
+          {!renderResetBtn && <FontAwesomeIcon icon={open ? faAngleUp : faAngleDown} className="dropdown-caret" />}
         </button>
-        {/* {showCancelButton && <IconButton onClick={handleClear} type="clear"/>} */}
+        {renderResetBtn && reset && <IconButton onClick={handleReset} type="remove"/>}
       </div>
       { open &&
         <ul ref={menuRef} className="dropdown__menu" role="listbox" id={menuId}>
@@ -197,28 +189,11 @@ const Dropdown = ({ options,
             ) : (
               emptyState
             )
-            // // Only relevant to Player dropdown
-            // <li role="option" className="dropdown__option--warning">
-            //   <span className="dropdown__value">NO ONE AVAILABLE</span>
-            //   <button className="dropdown__button--warning sub-form__button"
-            //           onClick={() => renderSubForm(true, position)}>
-            //     Add Sub
-            //   </button>
-            // </li>
           }
         </ul>
        }
     </div>
   )
-}
-
-Dropdown.propTypes = {
-  options: PropTypes.array,
-  labelId: PropTypes.string,
-  updateSelected: PropTypes.func,
-  renderSubForm: PropTypes.func,
-  position: PropTypes.string,
-  selectionType: PropTypes.string
 }
 
 export default Dropdown;

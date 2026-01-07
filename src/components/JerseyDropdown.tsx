@@ -1,5 +1,5 @@
-import React, { Dispatch, SetStateAction } from 'react';
-import Dropdown2 from './Dropdown2';
+import React from 'react';
+import Dropdown from './Dropdown';
 import { JerseyColourType } from '../App';
 
 interface DropdownProps {
@@ -14,7 +14,7 @@ const JerseyColourDropdown = ({ chooseJersey, jerseyColour }: DropdownProps) => 
 	return (
   <div className= "dropdown--jersey">
     <label htmlFor="dropdown" id={labelId}>Choose Jersey:</label>
-    <Dropdown2 labelId={labelId}
+    <Dropdown labelId={labelId}
               options={options}
               selectedValue={jerseyColour}
               onSelect={(option) => chooseJersey(option as JerseyColourType)}

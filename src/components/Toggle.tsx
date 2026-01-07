@@ -1,7 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const Toggle = ({ showValue, setShowValue }) => {
+interface ToggleProps {
+  showValue: boolean;
+  setShowValue: (value: boolean) => void;
+}
+
+const Toggle = ({ showValue, setShowValue }: ToggleProps) => {
   const toggleText = showValue ? 'Hide Positions' : 'Show Positions';
   return (
     <div className="toggle-label-container">
@@ -19,11 +23,6 @@ const Toggle = ({ showValue, setShowValue }) => {
       </label>
     </div>
   )
-};
-
-Toggle.propTypes = {
-  setShowValue: PropTypes.func.isRequired,
-  showValue: PropTypes.bool.isRequired
 };
 
 export default Toggle;

@@ -5,7 +5,7 @@ import { faXmark, faPlus, faPenToSquare } from '@fortawesome/free-solid-svg-icon
 
 interface IconButtonProps {
   type: 'add' | 'remove' | 'update' | 'clear';
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick: () => void;
   className?: string;
 }
 
