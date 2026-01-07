@@ -9,20 +9,19 @@ import FieldLayout from './assets/fieldLayout.png';
 
 import { positions, LineType, AvailablePositions } from './util/lineupData';
 import playerDataSet, { PlayerType } from './util/playerDataSet';
-import { FormationContext, FormationContextType } from './contexts/FormationContext';
+import { FormationContext } from './contexts/FormationContext';
 import { PlayersContext } from './contexts/PlayersContext';
 
-type JerseyColorType = 'home' | 'away';
-interface JerseyColour {
-  dropdownValue: JerseyColorType;
-}
+export type JerseyColourType = 'home' | 'away';
 
 function App() {
   const [availablePlayers, setAvailablePlayers] = useState<PlayerType[]>(playerDataSet),
     [renderForm, setRenderForm] = useState(false),
     [selectedPosition, setSelectedPosition] = useState<AvailablePositions | null>(null),
-    [jerseyColour, setJerseyColour] = useState<JerseyColour>({ dropdownValue: 'home' }),
-    [formation, setFormation] = useState<number[]>([]);
+    [jerseyColour, setJerseyColour] = useState<JerseyColourType>('home'),
+    [formation, setFormation] = useState<number[]>([]),
+    [formationString, setFormationString] = useState<string>('');
+
   const fieldLineClassNames = classnames('field__line', {
     spread: formation.length < 4
   });
@@ -119,7 +118,7 @@ function App() {
   };
 
   const playersContext = { availablePlayers, setAvailablePlayers, formationPositions };
-  const formationContext: FormationContextType = { formation }
+  const formationContext = { formation, formationString, setFormation, setFormationString };
 
   return (
     <>
@@ -127,7 +126,10 @@ function App() {
         <main className="app__main">
           <HeroSection setJerseyColour={setJerseyColour}
                        setFormation={setFormation}
-                       setAvailablePlayers={setAvailablePlayers}/>
+                       setFormationString={setFormationString}
+                       setAvailablePlayers={setAvailablePlayers}
+                       formationString={formationString}
+                       jerseyColour={jerseyColour}/>
           <PlayersContext.Provider value={playersContext} >
             <FormationContext.Provider value={formationContext}>
               <div className="field">

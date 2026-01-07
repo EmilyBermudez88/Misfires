@@ -26,7 +26,6 @@ const Select = ({ player, edit, handleSelection }: SelectProps) => {
     }
     handlePositions();
   }, [player]);
-  
 
   useEffect(() => {
     edit && selectRef.current?.focus();

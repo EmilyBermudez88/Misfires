@@ -1,10 +1,10 @@
-export const formations = [
-    { dropdownValue: '1 - 2 - 3 - 1' },
-    { dropdownValue: '1 - 2 - 2 - 2' },
-    { dropdownValue: '1 - 2 - 1 - 3' },
-    { dropdownValue: '1 - 3 - 1 - 2' },
-    { dropdownValue: '1 - 3 - 2 - 1' },
-    { dropdownValue: '1 - 3 - 3' }
+export const formations = [ 
+    '1 - 2 - 3 - 1',
+    '1 - 2 - 2 - 2',
+    '1 - 2 - 1 - 3',
+    '1 - 3 - 1 - 2',
+    '1 - 3 - 2 - 1',
+    '1 - 3 - 3'
 ];
 
 export type LineType = 'goalie' | 'defense' | 'midfield' | 'attack';
