@@ -1,20 +1,20 @@
+import { AvailablePositions } from './lineupData';
+
 export interface PlayerType {
 	name: string;
-	position: string[];
-	backupPosition?: string;
+	position: AvailablePositions[];
+	backupPosition?: AvailablePositions;
 	sub?: boolean;
 }
 
-const playerDataSet = [
+const playerDataSet: PlayerType[] = [
 	{
 		name: 'German',
-		position: ['LB', 'RB', 'CB'],
-		backupPosition: undefined
+		position: ['LB', 'RB', 'CB']
 	},
 	{
 		name: 'Andrew',
-		position: ['GK', 'CB'],
-		backupPosition: undefined
+		position: ['GK', 'CB']
 	},
 	{
 		name: 'Omar',
@@ -86,11 +86,10 @@ const playerDataSet = [
 		position: ['LW', 'CM'],
 		backupPosition: 'CF'
 	},
-  {
-    name: 'Liam',
-    position: ['GK'],
-    backupPosition: undefined
-  }
+	{
+		name: 'Liam',
+		position: ['GK']
+	}
 ];
 
-export default playerDataSet;
+	export default playerDataSet;

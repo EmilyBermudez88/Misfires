@@ -7,7 +7,7 @@ import PlayerPositions from './components/PlayerPositions';
 import AddSubForm from './components/AddSubForm';
 import FieldLayout from './assets/fieldLayout.png';
 
-import { positions, LineType } from './util/lineupData';
+import { positions, LineType, AvailablePositions } from './util/lineupData';
 import playerDataSet, { PlayerType } from './util/playerDataSet';
 import { FormationContext, FormationContextType } from './contexts/FormationContext';
 import { PlayersContext } from './contexts/PlayersContext';
@@ -20,14 +20,14 @@ interface JerseyColour {
 function App() {
   const [availablePlayers, setAvailablePlayers] = useState<PlayerType[]>(playerDataSet),
     [renderForm, setRenderForm] = useState(false),
-    [selectedPosition, setSelectedPosition] = useState(''),
+    [selectedPosition, setSelectedPosition] = useState<AvailablePositions | null>(null),
     [jerseyColour, setJerseyColour] = useState<JerseyColour>({ dropdownValue: 'home' }),
     [formation, setFormation] = useState<number[]>([]);
   const fieldLineClassNames = classnames('field__line', {
     spread: formation.length < 4
   });
 
-  const formationPositions: string[] = [];
+  const formationPositions: AvailablePositions[] = [];
 
   const definePosition = (line: LineType, idx: number) => {
     const positionName = positions[line][idx];
@@ -113,9 +113,9 @@ function App() {
 		return children;
 	}
 
-  const renderSubForm = (show: boolean, position: string | undefined): void => {
+  const renderSubForm = (show: boolean, position: AvailablePositions | undefined): void => {
     setRenderForm(show);
-    position ? setSelectedPosition(position): setSelectedPosition('');
+    position ? setSelectedPosition(position): setSelectedPosition(null);
   };
 
   const playersContext = { availablePlayers, setAvailablePlayers, formationPositions };

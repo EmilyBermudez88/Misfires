@@ -1,114 +1,128 @@
 import React, { useState, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import { updateAvailablePlayers, calculateButtonClassName } from '../util/playerUtils';
+import { PlayerType } from '../util/playerDataSet';
+import { AvailablePositions } from '../util/lineupData';
+
+interface AddSubFormProps {
+  setAvailablePlayers: React.Dispatch<React.SetStateAction<PlayerType[]>>;
+  selectedPosition?: AvailablePositions | null;
+  formationPositions: AvailablePositions[];
+  openModal: boolean;
+  closeModal: () => void;
+}
 
 const AddSubForm =
-({ setAvailablePlayers, selectedPosition, formationPositions, openModal, closeModal }) => {
-  console.log('passed along', formationPositions)
-  const defaultPosition = selectedPosition ? selectedPosition : '';
-  const [addSub, setAddSub] = useState({ name:'', position: defaultPosition, sub: null });
+({ setAvailablePlayers, selectedPosition, formationPositions, openModal, closeModal }: AddSubFormProps) => {
+  const [subName, setSubName] = useState('');
+  const [subPosition, setSubPosition] = useState<AvailablePositions | ''>(selectedPosition || '');
   const [renderValidationError, setRenderValidationError] = useState(false);
 
-  const dialogEl = useRef(null);
-  const firstFocusableEl = useRef(null);
-  const lastFocusableEl = useRef(null);
-  const prevFocusedEl = useRef(null);
-  const missingFormValues = !addSub.name || !addSub.position;
-  const submitDisabled = missingFormValues && renderValidationError;
+  const dialogEl = useRef<HTMLDialogElement>(null);
+  const firstFocusableEl = useRef<HTMLInputElement | null>(null);
+  const lastFocusableEl = useRef<HTMLButtonElement | null>(null);
+  const prevFocusedEl = useRef<HTMLElement | null>(null);
+
+  const isInvalid = !subName || !subPosition;
+  const submitDisabled = isInvalid && renderValidationError;
   const inputClassNames = classnames('sub-form__input', {
-    'sub-form__input--invalid': !addSub.name && renderValidationError
+    'sub-form__input--invalid': !subName && renderValidationError
   });
   const selectClassNames = classnames('sub-form__select', {
-    'sub-form__select--invalid': !addSub.position && renderValidationError
+    'sub-form__select--invalid': !subPosition && renderValidationError
   });
   const submitBtnClassNames = classnames('sub-form__button sub-form__button--submit', {
     'sub-form__button--disabled': submitDisabled
   });
 
-  const handleFormChange = (value, key) => setAddSub({ ...addSub, [key]: value, sub: true });
-
-  const onSubmit = (e) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (missingFormValues) {
+    if (isInvalid) {
       setRenderValidationError(true);
       return
     } else {
       setRenderValidationError(false);
     }
 
+    const newPlayer: PlayerType = {
+      name: subName,
+      position: [subPosition],
+      sub: true
+    };
     setAvailablePlayers(prev =>
-        updateAvailablePlayers(prev, { action: 'add', player: { ...addSub, position: [addSub.position]}})
+        updateAvailablePlayers(prev, { action: 'add', player: newPlayer })
     )
-    setAddSub({ name:'', position: defaultPosition, sub: null });
-    closeModal();
+    handleClose();
 
-    if(!defaultPosition) {
+    if(!selectedPosition) {
       Promise.resolve().then(() => {
         const recentlyAddedPlayer =
-          document.querySelector(`.${calculateButtonClassName(addSub.name, 'remove')}`);
-          if (recentlyAddedPlayer) {
-            recentlyAddedPlayer.focus();
-          }
+          document.querySelector(`.${calculateButtonClassName(subName)}`) as HTMLButtonElement;
+        recentlyAddedPlayer?.focus();
       })
     } else {
       Promise.resolve().then(() => {
-        prevFocusedEl.current.focus();
+        prevFocusedEl.current?.focus();
       })
     }
   }
 
-  const onCancel = (e) => {
-    e.preventDefault();
-    setAddSub({ name:'', position: defaultPosition, sub: null });
+  const onCancel = () => {
+    handleClose();
     closeModal();
     Promise.resolve().then(() => {
-      prevFocusedEl.current.focus();
+      prevFocusedEl.current?.focus();
     })
   }
 
-  const handleKeyDown = (e) => {
+  const handleClose = () => {
+    setSubName('');
+    setSubPosition('');
+    setRenderValidationError(false);
+    closeModal();
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Tab') {
       if (!e.shiftKey && document.activeElement === lastFocusableEl.current) {
         e.preventDefault();
-        firstFocusableEl.current.focus();
+        firstFocusableEl.current?.focus();
       } else if (e.shiftKey && document.activeElement === firstFocusableEl.current) {
         e.preventDefault();
-        lastFocusableEl.current.focus();
+        lastFocusableEl.current?.focus();
       }
     } else if (e.key === 'Escape') {
       closeModal();
       Promise.resolve().then(() => {
-        prevFocusedEl.current.focus();
+        prevFocusedEl.current?.focus();
       })
     }
   }
 
   useEffect(() => {
     if (openModal && !prevFocusedEl.current) {
-      if (document.activeElement && document.activeElement.className.includes('dropdown__button--warning')) {
-          const dropdownBtn = document.activeElement
-            .closest('.dropdown__container')
-            .querySelector('.dropdown__button--main');
-          prevFocusedEl.current = dropdownBtn;
+      if (document.activeElement?.className.includes('dropdown__button--warning')) {
+        const dropdownContainer = document.activeElement.closest('.dropdown__container') as HTMLUListElement;
+        const dropdownBtn = dropdownContainer?.querySelector('.dropdown__button--main') as HTMLButtonElement;
+        prevFocusedEl.current = dropdownBtn;
       } else {
-          prevFocusedEl.current = document.activeElement;
+        prevFocusedEl.current = document.activeElement as HTMLElement;
       }
     }
 }, [openModal]);
 
   useEffect(() => {
     if (openModal) {
-      dialogEl.current.showModal();
-      firstFocusableEl.current.focus();
+      dialogEl.current?.showModal();
+      firstFocusableEl.current?.focus();
     } else {
-      dialogEl.current.close();
+      dialogEl.current?.close();
     }
   }, [openModal])
 
   useEffect(() => {
-    if(!missingFormValues && renderValidationError) {
+    if(!isInvalid && renderValidationError) {
       setRenderValidationError(false);
     }
   }, [renderValidationError, submitDisabled]);
@@ -134,8 +148,8 @@ const AddSubForm =
                    className={inputClassNames}
                    ref={firstFocusableEl}
                    type="text"
-                   onChange={(e) => handleFormChange(e.target.value, 'name')}
-                   value={addSub.name}/>
+                   onChange={(e) => setSubName(e.target.value)}
+                   value={subName}/>
           </div>
           <div className="sub-form__group">
             <label htmlFor="sub-position">
@@ -145,8 +159,8 @@ const AddSubForm =
             <select id="sub-position"
                     className={selectClassNames}
                     name="sub-position"
-                    onChange={(e) => handleFormChange(e.target.value, 'position')}
-                    value={addSub.position}>
+                    onChange={(e) => setSubPosition(e.target.value as AvailablePositions)}
+                    value={subPosition}>
               <option value="">Choose a Position</option>
               {formationPositions.map((position) => <option key={position}>{position}</option>)}
             </select>
@@ -168,13 +182,5 @@ const AddSubForm =
     </dialog>
   )
 }
-
-AddSubForm.propTypes = {
-  setAvailablePlayers: PropTypes.func.isRequired,
-  formationPositions: PropTypes.arrayOf(PropTypes.string).isRequired,
-  selectedPosition: PropTypes.string,
-  openModal: PropTypes.bool.isRequired,
-  closeModal: PropTypes.func.isRequired
-};
 
 export default AddSubForm;

@@ -78,6 +78,7 @@
         "react/jsx-max-props-per-line": ["error", { "maximum": 1, "when": "multiline" }],
         "react/jsx-closing-tag-location": ["error"],
         "react/display-name": "off",
-        "jsx-quotes": ["error", "prefer-double"]
+        "jsx-quotes": ["error", "prefer-double"],
+        "@typescript-eslint/no-empty-function": "off"
     }
 }

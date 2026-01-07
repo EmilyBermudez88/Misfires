@@ -5,19 +5,20 @@ import IconButton from './IconButton';
 import Select from './Select';
 import Toggle from './Toggle';
 
-import { updateAvailablePlayers } from '../util/playerUtils';
+import { updateAvailablePlayers, calculateButtonClassName } from '../util/playerUtils';
 import { PlayerType } from '../util/playerDataSet';
+import { AvailablePositions } from '../util/lineupData';
 import { PlayersContext } from '../contexts/PlayersContext';
 import { FormationContext } from '../contexts/FormationContext';
 
 interface BenchProps {
-  renderSubFormFromBench: (show: boolean, position?: string) => void;
+  renderSubFormFromBench: (show: boolean, position?: AvailablePositions) => void;
 }
 
 const Bench = ({ renderSubFormFromBench }: BenchProps) => {
   const [unavailable, setUnavailable] = useState<PlayerType[]>([]);
   const [showPlayerPosition, setShowPlayerPosition] = useState(false);
-  const [playerToEdit, setPlayerToEdit] = useState('');
+  const [playerToEdit, setPlayerToEdit] = useState<string | null>(null);
 
   const { setAvailablePlayers, availablePlayers } = useContext(PlayersContext);
   const { formation } = useContext(FormationContext);
@@ -86,6 +87,7 @@ const Bench = ({ renderSubFormFromBench }: BenchProps) => {
                   <IconButton onClick={() => setPlayerToEdit(player.name)} type="update"/>
                 </span>
                 <IconButton ref={(el) => setButtonRef(player.name, el)}
+                            className={calculateButtonClassName(player.name)}
                             onClick={() => removePlayer(player)}
                             type="remove"/>
               </li>)

@@ -25,5 +25,5 @@ export const updateAvailablePlayers = (availablePlayers: PlayerType[], ...action
   return result;
 }
 
-export const calculateButtonClassName = (player: string, action: string) =>
-  `bench__${action}-btn--${player.replace(/\s+/g, '-').toLowerCase()}`
+export const calculateButtonClassName = (player: string) =>
+  `remove-btn--${player.replace(/\s+/g, '-').toLowerCase()}`

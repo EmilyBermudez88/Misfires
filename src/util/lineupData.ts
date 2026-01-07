@@ -14,6 +14,8 @@ type DefensePositions = 'RB' | 'CB' | 'LB';
 type MidfieldPositions = 'RW' | 'CM' | 'LW';
 type AttackPositions = 'CF';
 
+export type AvailablePositions = GoaliePositions | DefensePositions | MidfieldPositions | AttackPositions;
+
 interface PitchPositions {
     goalie: GoaliePositions[];
     defense: DefensePositions[];
