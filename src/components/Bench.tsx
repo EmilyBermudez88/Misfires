@@ -5,7 +5,7 @@ import IconButton from './IconButton';
 import Select from './Select';
 import Toggle from './Toggle';
 
-import { updateAvailablePlayers, calculateButtonClassName } from '../util/playerUtils';
+import { updateAvailablePlayers, calculateButtonClassName } from '../utils/playerUtils';
 import { PlayersContext } from '../contexts/PlayersContext';
 import { FormationContext } from '../contexts/FormationContext';
 import { PlayerType, AvailablePositions } from '../types/types';

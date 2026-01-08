@@ -7,8 +7,8 @@ import PlayerPositions from './components/PlayerPositions';
 import AddSubForm from './components/AddSubForm';
 import FieldLayout from './assets/fieldLayout.png';
 
-import { positions } from './util/lineupData';
-import playerDataSet from './util/playerDataSet';
+import { positions } from './utils/lineupData';
+import playerDataSet from './utils/playerDataSet';
 import { FormationContext } from './contexts/FormationContext';
 import { PlayersContext } from './contexts/PlayersContext';
 import { JerseyColourType, PlayerType, LineType, AvailablePositions } from './types/types';

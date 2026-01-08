@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Dropdown from './Dropdown';
-import { formations } from '../util/lineupData';
+import { formations } from '../utils/lineupData';
 
 interface DropdownProps {
   chooseFormation: (formation: string) => void;

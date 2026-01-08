@@ -4,7 +4,7 @@ import TeamFormationDropdown from './TeamFormationDropdown';
 import JerseyDropdown from './JerseyDropdown';
 import SoccerBall from '../assets/soccer-ball.png';
 
-import playerDataSet from '../util/playerDataSet';
+import playerDataSet from '../utils/playerDataSet';
 import { JerseyColourType, PlayerType } from '../types/types';
 
 interface HeroProps {

@@ -7,7 +7,7 @@ import JerseyWhite from '../assets/JerseyWhite.png'
 
 import { PlayersContext } from '../contexts/PlayersContext';
 import { FormationContext } from '../contexts/FormationContext';
-import { updateAvailablePlayers } from '../util/playerUtils';
+import { updateAvailablePlayers } from '../utils/playerUtils';
 import { PlayerType, AvailablePositions, JerseyColourType, UpdateAvailableAction } from '../types/types';
 
 interface PlayerPositionsProps {

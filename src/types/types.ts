@@ -12,14 +12,19 @@ type DefensePositions = 'RB' | 'CB' | 'LB';
 type MidfieldPositions = 'RW' | 'CM' | 'LW';
 type AttackPositions = 'CF';
 
-export type AvailablePositions = GoaliePositions | DefensePositions | MidfieldPositions | AttackPositions;
-
-export interface PitchPositions {
-    goalie: GoaliePositions[];
-    defense: DefensePositions[];
-    midfield: MidfieldPositions[];
-    attack: AttackPositions[];
+interface LineToPositionMap {
+    goalie: GoaliePositions;
+    defense: DefensePositions;
+    midfield: MidfieldPositions;
+    attack: AttackPositions;
 }
+
+export type PitchPositions = {
+    [K in LineType]: LineToPositionMap[K][];
+}
+
+export type AvailablePositions = LineToPositionMap[LineType];
+
 
 export interface UpdateAvailableAction {
   action: 'add' | 'remove';

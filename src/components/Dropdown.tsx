@@ -6,7 +6,7 @@ import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import IconButton from './IconButton';
 
 interface DropdownProps {
-  options: string[];
+  options: readonly string[];
   onSelect: (option: string) => void;
   selectedValue?: string | null;
   placeholder: string;
@@ -42,7 +42,7 @@ const Dropdown = ({ options,
   const openKeys = [' ', 'ArrowDown', 'ArrowUp', 'Enter', 'Home', 'End'];
 
   const handleBlur=(e: React.FocusEvent<HTMLDivElement>) => {
-    if (!ref.current?.contains(e.relatedTarget as Node)) {
+    if (e.relatedTarget instanceof Node && !ref.current?.contains(e.relatedTarget)) {
       setOpen(false)
     }
   }
@@ -146,8 +146,10 @@ const Dropdown = ({ options,
 
   useEffect(() => {
     if (menuRef && open && visualSelectionIndex !== null) {
-      const focusedEl= menuRef.current?.children[visualSelectionIndex] as HTMLElement;
-      focusedEl?.scrollIntoView({ block: 'nearest' });
+      const focusedEl= menuRef.current?.children[visualSelectionIndex];
+      if (focusedEl instanceof HTMLElement) {
+        focusedEl.scrollIntoView({ block: 'nearest' });
+      } 
     }
   }, [visualSelectionIndex, open])
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import classnames from 'classnames';
 
-import { updateAvailablePlayers, calculateButtonClassName } from '../util/playerUtils';
+import { updateAvailablePlayers, calculateButtonClassName } from '../utils/playerUtils';
 import { PlayerType, AvailablePositions } from '../types/types';
 
 interface AddSubFormProps {
@@ -57,9 +57,10 @@ const AddSubForm =
 
     if(!selectedPosition) {
       Promise.resolve().then(() => {
-        const recentlyAddedPlayer =
-          document.querySelector(`.${calculateButtonClassName(subName)}`) as HTMLButtonElement;
-        recentlyAddedPlayer?.focus();
+        const recentlyAddedPlayer = document.querySelector(`.${calculateButtonClassName(subName)}`);
+        if (recentlyAddedPlayer instanceof HTMLButtonElement) {
+          recentlyAddedPlayer.focus();
+        }
       })
     } else {
       Promise.resolve().then(() => {
@@ -104,8 +105,10 @@ const AddSubForm =
     if (openModal && !prevFocusedEl.current) {
       if (document.activeElement?.className.includes('dropdown__button--warning')) {
         const dropdownContainer = document.activeElement.closest('.dropdown__container') as HTMLUListElement;
-        const dropdownBtn = dropdownContainer?.querySelector('.dropdown__button--main') as HTMLButtonElement;
-        prevFocusedEl.current = dropdownBtn;
+        const dropdownBtn = dropdownContainer?.querySelector('.dropdown__button--main');
+        if (dropdownBtn instanceof HTMLButtonElement) {
+          prevFocusedEl.current = dropdownBtn;
+        }
       } else {
         prevFocusedEl.current = document.activeElement as HTMLElement;
       }
