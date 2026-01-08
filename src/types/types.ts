@@ -32,3 +32,5 @@ export interface UpdateAvailableAction {
 }
 
 export type JerseyColourType = 'home' | 'away';
+
+export type renderSubFormType = (show: boolean, position?: AvailablePositions) => void;

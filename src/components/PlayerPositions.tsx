@@ -8,7 +8,7 @@ import JerseyWhite from '../assets/JerseyWhite.png'
 import { PlayersContext } from '../contexts/PlayersContext';
 import { FormationContext } from '../contexts/FormationContext';
 import { JerseyContext } from '../contexts/JerseyContext';
-import { updateAvailablePlayers } from '../utils/playerUtils';
+import { updateAvailablePlayers, calculateDropdownOptions } from '../utils/playerUtils';
 import { PlayerType, AvailablePositions, UpdateAvailableAction } from '../types/types';
 
 interface PlayerPositionsProps {
@@ -28,19 +28,7 @@ const PlayerPositions = React.memo(({ position, renderSubForm }: PlayerPositions
     away: jerseyColour === 'away'
   });
 
-  const getDropdownOptions = () => {
-    // We still want to parse the availablePlayers array into preferred positions to
-    // make the choice easier of which player should go where
-    const preferred = availablePlayers.filter(p => p.position.includes(position));
-    if (preferred.length > 0) {
-      return preferred.map(p => p.name);
-    }
-
-    // If no preferred players exist, render backup options
-    return availablePlayers
-      .filter(p => p.backupPosition?.includes(position))
-      .map(p => p.name);
-  }
+  const getDropodownOptions = calculateDropdownOptions(availablePlayers, position);
 
   const handleSelection = (selection: string) => {
     const newPlayer = availablePlayers.find((player) => player.name === selection);
@@ -68,7 +56,7 @@ const PlayerPositions = React.memo(({ position, renderSubForm }: PlayerPositions
   const emptyState = (
     <li className="dropdown__option--warning">
       <span>NO ONE AVAILABLE</span>
-      <button onClick={() => renderSubForm(true, position)}>Add Sub</button>
+      <button className="dropdown__button--warning" onClick={() => renderSubForm(true, position)}>Add Sub</button>
     </li>
   );
 
@@ -83,7 +71,7 @@ const PlayerPositions = React.memo(({ position, renderSubForm }: PlayerPositions
       <p className={titleClassName} id={labelId}>{position}</p>
       <Dropdown className={!userSelection ? 'unselected' : ''}
                 labelId={labelId}
-                options={getDropdownOptions()}
+                options={getDropodownOptions}
                 selectedValue={userSelection?.name || ''}
                 onSelect={handleSelection}
                 placeholder="select player"

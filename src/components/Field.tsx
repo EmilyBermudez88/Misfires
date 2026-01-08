@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useMemo } from 'react';
 import classnames from 'classnames';
 
 import PlayerPositions from './PlayerPositions';
@@ -7,111 +7,80 @@ import FieldLayout from '../assets/fieldLayout.png';
 import { positions } from '../utils/lineupData';
 import { PlayersContext } from '../contexts/PlayersContext';
 import { FormationContext } from '../contexts/FormationContext';
-import { LineType, renderSubFormType } from '../types/types';
+import { AvailablePositions, LineType, renderSubFormType } from '../types/types';
 
 interface FieldProps {
-	renderSubForm: renderSubFormType;
+  renderSubForm: renderSubFormType;
 }
 
 const Field = ({ renderSubForm }: FieldProps) => {
-	const { formationPositions, setFormationPositions } = useContext(PlayersContext);
-	const { formation } = useContext(FormationContext);
-	const fieldLineClassNames = classnames('field__line', {
+  const { formation } = useContext(FormationContext);
+  const { setFormationPositions } = useContext(PlayersContext);
+  const fieldLineClassNames = classnames('field__line', {
     spread: formation.length < 4
   });
 
-	const definePosition = (line: LineType, idx: number) => {
-		const positionName = positions[line][idx];
-		if (!formationPositions.includes(positionName)) {
-			formationPositions.push(positionName);
-		}
-		return positionName;
-
-	}
-
-	const renderGoalie = (num: number): React.JSX.Element[] => {
-		const children= []
-		for (let i = 0; i < num; i++) {
-      const goalie = definePosition('goalie', i);
-      children.push(<PlayerPositions key="goalie"
-                                     position={goalie}
-                                     renderSubForm={renderSubForm}/>);
-		}
-		return children;
-	}
-
-	const renderDefense = (num: number): React.JSX.Element[] => {
-		const children = []
-		if (num === 3) {
-      for (let i = 0; i < num; i++) {
-        const defense = definePosition('defense', i);
-				children.push(<PlayerPositions key={`defense-${i}`}
-                                   position={defense}
-                                   renderSubForm={renderSubForm}/>);
-			}
-		} else {
-      for (let i = 0; i < num; i++) {
-        const defense = definePosition('defense', 1);
-        children.push(<PlayerPositions key={`defense-${i}`}
-                                       position={defense}
-                                       renderSubForm={renderSubForm}/>);
+  const getPosition = (line: LineType, count: number, idx: number): AvailablePositions => {
+    const linePositions = positions[line];
+    if (line === 'defense') {
+      if (count === 2) {
+        return linePositions[1];
+      }
+      return linePositions[idx];
+    }
+    if (line === 'midfield') {
+      if (count === 1) {
+        return linePositions[1];
+      } else if (count === 2) {
+        return idx === 0 ? linePositions[0] : linePositions[2];
+      } else {
+        return linePositions[idx];
       }
     }
-		return children;
-	}
-	const renderMidfield = (num: number): React.JSX.Element[] => {
-		const children = []
-		if (num === 1) {
-      const midfield = definePosition('midfield', num);
-			children.push(<PlayerPositions key="midfield"
-                                  position={midfield}
-                                  renderSubForm={renderSubForm}/>);
-		}
-		else if (num === 2) {
-			for (let i = 0; i <= num; i = i + 2) {
-        const midfield = definePosition('midfield', i);
-				children.push(<PlayerPositions key={`midfield-${i}`}
-                                   position={midfield}
-                                   renderSubForm={renderSubForm}/>);
-			}
-		}
-		else {
-			for (let i = 0; i < num; i++) {
-        const midfield = definePosition('midfield', i);
-				children.push(<PlayerPositions key={`midfield-${i}`}
-                                   position={midfield}
-                                   renderSubForm={renderSubForm}/>);
-			}
-		}
-		return children;
-	}
+    return linePositions[0]
+  }
 
-	const renderAttack = (num: number): React.JSX.Element[] => {
-		const children = []
-		for (let i = 0; i < num; i++) {
-      const attack = definePosition('attack', i);
-			children.push(<PlayerPositions key={`attack-${i}`}
-                                  position={attack}
-                                  renderSubForm={renderSubForm}/>);
-		}
-		return children;
-	}
+  const fieldLayout = useMemo(() => {
+    const lines: LineType[] = ['goalie', 'defense', 'midfield', 'attack'];
 
-	return (
-		<div className="field">
-			<img className="field__image" src={FieldLayout}/>
-			<div className="field__setup">
-				{ !!formation.length &&
-					<>
-						<div className={fieldLineClassNames}>{renderGoalie(formation[0])}</div>
-						<div className={fieldLineClassNames}>{renderDefense(formation[1])}</div>
-						<div className={fieldLineClassNames}>{renderMidfield(formation[2])}</div>
-						<div className={fieldLineClassNames}>{renderAttack(formation[3])}</div>
-					</>
-					}
-			</div>
-		</div>
-	)
+    return lines.map((line, lineIdx) => {
+      const count = formation[lineIdx] || 0;
+      const positionsInLine: AvailablePositions[] = [];
+
+      for (let i = 0; i < count; i++) {
+        positionsInLine.push(getPosition(line, count, i));
+      }
+
+      return positionsInLine;
+    });
+  }, [formation]);
+
+  useEffect(() => {
+    if (formation.length > 0) {
+      const allActivePositions = fieldLayout.flat();
+      setFormationPositions([...new Set(allActivePositions)]);
+
+    } else {
+      setFormationPositions([]);
+    }
+  }, [formation]);
+
+  return (
+    <div className="field">
+      <img className="field__image" src={FieldLayout}/>
+      <div className="field__setup">
+        { !!formation.length && fieldLayout.map((positions, lineIdx) => (
+          <div key={`line-${lineIdx}`} className={fieldLineClassNames}>
+            {positions.map((pos, idx) => (
+              <PlayerPositions key={`pos-${lineIdx}-${idx}`}
+                               position={pos}
+                               renderSubForm={renderSubForm}/>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
 }
 
 export default Field;

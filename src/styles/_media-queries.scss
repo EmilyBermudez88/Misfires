@@ -166,16 +166,10 @@
         height: 90px;
       }
 
-      .dropdown__button {
-        &.unselected {
-          text-align: left;
-        }
-
-        .dropdown-caret {
-          height: 60%;
-          top: 3px;
-          right: var(--spacing-base);
-        }
+      .dropdown-caret {
+        height: 60%;
+        top: 3px;
+        right: var(--spacing-base);
       }
     }
   }
@@ -221,5 +215,11 @@
 
   .field-position {
     width: 115px;
+
+    .dropdown__button--main {
+      &.unselected {
+        text-align: left;
+      }
+    }
   }
 }

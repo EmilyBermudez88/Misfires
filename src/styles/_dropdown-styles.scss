@@ -51,6 +51,12 @@
       width: 100%;
       font-size: var(--font-small);
       color: rgb(249, 109, 109);
+      font-weight: bold;
+      span {
+        display: inline-block;
+        background-color:var(--black);
+        padding: var(--spacing-base) 2px;
+      }
 
       .dropdown {
         &__value {

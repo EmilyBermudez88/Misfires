@@ -1,5 +1,5 @@
 import playerDataSet from './playerDataSet';
-import { PlayerType, UpdateAvailableAction } from '../types/types';
+import { AvailablePositions, PlayerType, UpdateAvailableAction } from '../types/types';
 
 const removePlayer = (playerToRemove: PlayerType, playerArr: PlayerType[]): PlayerType[] => {
   return playerArr.filter((ind) => ind.name !== playerToRemove.name);
@@ -23,6 +23,20 @@ export const updateAvailablePlayers = (
     : result = addPlayer(update.player, result)
   )
   return result;
+}
+
+export const calculateDropdownOptions = (availablePlayers: PlayerType[], position: AvailablePositions) => {
+  // We still want to parse the availablePlayers array into preferred positions to
+  // make the choice easier of which player should go where
+  const preferred = availablePlayers.filter(p => p.position.includes(position));
+  if (preferred.length > 0) {
+    return preferred.map(p => p.name);
+  }
+
+  // If no preferred players exist, render backup options
+  return availablePlayers
+    .filter(p => p.backupPosition?.includes(position))
+    .map(p => p.name);
 }
 
 export const calculateButtonClassName = (player: string) =>

@@ -149,7 +149,7 @@ const Dropdown = ({ options,
       const focusedEl= menuRef.current?.children[visualSelectionIndex];
       if (focusedEl instanceof HTMLElement) {
         focusedEl.scrollIntoView({ block: 'nearest' });
-      } 
+      }
     }
   }, [visualSelectionIndex, open])
 
