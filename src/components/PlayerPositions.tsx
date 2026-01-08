@@ -7,10 +7,8 @@ import JerseyWhite from '../assets/JerseyWhite.png'
 
 import { PlayersContext } from '../contexts/PlayersContext';
 import { FormationContext } from '../contexts/FormationContext';
-import { PlayerType } from '../util/playerDataSet';
 import { updateAvailablePlayers } from '../util/playerUtils';
-import { AvailablePositions } from '../util/lineupData';
-import { JerseyColourType } from '../App';
+import { PlayerType, AvailablePositions, JerseyColourType, UpdateAvailableAction } from '../types/types';
 
 interface PlayerPositionsProps {
   position: AvailablePositions;
@@ -48,7 +46,7 @@ const PlayerPositions = ({ position, renderSubForm, jersey }: PlayerPositionsPro
 
     if (newPlayer) {
       setAvailablePlayers(prev => {
-        const actions: any[] = [{ action: 'remove', player: newPlayer }];
+        const actions: UpdateAvailableAction[] = [{ action: 'remove', player: newPlayer }];
         if (userSelection) {
           actions.push({ action: 'add', player: userSelection })
         }

@@ -1,11 +1,11 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 
 import TeamFormationDropdown from './TeamFormationDropdown';
 import JerseyDropdown from './JerseyDropdown';
 import SoccerBall from '../assets/soccer-ball.png';
 
-import playerDataSet, { PlayerType } from '../util/playerDataSet';
-import { JerseyColourType } from '../App';
+import playerDataSet from '../util/playerDataSet';
+import { JerseyColourType, PlayerType } from '../types/types';
 
 interface HeroProps {
   setJerseyColour: (color: JerseyColourType) => void;

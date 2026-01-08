@@ -7,12 +7,11 @@ import PlayerPositions from './components/PlayerPositions';
 import AddSubForm from './components/AddSubForm';
 import FieldLayout from './assets/fieldLayout.png';
 
-import { positions, LineType, AvailablePositions } from './util/lineupData';
-import playerDataSet, { PlayerType } from './util/playerDataSet';
+import { positions } from './util/lineupData';
+import playerDataSet from './util/playerDataSet';
 import { FormationContext } from './contexts/FormationContext';
 import { PlayersContext } from './contexts/PlayersContext';
-
-export type JerseyColourType = 'home' | 'away';
+import { JerseyColourType, PlayerType, LineType, AvailablePositions } from './types/types';
 
 function App() {
   const [availablePlayers, setAvailablePlayers] = useState<PlayerType[]>(playerDataSet),

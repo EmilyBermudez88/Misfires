@@ -1,11 +1,4 @@
-import { AvailablePositions } from './lineupData';
-
-export interface PlayerType {
-	name: string;
-	position: AvailablePositions[];
-	backupPosition?: AvailablePositions;
-	sub?: boolean;
-}
+import { PlayerType } from '../types/types';
 
 const playerDataSet: PlayerType[] = [
 	{

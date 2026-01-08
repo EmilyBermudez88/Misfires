@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 
 import { PlayersContext } from '../contexts/PlayersContext';
-import { PlayerType } from '../util/playerDataSet';
-import { AvailablePositions } from '../util/lineupData';
+import { AvailablePositions, PlayerType } from '../types/types';
 
 interface SelectProps {
   player: PlayerType;

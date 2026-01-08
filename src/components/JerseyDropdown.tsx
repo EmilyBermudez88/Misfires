@@ -1,6 +1,6 @@
 import React from 'react';
 import Dropdown from './Dropdown';
-import { JerseyColourType } from '../App';
+import { JerseyColourType } from '../types/types';
 
 interface DropdownProps {
   chooseJersey: (color: JerseyColourType) => void;

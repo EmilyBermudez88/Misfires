@@ -2,8 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import classnames from 'classnames';
 
 import { updateAvailablePlayers, calculateButtonClassName } from '../util/playerUtils';
-import { PlayerType } from '../util/playerDataSet';
-import { AvailablePositions } from '../util/lineupData';
+import { PlayerType, AvailablePositions } from '../types/types';
 
 interface AddSubFormProps {
   setAvailablePlayers: React.Dispatch<React.SetStateAction<PlayerType[]>>;

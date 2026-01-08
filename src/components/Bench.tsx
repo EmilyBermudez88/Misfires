@@ -6,10 +6,9 @@ import Select from './Select';
 import Toggle from './Toggle';
 
 import { updateAvailablePlayers, calculateButtonClassName } from '../util/playerUtils';
-import { PlayerType } from '../util/playerDataSet';
-import { AvailablePositions } from '../util/lineupData';
 import { PlayersContext } from '../contexts/PlayersContext';
 import { FormationContext } from '../contexts/FormationContext';
+import { PlayerType, AvailablePositions } from '../types/types';
 
 interface BenchProps {
   renderSubFormFromBench: (show: boolean, position?: AvailablePositions) => void;

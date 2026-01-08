@@ -1,6 +1,5 @@
 import { createContext, Dispatch, SetStateAction } from 'react';
-import { PlayerType } from '../util/playerDataSet';
-import { AvailablePositions } from '../util/lineupData';
+import { PlayerType, AvailablePositions } from '../types/types';
 
 interface PlayersContextType {
   availablePlayers: PlayerType[];

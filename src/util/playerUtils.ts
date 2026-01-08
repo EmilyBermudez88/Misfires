@@ -1,9 +1,5 @@
-import playerDataSet, { PlayerType } from './playerDataSet';
-
-interface UpdateAction {
-  action: 'add' | 'remove';
-  player: PlayerType;
-}
+import playerDataSet from './playerDataSet';
+import { PlayerType, UpdateAvailableAction } from '../types/types';
 
 const removePlayer = (playerToRemove: PlayerType, playerArr: PlayerType[]): PlayerType[] => {
   return playerArr.filter((ind) => ind.name !== playerToRemove.name);
@@ -15,7 +11,11 @@ const addPlayer = (playerToAdd: PlayerType, playerArr: PlayerType[]): PlayerType
   return playerArr.concat(player);
 }
 
-export const updateAvailablePlayers = (availablePlayers: PlayerType[], ...actions: UpdateAction[]): PlayerType[] => {
+export const updateAvailablePlayers = (
+    availablePlayers: PlayerType[],
+    ...actions: UpdateAvailableAction[]
+  ): PlayerType[] => {
+
   let result = availablePlayers;
 
   actions.forEach((update) => update.action === 'remove'
