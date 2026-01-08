@@ -26,22 +26,22 @@ function App() {
     <>
       <div className="app">
         <PlayersProvider>
-            <main className="app__main">
-              <JerseyProvider>
-                <section className="hero-section">
-                  <div className="hero-section__title">
-                    <h1 className="hero-section__title-text">Misfires</h1>
-                    <img className="hero-section__image" src={SoccerBall}/>
-                  </div>
-                  <div className="hero-section__dropdowns">
-                    <TeamFormationDropdown />
-                    <JerseyDropdown />
-                  </div>
-                </section>
-                <Field renderSubForm={renderSubForm}/>
-              </JerseyProvider>
-              <Bench renderSubFormFromBench={renderSubForm}/>
-            </main>
+          <main className="app__main">
+            <JerseyProvider>
+              <section className="hero-section">
+                <div className="hero-section__title">
+                  <h1 className="hero-section__title-text">Misfires</h1>
+                  <img className="hero-section__image" src={SoccerBall}/>
+                </div>
+                <div className="hero-section__dropdowns">
+                  <TeamFormationDropdown />
+                  <JerseyDropdown />
+                </div>
+              </section>
+              <Field renderSubForm={renderSubForm}/>
+            </JerseyProvider>
+            <Bench renderSubFormFromBench={renderSubForm}/>
+          </main>
           {renderForm &&
             <AddSubForm selectedPosition={selectedPosition}
                         openModal={renderForm}

@@ -18,32 +18,32 @@ const AddSubForm =
 
   const [subName, setSubName] = useState('');
   const [subPosition, setSubPosition] = useState<AvailablePositions | ''>(defaultPosition);
-  const [renderValidationError, setRenderValidationError] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const dialogEl = useRef<HTMLDialogElement>(null);
   const firstFocusableEl = useRef<HTMLInputElement | null>(null);
   const lastFocusableEl = useRef<HTMLButtonElement | null>(null);
   const prevFocusedEl = useRef<HTMLElement | null>(null);
 
-  const isInvalid = !subName || !subPosition;
-  const submitDisabled = isInvalid && renderValidationError;
+  const isFormInvalid = !subName || !subPosition;
+  const showValidationError = isSubmitted && isFormInvalid;
+
   const inputClassNames = classnames('sub-form__input', {
-    'sub-form__input--invalid': !subName && renderValidationError
+    'sub-form__input--invalid': !subName && isSubmitted
   });
   const selectClassNames = classnames('sub-form__select', {
-    'sub-form__select--invalid': !subPosition && renderValidationError
+    'sub-form__select--invalid': !subPosition && isSubmitted
   });
   const submitBtnClassNames = classnames('sub-form__button sub-form__button--submit', {
-    'sub-form__button--disabled': submitDisabled
+    'sub-form__button--disabled': showValidationError
   });
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (isInvalid) {
-      setRenderValidationError(true);
-      return
-    } else {
-      setRenderValidationError(false);
+    setIsSubmitted(true);
+
+    if (isFormInvalid) {
+      return;
     }
 
     const newPlayer: PlayerType = {
@@ -54,7 +54,7 @@ const AddSubForm =
     setAvailablePlayers(prev =>
         updateAvailablePlayers(prev, { action: 'add', player: newPlayer })
     )
-    handleClose();
+    closeAndReset();
 
     if(!selectedPosition) {
       Promise.resolve().then(() => {
@@ -71,17 +71,16 @@ const AddSubForm =
   }
 
   const onCancel = () => {
-    handleClose();
-    closeModal();
+    closeAndReset();
     Promise.resolve().then(() => {
       prevFocusedEl.current?.focus();
     })
   }
 
-  const handleClose = () => {
+  const closeAndReset = () => {
     setSubName('');
     setSubPosition('');
-    setRenderValidationError(false);
+    setIsSubmitted(false);
     closeModal();
   }
 
@@ -95,10 +94,7 @@ const AddSubForm =
         lastFocusableEl.current?.focus();
       }
     } else if (e.key === 'Escape') {
-      closeModal();
-      Promise.resolve().then(() => {
-        prevFocusedEl.current?.focus();
-      })
+      onCancel()
     }
   }
 
@@ -124,12 +120,6 @@ const AddSubForm =
       dialogEl.current?.close();
     }
   }, [openModal])
-
-  useEffect(() => {
-    if(!isInvalid && renderValidationError) {
-      setRenderValidationError(false);
-    }
-  }, [renderValidationError, submitDisabled]);
 
   return (
     <dialog ref={dialogEl}
@@ -170,13 +160,13 @@ const AddSubForm =
             </select>
           </div>
           <div className="sub-form__button-bar">
-            {renderValidationError &&
+            {showValidationError &&
               <p className="validation-message">
                 <span className="asterisk">*</span>
                 Fill all fields
               </p>
             }
-            <button className={submitBtnClassNames} disabled={submitDisabled}>
+            <button className={submitBtnClassNames} disabled={showValidationError}>
               Add Player
             </button>
             <button className="sub-form__button" ref={lastFocusableEl} type="reset" onClick={onCancel}>Cancel</button>
