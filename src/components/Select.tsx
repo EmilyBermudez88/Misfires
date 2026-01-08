@@ -10,10 +10,10 @@ interface SelectProps {
 }
 
 const Select = ({ player, edit, handleSelection }: SelectProps) => {
+  const { formationPositions } = useContext(PlayersContext);
   const [availablePlayerPositions, setAvailablePlayerPositions] = useState<AvailablePositions[]>([]);
   const [selected, setSelected]= useState<AvailablePositions>(player.position[0]);
   const selectRef = useRef<HTMLSelectElement>(null);
-  const { formationPositions } = useContext(PlayersContext);
 
   useEffect(() => {
     const handlePositions = () => {

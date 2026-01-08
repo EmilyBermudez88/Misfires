@@ -1,13 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Dropdown from './Dropdown';
+
+import { JerseyContext } from '../contexts/JerseyContext';
 import { JerseyColourType } from '../types/types';
 
-interface DropdownProps {
-  chooseJersey: (color: JerseyColourType) => void;
-  jerseyColour: JerseyColourType;
-}
-
-const JerseyColourDropdown = ({ chooseJersey, jerseyColour }: DropdownProps) => {
+const JerseyColourDropdown = () => {
+  const { jerseyColour, setJerseyColour } = useContext(JerseyContext);
   const labelId = 'jersey-labl';
   const options: JerseyColourType[] = ['away', 'home'];
 
@@ -17,7 +15,7 @@ const JerseyColourDropdown = ({ chooseJersey, jerseyColour }: DropdownProps) => 
     <Dropdown labelId={labelId}
               options={options}
               selectedValue={jerseyColour}
-              onSelect={(option) => chooseJersey(option as JerseyColourType)}
+              onSelect={(option) => setJerseyColour(option as JerseyColourType)}
               placeholder="select jersey"
               />
   </div>

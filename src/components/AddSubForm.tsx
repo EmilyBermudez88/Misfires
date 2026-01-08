@@ -1,20 +1,21 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import classnames from 'classnames';
 
+import { PlayersContext } from '../contexts/PlayersContext';
 import { updateAvailablePlayers, calculateButtonClassName } from '../utils/playerUtils';
 import { PlayerType, AvailablePositions } from '../types/types';
 
 interface AddSubFormProps {
-  setAvailablePlayers: React.Dispatch<React.SetStateAction<PlayerType[]>>;
   selectedPosition?: AvailablePositions | null;
-  formationPositions: AvailablePositions[];
   openModal: boolean;
   closeModal: () => void;
 }
 
 const AddSubForm =
-({ setAvailablePlayers, selectedPosition, formationPositions, openModal, closeModal }: AddSubFormProps) => {
+({ selectedPosition, openModal, closeModal }: AddSubFormProps) => {
+  const { setAvailablePlayers, formationPositions } = useContext(PlayersContext);
   const defaultPosition = selectedPosition || '';
+
   const [subName, setSubName] = useState('');
   const [subPosition, setSubPosition] = useState<AvailablePositions | ''>(defaultPosition);
   const [renderValidationError, setRenderValidationError] = useState(false);

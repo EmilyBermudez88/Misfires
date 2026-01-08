@@ -7,24 +7,25 @@ import JerseyWhite from '../assets/JerseyWhite.png'
 
 import { PlayersContext } from '../contexts/PlayersContext';
 import { FormationContext } from '../contexts/FormationContext';
+import { JerseyContext } from '../contexts/JerseyContext';
 import { updateAvailablePlayers } from '../utils/playerUtils';
-import { PlayerType, AvailablePositions, JerseyColourType, UpdateAvailableAction } from '../types/types';
+import { PlayerType, AvailablePositions, UpdateAvailableAction } from '../types/types';
 
 interface PlayerPositionsProps {
   position: AvailablePositions;
   renderSubForm: (show: boolean, position: AvailablePositions | undefined) => void;
-  jersey: JerseyColourType;
 }
 
-const PlayerPositions = ({ position, renderSubForm, jersey }: PlayerPositionsProps) => {
+const PlayerPositions = React.memo(({ position, renderSubForm }: PlayerPositionsProps) => {
   const { availablePlayers, setAvailablePlayers } = useContext(PlayersContext);
   const { formationString } = useContext(FormationContext);
+  const { jerseyColour } = useContext(JerseyContext);
   const [userSelection, setUserSelection] = useState<PlayerType | null>(null);
 
 	const labelId = `field-position-${position}`;
-  const jerseyImg = jersey === 'away' ? JerseyWhite : JerseyRed;
+  const jerseyImg = jerseyColour === 'away' ? JerseyWhite : JerseyRed;
   const titleClassName = classnames('field-position__title', {
-    away: jersey === 'away'
+    away: jerseyColour === 'away'
   });
 
   const getDropdownOptions = () => {
@@ -93,6 +94,6 @@ const PlayerPositions = ({ position, renderSubForm, jersey }: PlayerPositionsPro
     </div>
   </div>
 	);
-};
+});
 
 export default PlayerPositions;

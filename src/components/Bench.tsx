@@ -8,19 +8,19 @@ import Toggle from './Toggle';
 import { updateAvailablePlayers, calculateButtonClassName } from '../utils/playerUtils';
 import { PlayersContext } from '../contexts/PlayersContext';
 import { FormationContext } from '../contexts/FormationContext';
-import { PlayerType, AvailablePositions } from '../types/types';
+import { PlayerType, renderSubFormType } from '../types/types';
 
 interface BenchProps {
-  renderSubFormFromBench: (show: boolean, position?: AvailablePositions) => void;
+  renderSubFormFromBench: renderSubFormType;
 }
 
 const Bench = ({ renderSubFormFromBench }: BenchProps) => {
+  const { setAvailablePlayers, availablePlayers } = useContext(PlayersContext);
+  const { formation } = useContext(FormationContext);
+
   const [unavailable, setUnavailable] = useState<PlayerType[]>([]);
   const [showPlayerPosition, setShowPlayerPosition] = useState(false);
   const [playerToEdit, setPlayerToEdit] = useState<string | null>(null);
-
-  const { setAvailablePlayers, availablePlayers } = useContext(PlayersContext);
-  const { formation } = useContext(FormationContext);
 
   const renderSubWarning = availablePlayers.length < 4;
 
@@ -44,8 +44,6 @@ const Bench = ({ renderSubFormFromBench }: BenchProps) => {
       btnIdx === playerList.length - 1
         ? playerList[btnIdx - 1]
         : playerList[btnIdx + 1];
-
-    console.log(btnIdx, nextPlayer);
 
     if (nextPlayer) {
      const btnToFocus = buttonRefs.current.get(nextPlayer.name);
